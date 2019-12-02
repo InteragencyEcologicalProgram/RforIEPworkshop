@@ -1,0 +1,200 @@
+---
+title: "IEP Data Manipulation and Processing"
+author: "Rosemary Hartman"
+date: "12/2/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Outline
+
+1. Importing data
+1. Foundational skills of data manipulations
+2. Detecting errors and outliers
+3. Dataset restructuring
+4. Missing data
+5. Miscellaneous data manipulation
+6. getting data out of R
+
+
+Do we want to go into data organization at all? Maybe introduce "[tidy data](https://learning.nceas.ucsb.edu/2019-11-RRCourse/data-modeling-tidy-data.html)"?
+
+
+## Importing data
+
+There are multiple different ways of getting your data into R. RStudio 
+has a nice little point=and-click interface that lets you import your dataset, however using
+the GUI makes it more difficult to replicate your work later. Therefore, it's better
+to use the comand-line to import your data.
+
+We are going to use the Zooplankton Survey data for this demonstration. It's available 
+[here](ftp://ftp.wildlife.ca.gov/IEP_Zooplankton/1972-2018CBMatrix.xlsx)
+
+If you have a .csv file, you can use base R. So I went into the excel file and saved
+one of the worksheets as a .csv
+
+```{r imports}
+?read.csv
+
+CBdata = read.csv("CBdata.csv", stringsAsFactors = F)
+head(CBdata)
+
+```
+
+But what if we want to import the origional excel file? For that,
+we need the "readxl" package
+
+```{r excel}
+
+library(readxl)
+
+?read_excel
+
+CBdata = read_xlsx("1972-2018CBMatrix.xlsx", sheet = "CB CPUE Matrix 1972-2018")
+#Yuck. If you have too many blanks in the begining of your sheet, it thinks it is
+#a logical vector. Let's fix that.
+
+CBdata = read_excel("1972-2018CBMatrix.xlsx", 
+    sheet = "CB CPUE Matrix 1972-2018", col_types = c("numeric", 
+        "numeric", "numeric", "numeric", 
+        "date", "text", "text", "text", "numeric", 
+        "text", "numeric", "text", "numeric", 
+        "numeric", "numeric", "numeric", 
+        "numeric", "numeric", "numeric", 
+        "numeric", "numeric", "numeric", 
+        "numeric", "numeric", "numeric", 
+        "numeric", "numeric", "numeric", 
+        "numeric", "numeric", "numeric", 
+        "numeric", "numeric", "numeric", 
+        "numeric", "numeric", "numeric", 
+        "numeric", "numeric", "numeric", 
+        "numeric", "numeric", "numeric", 
+        "numeric", "numeric", "numeric", 
+        "numeric", "numeric", "numeric", 
+        "numeric", "numeric", "numeric", 
+        "numeric", "numeric", "numeric", 
+        "numeric", "numeric", "numeric", 
+        "numeric", "numeric", "numeric", 
+        "numeric", "numeric", "numeric", 
+        "numeric", "numeric", "numeric", 
+        "numeric", "numeric", "numeric", 
+        "numeric", "numeric", "numeric", 
+        "numeric"))
+
+head(CBdata)
+
+```
+## Foundational skills
+
+Do we really want to do data generation? Seems like a lot of work. 
+###	Generating data
+1.	rnorm, rbinom
+
+### Dealing with data frames
+
+A lot of these skills can be done with either Base R syntax, or "tidyverse"
+syntax. Most people find "tidyverse" a little more intuitive, but you
+can use whichever you are more comfortable with.
+
+#### Renaming columns
+
+```{r rename}
+library(tidyverse)
+
+names(CBdata)
+
+#several options for how to rename your colums
+
+names(CBdata)[names(CBdata)== "SurveyCode"] = "cheese"
+
+names(CBdata)
+
+#you could also just make a new column and delete the old one
+CBdata$crackers = CBdata$cheese
+CBdata$cheese = NULL
+
+names(CBdata)
+
+#using "rename" is a little more intuitive
+CBdata = rename(CBdata, SurveyCode = crackers)
+
+names(CBdata)
+
+```
+
+####	Reordering columns
+
+But now our "SurveyCode" column is at the end. We want to put it back in the begining.
+
+```{r}
+#here's how to do it in base R
+CBdata = CBdata[,c(74, 1:73)]
+
+names(CBdata)
+
+#you can also use the "select" function in dplyr
+CBdata = select(CBdata, Survey, Year, SurveyCode, SurveyRep:CrabZoea)
+
+names(CBdata)
+
+#I just learned this cool thing when you have a lot of columns!
+CBdatatest = select(CBdata, DAPHNIA, everything())
+
+names(CBdatatest)
+
+```
+
+
+####	Adding new mutated data
+
+We frequently need to transform data (especially log transformations). We 
+might also need to calculate CPUE, or do other stuff, and add our calculated variables
+to our data set. 
+
+```{r mutate}
+
+#we can just define a new variable and assign its value with the old variable
+CBdata$ln_cals = log(CBdata$ALLCALADULTS + 1)
+
+#or we can use the "mutate" function from dplyr. This is especially
+#helpful if you want to make a bunch of variables at once
+
+CBdata = mutate(CBdata, ln_clads = log(ALLCLADOCERA + 1), ln_cyc = log(ALLCYCADULTS +1), ln_all = ln_cals + ln_cyc + ln_clads)
+
+View(CBdata)
+
+```
+
+1.	i.e., dat$ln_var = log(dat$var)
+viii.	reordering factors
+ix.	Converting among data classes
+
+ii.	Apply functions
+
+R goes fastest when you can apply a function to every element in
+a vector (or a data frame)
+
+```{r apply}
+
+
+```
+iii.	For loops
+iv.	Aggregate()
+
+x.	Convert numeric categorical data into text
+1.	E.g., from 0/1 to “absent”/”present”
+xi.	Working with Dates
+1.	Converting to usable date notation
+a.	The format() function
+2.	How to generate DOY
+
+
+```{r foundations}
+
+
+```
+
+
