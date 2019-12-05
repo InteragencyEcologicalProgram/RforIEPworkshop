@@ -168,9 +168,24 @@ View(CBdata)
 
 ```
 
-1.	i.e., dat$ln_var = log(dat$var)
-viii.	reordering factors
+#### converting among data classes
+
+Even though we read in all our columns based on particular classses, sometimes
+we want to change the data class. Sometimes that's super easy, sometimes it's more
+difficult
+
+```{r}
+
+str(CBdata)
+
+#changing things from characters to factors and back again is really easy
+
+
+```
+
 ix.	Converting among data classes
+viii.	reordering factors
+
 
 ii.	Apply functions
 
