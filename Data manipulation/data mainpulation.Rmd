@@ -124,6 +124,18 @@ CBdata = rename(CBdata, SurveyCode = crackers)
 names(CBdata)
 
 ```
+#### Dropping columns
+The zooplankton data set has one row for every sample, and one
+column for every species. It also has columns with the sums of groups 
+of species (e.g. "All Cladocera"). We want to get rid of those summed
+columns because they make the data messy and harder to work with.
+
+```{r}
+
+?select
+
+CBdata2 = select(CBdata, -starts_with("ALL"))
+```
 
 ####	Reordering columns
 
@@ -131,17 +143,17 @@ But now our "SurveyCode" column is at the end. We want to put it back in the beg
 
 ```{r}
 #here's how to do it in base R
-CBdata = CBdata[,c(74, 1:73)]
+CBdata2 = CBdata2[,c(67, 1:66)]
 
-names(CBdata)
+names(CBdata2)
 
 #you can also use the "select" function in dplyr
-CBdata = select(CBdata, Survey, Year, SurveyCode, SurveyRep:CrabZoea)
+CBdata2 = select(CBdata2, Survey, Year, SurveyCode, SurveyRep:CRABZOEA)
 
-names(CBdata)
+names(CBdata2)
 
 #I just learned this cool thing when you have a lot of columns!
-CBdatatest = select(CBdata, DAPHNIA, everything())
+CBdatatest = select(CBdata2, DAPHNIA, everything())
 
 names(CBdatatest)
 
@@ -176,9 +188,21 @@ difficult
 
 ```{r}
 
-str(CBdata)
+str(CBdata2)
 
 #changing things from characters to factors and back again is really easy
+#the "Region" variable would make a good factor
+
+CBdata2$Region = as.factor(CBdata2$Region)
+
+#or we can do it with "mutate" again
+CBdata2 = mutate(CBdata2, Station = as.factor(Station)) 
+
+str(CBdata2)
+
+levels(CBdata2$Region)
+
+#the levels are automatically in alphabetical order. If we want to cange that:
 
 
 ```
