@@ -53,7 +53,7 @@ library(readxl)
 
 ?read_excel
 
-CBdata = read_xlsx("1972-2018CBMatrix.xlsx", sheet = "CB CPUE Matrix 1972-2018")
+#CBdata = read_xlsx("1972-2018CBMatrix.xlsx", sheet = "CB CPUE Matrix 1972-2018")
 #Yuck. If you have too many blanks in the begining of your sheet, it thinks it is
 #a logical vector. Let's fix that.
 
@@ -184,9 +184,16 @@ View(CBdata)
 
 Even though we read in all our columns based on particular classses, sometimes
 we want to change the data class. Sometimes that's super easy, sometimes it's more
-difficult
+difficult. Almost all data classes have an "as" function. as.data.frame, as.character, as.numeric, as.factor, etc. 
+
+Other useful functions:
+length(object) # number of elements or components
+str(object)    # structure of an object
+class(object)  # class or type of an object
+names(object)  # names
 
 ```{r}
+
 
 str(CBdata2)
 
@@ -202,14 +209,63 @@ str(CBdata2)
 
 levels(CBdata2$Region)
 
-#the levels are automatically in alphabetical order. If we want to cange that:
+```
+The levels are automatically in alphabetical order. 
+If we want to put them in order from west to east we
+can change the levels using the "factor" function. Just
+put the levels in the order you want. You can also use
+this fuction to change the labels of the factors (useful when plotting)
 
+```{r}
+?factor
+
+CBdata2$Region = factor(CBdata2$Region, 
+                        levels = c("NapaR", "SPBay", 
+                                   "CarStrait",  "SuiBay", "SuiMar", "EZ",
+                                   "WestDel", "SacR","SJR",
+                                   "NEDel","NorDel","SoDel","EastDel"),
+                        labels = c("Napa River", "San Pablo Bay",
+                                   "Carquinez", "Suisun Bay", "Suisun Marsh",
+                                   "EZ", "West Delta", "Sacramento River",
+                                   "San Joaquin River", "North East Delta",
+                                   "North Delta", "South Delta", "East Delta")
+                        )
+
+levels(CBdata2$Region)
 
 ```
 
-ix.	Converting among data classes
-viii.	reordering factors
+You can also change from factor to character, factor to numeric,
+or numeric to character, or logical values. 
 
+For example, if we wanted to look at crabzoea presence/absence instead
+of abundance, we can use "as.logical"
+
+```{r}
+CBdata2 = mutate(CBdata2, CRABZOEA_yn = as.logical(CRABZOEA))
+
+View(CBdata2)
+
+CBdata2 = select(CBdata2, -CRABZOEA_yn)
+
+```
+
+# Dates
+
+Dealing with dates is one of the most difficult data types, but fortunately the package "lubridate" makes it much easier.
+
+This might need to be a whole other lesson.
+
+
+```{r}
+library(lubridate)
+?lubridate
+
+class(CBdata2$Date)
+
+?DateTimeClasses
+
+```
 
 ii.	Apply functions
 
