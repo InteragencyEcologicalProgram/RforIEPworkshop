@@ -303,7 +303,7 @@ Frequently, we also need to combine several tables. For example, we might want t
 
 #first let's import the station lookup table from the excel file
 
-taxalookup <- read_excel("Data manipulation/1972-2018CBMatrix.xlsx", 
+taxalookup <- read_excel("1972-2018CBMatrix.xlsx", 
     sheet = "CB Taxa Lookup")
 View(taxalookup)
 
@@ -311,4 +311,40 @@ View(taxalookup)
 
 #let's rename that
 names(taxalookup) =  c("TaxonCode", "TaxonName", "StartYear", "EndYear")
+View(taxalookup)
+
+#get rid of the first and last row
+taxalookup = taxalookup[-c(1,58),]
+View(taxalookup)
+
+```
+Now we can attach the scientific names to the main "CBlong" data frame
+
+```{r}
+
+?merge
+
+CBlong2 = merge(CBlong, taxalookup, by = "TaxonCode")
+
+
+```
+
+This automatically only keeps rows that are present in both data sets (equivelent to an "inner join" in SQL). If we want to do a left join or a right joing you can set "all.x = T" or "all.y = T".
+
+```{r}
+#for example, if we only had scientific names for some of our taxa
+taxalookupshort = taxalookup[1:20,]
+
+CBlong3 = merge(CBlong, taxalookupshort, by = "TaxonCode")
+nrow(CBlong)
+nrow(CBlong3)
+#all the rows that weren't in the first 20 taxa have been dropped
+
+
+CBlong4 = merge(CBlong, taxalookupshort, by = "TaxonCode", all.x = T)
+nrow(CBlong4)
+View(CBlong4)
+#Empty values are now "NA"
+
+```
 
