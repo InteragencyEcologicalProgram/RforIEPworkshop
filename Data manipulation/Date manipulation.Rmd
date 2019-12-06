@@ -1,0 +1,24 @@
+---
+title: "Dates"
+author: "Rosemary Hartman"
+date: "12/6/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Dates
+
+Dealing with dates is one of the most difficult data types, but fortunately the package "lubridate" makes it much easier.
+
+This might need to be a whole other lesson.
+
+
+```{r}
+library(lubridate)
+?lubridate
+
+?DateTimeClasses
+
+```

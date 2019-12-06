@@ -250,46 +250,65 @@ CBdata2 = select(CBdata2, -CRABZOEA_yn)
 
 ```
 
-# Dates
+# Dataset Restructuring
 
-Dealing with dates is one of the most difficult data types, but fortunately the package "lubridate" makes it much easier.
-
-This might need to be a whole other lesson.
+The data is never in the format you want it. Usually, R likes things to be in "long" format instead of "wide" format. However, data is often published in "wide" format, and community analyses like things in "wide" format, so you need to know how to switch between the two. The functions "pivot_wider" and "pivot_longer" are probably the easiest way to do this.
 
 
 ```{r}
-library(lubridate)
-?lubridate
+?pivot_longer
 
-class(CBdata2$Date)
+CBlong = pivot_longer(CBdata2, #specify the data set you want to pivot
+                      cols = ACARTELA:CRABZOEA, #specify the coloms to pivot
+                      names_to = "TaxonCode", #give the name of the new column you want to create
+                      values_to = "CPUE" #name of the column for the values
+                      )
 
-?DateTimeClasses
-
-```
-
-ii.	Apply functions
-
-R goes fastest when you can apply a function to every element in
-a vector (or a data frame)
-
-```{r apply}
-
-
-```
-iii.	For loops
-iv.	Aggregate()
-
-x.	Convert numeric categorical data into text
-1.	E.g., from 0/1 to “absent”/”present”
-xi.	Working with Dates
-1.	Converting to usable date notation
-a.	The format() function
-2.	How to generate DOY
-
-
-```{r foundations}
-
+View(CBlong)
 
 ```
 
+If we want to put it back in "wide" format, we use "pivot_wider"
+```{r}
+?pivot_wider
+
+CBwide = pivot_wider(CBlong, #specify the data set you want to pivot
+                      id_cols = c(Survey, Year, Date, Station), #Identifier columns (ones you don't want to pivot)
+                      names_from = TaxonCode, #give the name of the new column you want to use for the names of the new columns
+                      values_from = CPUE #name of the column for the values
+                      )
+
+View(CBwide)
+```
+
+We can also use this to summarize values as we pivot. For example, if we wanted one row for each year instead of for each sample, we can do that.
+
+```{r}
+
+CBwideY = pivot_wider(CBlong, #specify the data set you want to pivot
+                      id_cols = Year, #specify the column with the unique identifier
+                      names_from = TaxonCode, #give the name of the new column you want to use for the names of the new columns
+                      values_from = CPUE, #name of the column for the values
+                      values_fn = list(CPUE = sum) #function to use to combine values
+                      )
+
+View(CBwideY)
+
+```
+
+## Merging data
+Frequently, we also need to combine several tables. For example, we might want the GPS coordinates for the stations to be included in our zooplankton table. The excel file had those coordinates, but they were in another spread sheet. To put those tables together, we can use the "merge" function.
+
+```{r}
+
+#first let's import the station lookup table from the excel file
+
+taxalookup <- read_excel("Data manipulation/1972-2018CBMatrix.xlsx", 
+    sheet = "CB Taxa Lookup")
+View(taxalookup)
+
+#apparently the first row wasn't the column names! Oh no!
+
+#let's rename that
+names(taxalookup) =  c("TaxonCode", "TaxonName", "StartYear", "EndYear")
 
