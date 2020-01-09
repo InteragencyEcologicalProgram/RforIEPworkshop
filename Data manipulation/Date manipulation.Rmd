@@ -12,13 +12,111 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Dealing with dates is one of the most difficult data types, but fortunately the package "lubridate" makes it much easier.
 
-This might need to be a whole other lesson.
+There are a few different types of data that reffer to dates. "Dates" just have a date component, whereas date-times may be POSIXct (number of seconds since 1970), or PSIXlt (a named vector of year/month/day/hour/minute/second/time zone).
+
 
 
 ```{r}
+library(tidyverse)
 library(lubridate)
 ?lubridate
 
 ?DateTimeClasses
 
+today()
+
+now()
+
+class(today())
+class(now())
+
 ```
+To play with dates, let's read in the CB data again, but we won't tell it that the "date" column is a date
+
+```{r}
+library(readxl)
+
+CBdates = read.csv("CBdata.csv", stringsAsFactors = F)[,1:10]
+str(CBdates$Date)
+
+```
+It things "Date" is a vector of characters. We want to tell it that it's a date.
+
+In base R, we can use as.date()
+
+```{r}
+
+zoopdates = as.Date(CBdates$Date)
+
+str(zoopdates)
+#Oops
+
+?as.Date
+?strptime
+
+zoopdates = as.Date(CBdates$Date, format = "%m/%d/%Y")
+
+str(zoopdates)
+
+```
+Well, that seemed to work, but I can never remember how the "format" thing works. Fortunately, lubridate has some shortcuts. 
+
+```{r}
+?ymd
+
+CBdates = mutate(CBdates, Date2 = mdy(Date))
+
+```
+If I want to organize my dataset by month, I need to extract the "month" part of the date.
+
+```{r}
+
+?month
+
+month(today())
+
+month(today(), label = TRUE)
+
+CBdates = mutate(CBdates, Month = month(Date2), 
+                 julianday = yday(Date2), 
+                 monthday = mday(Date2), 
+                 weekday = wday(Date2))
+View(CBdates)
+```
+
+# Now you try it!
+
+1. What happens if you parse a string that contains invalid dates?
+
+```{r}
+
+ymd(c("2010-10-10", "cheese"))
+
+```
+2. Parse each of the following dates (use lubridate or base r, as you see fit)
+
+```{r}
+d1 <- "January 1, 2010"
+
+d2 <- "2015-Mar-07"
+
+d3 <- "06-Jun-2017"
+
+d4 <- c("August 19 (2015)", "July 1 (2015)")
+
+d5 <- "12/30/14" # Dec 30, 2014
+
+```
+3. We've dealt with the "date" column of the zooplankton dataset, what about the "time" column? Can you convert it to a date-time format?
+
+```{r}
+
+```
+
+4. How do you add the date and time together into a single column?
+
+```{r}
+
+```
+5. How often does the zooplankton survey sample on the weekends?
+
