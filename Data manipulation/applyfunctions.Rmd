@@ -1,5 +1,5 @@
 ---
-title: "Applyfunctions"
+title: "Itteration"
 author: "Rosemary Hartman"
 date: "12/6/2019"
 output: html_document
@@ -10,7 +10,31 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-#	Apply functions
+#	Loops
 
-R goes fastest when you can apply a function to every element in
-a vector (or a data frame)
+We've now got our zooplankton data set in a format we can work with, but now we probably want to do some calculations on it. What if we want to calculate annual average catch?
+
+We can do it one year at a time:
+```{r}
+
+mean(filter(CBlong, Year == 1984))
+
+mean(filter(CBlong, Year == 1985))
+
+mean(filter(CBlong, Year == 1986))
+
+```
+But we don't want to keep copying and pasting! Instead, we can use a loop:
+
+
+```{r}
+
+output = data.frame(year = seq(min(CBlong$Year), max(CBlong$Year)), Mean = NA)
+
+for (i in seq_along(output)) {
+  output[i,"Mean"] = mean(filter(CBlong, Year == i))
+}
+
+```
+
+ 

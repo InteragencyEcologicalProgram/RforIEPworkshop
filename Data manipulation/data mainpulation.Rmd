@@ -338,4 +338,4 @@ View(CBlong4)
 
 # Now its your turn
 
-1. 
+1. Import the "Station_GPS.csv" into your environment and merge the latitude and longitude to the "CBlong" data frame.
