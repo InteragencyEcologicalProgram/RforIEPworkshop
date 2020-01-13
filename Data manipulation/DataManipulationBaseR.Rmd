@@ -1,0 +1,306 @@
+---
+title: ''
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Style Guide
+
+PascalCase: function names; dataframes; field headings; file names  
+camelCase: function parameters  
+lower_case (with underscore): variables  
+
+use `<-` instead of `=` for variable assignment  
+most everytime function call, hard return after left parentheses  
+each line keep to max 80 characters  
+
+```
+# create function
+LengthFrequency <- function(data, speciesName, forkLength) {
+  # do something here
+}
+# end LengthFrequency
+
+len_freq <- LengthFrequency(
+  data = Sturgeon,
+  speciesName = "white",
+  # speciesName = "green",
+  forkLength = TRUE
+)
+```
+
+# Functional Programming
+
+- function call
+- arguments can be other functions
+- functions can return functions
+
+# Function Call
+
+`iris` built-in dataframe in `datasets` package
+
+```{r func-call}
+
+`+`(9, 8)                      # 9 + 8
+
+`<-`(x, 1:10)                  # x <- 1:10 or x = 1:10
+print(x)
+
+`==`(9, 8)                     # 9 == 8
+
+`[`(iris, 1, 2)                # iris[1, 2]
+`[[`(iris, 1, 2)               # iris[[1, 2]]
+
+`[[`(iris, 1, "Sepal.Width")   # iris[[1, "Sepal.Width"]]
+
+# Not run --------------------------------------------------
+# `[`(iris, 5)                 # iris[5]
+# `[`(iris, , 5, drop = TRUE)  # iris[, 5, drop = TRUE]
+# `[[`(iris, 5)                # iris[[5]]
+
+
+
+```
+
+# `for` Loop
+
+```
+for (items in variable) {
+  # do something
+}
+```
+
+```{r for-loop}
+for (i in 1:5) {
+  print(i)
+}
+```
+
+# `<_>apply` Family Functions
+
+```
+lapply(list or vector, FUN = function(x) # do something)
+```
+
+```{r lapply-show}
+
+lapply
+
+```
+
+```{r fun-lapply}
+
+lapply(1:5, FUN = `+`, 5)
+
+```
+
+```{r vectorized}
+1:5 + 5
+```
+
+```{r list-create}
+
+X <- list(
+  Item1 = 1:5,
+  Item2 = 6:10,
+  Item3 = 11:20
+)
+
+```
+
+```{r list-add5, eval=FALSE}
+
+X + 5
+# Error in X + 5 : non-numeric argument to binary operator
+
+```
+
+```{r list-lapply}
+
+lapply(X, FUN = `+`, 5)
+lapply(X, FUN = `^`, 2)
+
+```
+
+```{r length-X}
+
+lapply(X, FUN = length)
+
+```
+
+```{r vapply-show}
+
+vapply
+
+```
+
+```{r vapply-example}
+
+vapply(X, FUN = length, FUN.VALUE = numeric(1L))
+
+```
+
+```{r employees-list}
+
+employees <- list(
+  c("first", "last"),
+  c("first", "last"),
+  c("first", "last"),
+  c("first", "last"),
+  c("first")
+)
+
+employees
+
+```
+
+```{r employees-demo}
+
+vapply(employees, FUN = `[`, FUN.VALUE = character(1L), 1)
+vapply(employees, FUN = paste0, FUN.VALUE = character(1L), collapse = " ")
+
+```
+
+```{r X-display}
+
+# display list `X` again for convenience
+X
+
+```
+
+```{r vapply-matrix_out1}
+
+vapply(X, FUN = function(x) {
+  c(Min = min(x), Max = max(x), Mean = mean(x))
+}, FUN.VALUE = numeric(3L))
+
+```
+
+```{r vapply-matrix_out2}
+
+vapply(X, FUN = function(x) {
+  c(N = length(x), Min = min(x), Max = max(x), Mean = mean(x))
+}, FUN.VALUE = numeric(4L))
+
+```
+
+```{r vapply-matrix_out3}
+
+t(vapply(X, FUN = function(x) {
+  c(N = length(x), Min = min(x), Max = max(x), Mean = mean(x))
+}, FUN.VALUE = numeric(4L)))
+
+```
+
+```{r vapply-list_out, eval=FALSE, echo=FALSE}
+
+t(vapply(X, FUN = function(x) {
+  list(N = length(x), Min = min(x), Max = max(x), Mean = mean(x))
+}, FUN.VALUE = list(N = NA, Min = NA, Max = NA, Mean = NA)))
+
+```
+
+```{r list-functions}
+
+funs <- list(
+  Mean = mean,
+  Sd = sd,
+  N = length,
+  NumValsLT5 = function(x) sum(x < 5)
+)
+
+vapply(funs, FUN = function(f, nums) {
+  f(nums)
+}, FUN.VALUE = numeric(1L), nums = 1:10)
+
+```
+
+```{r data-download}
+
+tf <- tempfile(pattern = "thisone", fileext = ".xlsx")
+
+download.file(
+  url = "ftp://ftp.wildlife.ca.gov/IEP_Zooplankton/1972-2018MysidMatrix.xlsx",
+  # destfile = tempfile(fileext = ".xlsx")
+  destfile = tf,
+  mode = "ab"
+)
+
+Zoop <- readxl::read_excel(
+  path = tf,
+  sheet = "Mysid CPUE Matrix 1972-2018 "
+)
+
+unlink(tf)
+
+```
+
+```{r na-check}
+
+vapply(Zoop, FUN = function(x) {
+  sum(is.na(x))
+}, FUN.VALUE = numeric(1L))
+
+t(noquote(vapply(Zoop, FUN = function(x) {
+  c(NumNA = sum(is.na(x)), TypeOf = typeof(x))
+}, FUN.VALUE = character(2L))))
+
+```
+
+```{r summary-plus}
+
+lapply(Zoop, FUN = function(x) {
+  if (is.double(x)) return(range(x, na.rm = TRUE))
+  table(x, useNA = "ifany", dnn = NULL)
+})
+
+```
+
+```{r na-quoted}
+
+vapply(Zoop, FUN = function(x) {
+  sum(x %in% "NA")
+}, FUN.VALUE = numeric(1L))
+
+```
+
+```{r char-nas}
+
+char_nas <- vapply(Zoop, FUN = function(x) {
+  sum(x %in% "NA")
+}, FUN.VALUE = numeric(1L), USE.NAMES = FALSE)
+
+b <- char_nas > 0
+
+head(Zoop[b])
+
+Zoop[b] <- lapply(Zoop[b], FUN = function(x) {
+  x[x %in% "NA"] <- NA
+  x
+})
+
+```
+
+```{r na-quoated-recheck}
+
+vapply(Zoop, FUN = function(x) {
+  sum(x %in% "NA")
+}, FUN.VALUE = numeric(1L))
+
+```
+
+
+
+On Zooplankton data
+
+
+number of NAs per column
+Map on multiple variables
+transforming data in > column (e.g., [max / max-min])
+using v-or-lapply to plot many Ys against one X variable
+split-apply-do_something-combine
+
