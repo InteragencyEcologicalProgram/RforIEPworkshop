@@ -293,6 +293,36 @@ vapply(Zoop, FUN = function(x) {
 
 ```
 
+```{r scaled}
+
+cols <- c("N_ mercedis", "A_ hwanhaiensis")
+
+fv <- nrow(Zoop)
+
+apply(Zoop[cols], MARGIN = 2, FUN = range)
+
+zoop_scaled <- vapply(Zoop[cols], FUN = function(x) {
+  x / (max(x) - min(x))
+}, FUN.VALUE = numeric(fv))
+
+apply(zoop_scaled, MARGIN = 2, FUN = range)
+
+
+```
+
+```{r plot-not-scaled}
+
+plot(x = Zoop[["Year"]], y = Zoop[[cols[1]]])
+points(x = Zoop[["Year"]], y = Zoop[[cols[2]]], col = "red")
+
+```
+
+```{r plot-scaled}
+
+plot(x = Zoop[["Year"]], y = zoop_scaled[, "N_ mercedis"])
+points(x = Zoop[["Year"]], y = zoop_scaled[, "A_ hwanhaiensis"], col = "red")
+
+```
 
 
 On Zooplankton data
