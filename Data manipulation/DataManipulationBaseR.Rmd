@@ -324,6 +324,142 @@ points(x = Zoop[["Year"]], y = zoop_scaled[, "A_ hwanhaiensis"], col = "red")
 
 ```
 
+```{r mean-temp-yr1}
+
+mean_temp_yr <- with(data = Zoop, expr = {
+  
+  s <- split(Temperature, f = Year)
+  
+  vapply(s, FUN = mean, FUN.VALUE = numeric(1L))
+  
+})
+
+mean_temp_yr
+
+```
+
+```{r mean-temp-yr2}
+
+mean_temp_yr <- with(data = Zoop, expr = {
+  
+  s <- split(Temperature, f = Year)
+  
+  vapply(s, FUN = mean, FUN.VALUE = numeric(1L), na.rm = TRUE)
+  
+})
+
+mean_temp_yr
+
+```
+
+```{r mean-temp-yr3}
+
+mean_temp_yr <- with(data = Zoop, expr = {
+  
+  s <- split(Temperature, f = Year)
+  
+  # t(vapply(s, FUN = function(x, ...) {
+  #   c(Mean = mean(x, ...), Sd = sd(x, ...))
+  # }, FUN.VALUE = numeric(2L), na.rm = TRUE))
+  
+  t(vapply(s, FUN = function(x) {
+    nna <- sum(is.na(x))
+    x <- Filter(f = Negate(is.na), x = x)
+    c(N = length(x), NNA = nna, Mean = mean(x), Var = var(x))
+  }, FUN.VALUE = numeric(4L)))
+  
+})
+
+str(mean_temp_yr)
+tail(mean_temp_yr)
+
+```
+
+```{r mean-temp-yr-mon1}
+
+mean_temp_yr_mon <- with(data = Zoop, expr = {
+  
+  # extract month from Date (as "01", "02", "03", etc.)
+  m <- format(SampleDate, format = "%m")
+  
+  s <- split(Temperature, f = list(Year, m), drop = FALSE) #, sep = "_"
+  
+  # t(vapply(s, FUN = function(x, ...) {
+  #   c(Mean = mean(x, ...), Sd = sd(x, ...))
+  # }, FUN.VALUE = numeric(2L), na.rm = TRUE))
+  
+  t(vapply(s, FUN = function(x) {
+    nna <- sum(is.na(x))
+    x <- Filter(f = Negate(is.na), x = x)
+    c(N = length(x), NNA = nna, Mean = mean(x), Var = var(x))
+  }, FUN.VALUE = numeric(4L)))
+  
+})
+
+dim(mean_temp_yr_mon)
+dimnames(mean_temp_yr_mon)[[2]]
+head(dimnames(mean_temp_yr_mon)[[1]], n = 10)
+
+```
+
+```{r mean-temp-yr-mon-show}
+
+head(mean_temp_yr_mon)
+
+```
+
+```{r mean-temp-yr-mon2}
+
+mean_temp_yr_mon <- with(data = Zoop, expr = {
+  
+  # extract month from Date (as "01", "02", "03", etc.)
+  m <- as.numeric(format(SampleDate, format = "%m"))
+  
+  out <- aggregate(
+    Temperature,
+    by = list(Year = Year, Mon = m),
+    FUN = function(x) {
+      nna <- sum(is.na(x))
+      x <- Filter(f = Negate(is.na), x = x)
+      c(N = length(x), NNA = nna, Mean = mean(x), Var = var(x))
+    }
+  )
+  
+  out
+})
+
+str(mean_temp_yr_mon)
+
+```
+
+```{r mean-temp-yr-mon3}
+
+mean_temp_yr_mon <- with(data = Zoop, expr = {
+  
+  # extract month from Date (as "01", "02", "03", etc.)
+  m <- as.numeric(format(SampleDate, format = "%m"))
+  
+  out <- aggregate(
+    Temperature,
+    by = list(Year = Year, Mon = m),
+    FUN = function(x) {
+      nna <- sum(is.na(x))
+      x <- Filter(f = Negate(is.na), x = x)
+      c(N = length(x), NNA = nna, Mean = mean(x), Var = var(x))
+    }
+  )
+  
+  data.frame(
+    out[c("Year", "Mon")],
+    out[["x"]]
+  )
+})
+
+str(mean_temp_yr_mon)
+
+```
+
+
 
 On Zooplankton data
 
