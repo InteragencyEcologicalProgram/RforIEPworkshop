@@ -459,14 +459,33 @@ str(mean_temp_yr_mon)
 
 ```
 
+```{r plot-mult-y1}
 
+b <- grepl(pattern = "^[A-Z]\\_", x = colnames(Zoop))
+nms <- colnames(Zoop)[b]
+nms
 
-On Zooplankton data
+vapply(nms, FUN = function(y, d, xVar) {
+  
+  plot(x = d[[xVar]], y = d[[y]], xlab = xVar, ylab = y)
+  
+  mean(d[[y]], na.rm = TRUE)
+  
+}, FUN.VALUE = numeric(1L), d = Zoop, xVar = "Year")
 
+```
 
-number of NAs per column
-Map on multiple variables
-transforming data in > column (e.g., [max / max-min])
-using v-or-lapply to plot many Ys against one X variable
-split-apply-do_something-combine
+```{r plot-mult-y2}
+
+par(mfrow = c(4, 2))
+
+vapply(nms, FUN = function(y, d, xVar) {
+  
+  plot(x = d[[xVar]], y = d[[y]], xlab = xVar, ylab = y)
+  
+  mean(d[[y]], na.rm = TRUE)
+  
+}, FUN.VALUE = numeric(1L), d = Zoop, xVar = "Secchi")
+
+```
 
