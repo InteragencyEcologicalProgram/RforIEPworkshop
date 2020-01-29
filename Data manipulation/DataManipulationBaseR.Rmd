@@ -7,7 +7,6 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-
 # Style Guide
 
 PascalCase: function names; dataframes; field headings; file names  
@@ -32,7 +31,6 @@ len_freq <- LengthFrequency(
   forkLength = TRUE
 )
 ```
-
 # Functional Programming
 
 - function call
