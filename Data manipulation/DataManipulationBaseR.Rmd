@@ -81,6 +81,7 @@ for (i in 1:5) {
 ```
 lapply(list or vector, FUN = function(x) # do something)
 ```
+# `lapply` Inner Workings
 
 ```{r lapply-show}
 
@@ -88,15 +89,21 @@ lapply
 
 ```
 
+# `lapply` First Example
+
 ```{r fun-lapply}
 
 lapply(1:5, FUN = `+`, 5)
 
 ```
 
+# Vectorized
+
 ```{r vectorized}
 1:5 + 5
 ```
+
+# `lapply` On List
 
 ```{r list-create}
 
@@ -106,7 +113,11 @@ X <- list(
   Item3 = 11:20
 )
 
+X
+
 ```
+
+because `X` is a list, vectorization concept doesn't work...
 
 ```{r list-add5, eval=FALSE}
 
@@ -115,6 +126,8 @@ X + 5
 
 ```
 
+so, here's where `lapply` is useful.
+
 ```{r list-lapply}
 
 lapply(X, FUN = `+`, 5)
@@ -122,11 +135,15 @@ lapply(X, FUN = `^`, 2)
 
 ```
 
+useful to get count for each item in list
+
 ```{r length-X}
 
 lapply(X, FUN = length)
 
 ```
+
+# `vapply` Inner Workings
 
 ```{r vapply-show}
 
