@@ -60,8 +60,6 @@ print(x)
 # `[`(iris, , 5, drop = TRUE)  # iris[, 5, drop = TRUE]
 # `[[`(iris, 5)                # iris[[5]]
 
-
-
 ```
 
 # `for` Loop
