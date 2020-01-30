@@ -151,11 +151,17 @@ vapply
 
 ```
 
+# `vapply` Example
+
 ```{r vapply-example}
 
 vapply(X, FUN = length, FUN.VALUE = numeric(1L))
 
 ```
+
+now experiment with changing argument to `FUN` or setting `USE.NAMES = FALSE`
+
+# More with `vapply`
 
 ```{r employees-list}
 
@@ -171,12 +177,16 @@ employees
 
 ```
 
+can we get employees' first name or concatenate `first` & `last`...
+
 ```{r employees-demo}
 
 vapply(employees, FUN = `[`, FUN.VALUE = character(1L), 1)
 vapply(employees, FUN = paste0, FUN.VALUE = character(1L), collapse = " ")
 
 ```
+
+let's display our numeric list again
 
 ```{r X-display}
 
@@ -185,13 +195,20 @@ X
 
 ```
 
-```{r vapply-matrix_out1}
+...what if we wanted some descriptive stats for each item in `X`
+
+- how might you handle `NAs`
+- how might you change output's orientation (i.e., stat names as columns)
+
+```{r vapply-matrix_out1} 
 
 vapply(X, FUN = function(x) {
   c(Min = min(x), Max = max(x), Mean = mean(x))
 }, FUN.VALUE = numeric(3L))
 
 ```
+
+same idea, but now we've included `N` or count
 
 ```{r vapply-matrix_out2}
 
@@ -201,7 +218,9 @@ vapply(X, FUN = function(x) {
 
 ```
 
-```{r vapply-matrix_out3}
+probably the preferred orientation
+
+```{r vapply-matrix_out3} 
 
 t(vapply(X, FUN = function(x) {
   c(N = length(x), Min = min(x), Max = max(x), Mean = mean(x))
@@ -216,6 +235,8 @@ t(vapply(X, FUN = function(x) {
 }, FUN.VALUE = list(N = NA, Min = NA, Max = NA, Mean = NA)))
 
 ```
+
+# List of Functions
 
 ```{r list-functions}
 
