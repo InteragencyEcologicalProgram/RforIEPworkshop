@@ -238,6 +238,8 @@ t(vapply(X, FUN = function(x) {
 
 # List of Functions
 
+we could pass a list of functions as an argument to `vapply`'s `X`
+
 ```{r list-functions}
 
 funs <- list(
@@ -253,7 +255,16 @@ vapply(funs, FUN = function(f, nums) {
 
 ```
 
+# Download Data
+
+here we use zooplankton data from CDFW's ftp site
+
+** note the use of package `readxl` **
+
 ```{r data-download}
+
+# tempdir()
+# list.files(tempdir())
 
 tf <- tempfile(pattern = "thisone", fileext = ".xlsx")
 
