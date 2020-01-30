@@ -284,6 +284,10 @@ unlink(tf)
 
 ```
 
+# Check Data
+
+is our data clean
+
 ```{r na-check}
 
 vapply(Zoop, FUN = function(x) {
@@ -296,6 +300,10 @@ t(noquote(vapply(Zoop, FUN = function(x) {
 
 ```
 
+# Custom Data Summary
+
+(long output)
+
 ```{r summary-plus}
 
 lapply(Zoop, FUN = function(x) {
@@ -305,6 +313,8 @@ lapply(Zoop, FUN = function(x) {
 
 ```
 
+where are the quoted NAs
+
 ```{r na-quoted}
 
 vapply(Zoop, FUN = function(x) {
@@ -312,6 +322,8 @@ vapply(Zoop, FUN = function(x) {
 }, FUN.VALUE = numeric(1L))
 
 ```
+
+# Clean Data
 
 ```{r char-nas}
 
@@ -330,13 +342,17 @@ Zoop[b] <- lapply(Zoop[b], FUN = function(x) {
 
 ```
 
-```{r na-quoated-recheck}
+now recheck
+
+```{r na-quoted-recheck}
 
 vapply(Zoop, FUN = function(x) {
   sum(x %in% "NA")
 }, FUN.VALUE = numeric(1L))
 
 ```
+
+# Scale Data
 
 ```{r scaled}
 
