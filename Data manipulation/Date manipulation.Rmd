@@ -66,6 +66,8 @@ Well, that seemed to work, but I can never remember how the "format" thing works
 
 CBdates = mutate(CBdates, Date2 = mdy(Date))
 
+#if you don't like 
+
 ```
 If I want to organize my dataset by month, I need to extract the "month" part of the date.
 

@@ -1,53 +1,17 @@
----
-title: "IEP Data Manipulation and Processing"
-author: "Rosemary Hartman"
-date: "12/2/2019"
-output: html_document
----
-
-```{r setup, include=FALSE}
+## ----setup, include=FALSE------------------------------------------------
 knitr::opts_chunk$set(echo = TRUE)
-```
-
-## Outline
-
-1. Importing data
-1. Foundational skills of data manipulations
-2. Detecting errors and outliers
-3. Dataset restructuring
-4. Missing data
-5. Miscellaneous data manipulation
-6. getting data out of R
 
 
-Do we want to go into data organization at all? Maybe introduce "[tidy data](https://learning.nceas.ucsb.edu/2019-11-RRCourse/data-modeling-tidy-data.html)"?
-
-
-## Importing data
-
-There are multiple different ways of getting your data into R. RStudio 
-has a nice little point=and-click interface that lets you import your dataset, however using
-the GUI makes it more difficult to replicate your work later. Therefore, it's better
-to use the comand-line to import your data.
-
-We are going to use the Zooplankton Survey data for this demonstration. It's available 
-[here](ftp://ftp.wildlife.ca.gov/IEP_Zooplankton/1972-2018CBMatrix.xlsx)
-
-If you have a .csv file, you can use base R. So I went into the excel file and saved
-one of the worksheets as a .csv
-
-```{r imports}
+## ----imports-------------------------------------------------------------
 ?read.csv
 
-CBdata = read.csv("CBdata.csv", stringsAsFactors = F)
+setwd("C:/Users/rhartman/OneDrive - California Department of Water Resources/DUWG/RforIEPworkshop")
+CBdata = read.csv("Data manipulation/CBdata.csv", stringsAsFactors = F)
 head(CBdata)
 
-```
 
-But what if we want to import the origional excel file? For that,
-we need the "readxl" package
 
-```{r excel}
+## ----excel---------------------------------------------------------------
 
 library(readxl)
 
@@ -57,7 +21,7 @@ library(readxl)
 #Yuck. If you have too many blanks in the begining of your sheet, it thinks it is
 #a logical vector. Let's fix that.
 
-CBdata = read_excel("1972-2018CBMatrix.xlsx", 
+CBdata = read_excel("Data manipulation/1972-2018CBMatrix.xlsx", 
     sheet = "CB CPUE Matrix 1972-2018", col_types = c("numeric", 
         "numeric", "numeric", "numeric", 
         "date", "text", "text", "text", "numeric", 
@@ -65,10 +29,9 @@ CBdata = read_excel("1972-2018CBMatrix.xlsx",
 
 head(CBdata)
 
-```
-If we want to download directly from an online site we can use
 
-```{r}
+
+## ------------------------------------------------------------------------
 
 #Set up the path to a temporary file where we can store the data set
 tf <- tempfile(pattern = "thisone", fileext = ".xlsx")
@@ -92,18 +55,9 @@ Zoop <- readxl::read_excel(
 #get rid of the temporary excel file we created
 unlink(tf)
 
-```
 
 
-### Dealing with data frames
-
-A lot of these skills can be done with either Base R syntax, or "tidyverse"
-syntax. Most people find "tidyverse" a little more intuitive, but you
-can use whichever you are more comfortable with.
-
-#### Renaming columns
-
-```{r rename}
+## ----rename--------------------------------------------------------------
 library(tidyverse)
 
 names(CBdata)
@@ -125,14 +79,9 @@ CBdata = rename(CBdata, SurveyCode = crackers)
 
 names(CBdata)
 
-```
-#### Dropping columns
-The zooplankton data set has one row for every sample, and one
-column for every species. It also has columns with the sums of groups 
-of species (e.g. "All Cladocera"). We want to get rid of those summed
-columns because they make the data messy and harder to work with.
 
-```{r}
+
+## ------------------------------------------------------------------------
 
 #Here is how you drop a column in base R
 
@@ -142,13 +91,9 @@ CBdata2 = subset(CBdata, select = -ALLCYCADULTS)
 ?select
 
 CBdata2 = select(CBdata, -starts_with("ALL"))
-```
 
-####	Reordering columns
 
-But now our "SurveyCode" column is at the end. We want to put it back in the begining.
-
-```{r}
+## ------------------------------------------------------------------------
 #here's how to do it in base R
 CBdata2 = CBdata2[,c(67, 1:66)]
 
@@ -165,16 +110,9 @@ CBdatatest = select(CBdata2, DAPHNIA, everything())
 
 names(CBdatatest)
 
-```
 
 
-####	Adding new mutated data
-
-We frequently need to transform data (especially log transformations). We 
-might also need to calculate CPUE, or do other stuff, and add our calculated variables
-to our data set. 
-
-```{r mutate}
+## ----mutate--------------------------------------------------------------
 
 #In base R, we can just define a new variable and assign its value with the old variable
 CBdata$ln_cals = log(CBdata$ALLCALADULTS + 1)
@@ -186,21 +124,9 @@ CBdata = mutate(CBdata, ln_clads = log(ALLCLADOCERA + 1), ln_cyc = log(ALLCYCADU
 
 View(CBdata)
 
-```
 
-#### converting among data classes
 
-Even though we read in all our columns based on particular classses, sometimes
-we want to change the data class. Sometimes that's super easy, sometimes it's more
-difficult. Almost all data classes have an "as" function. as.data.frame, as.character, as.numeric, as.factor, etc. 
-
-Other useful functions:
-length(object) # number of elements or components
-str(object)    # structure of an object
-class(object)  # class or type of an object
-names(object)  # names
-
-```{r}
+## ------------------------------------------------------------------------
 
 
 str(CBdata2)
@@ -217,14 +143,9 @@ str(CBdata2)
 
 levels(CBdata2$Region)
 
-```
-The levels are automatically in alphabetical order. 
-If we want to put them in order from west to east we
-can change the levels using the "factor" function. Just
-put the levels in the order you want. You can also use
-this fuction to change the labels of the factors (useful when plotting)
 
-```{r}
+
+## ------------------------------------------------------------------------
 ?factor
 
 CBdata2$Region = factor(CBdata2$Region, 
@@ -241,28 +162,13 @@ CBdata2$Region = factor(CBdata2$Region,
 
 levels(CBdata2$Region)
 
-```
 
-You can also change from factor to character, factor to numeric,
-or numeric to character, or logical values. 
 
-For example, if we wanted to look at crabzoea presence/absence instead
-of abundance, we can use "as.logical"
-
-```{r}
+## ------------------------------------------------------------------------
 CBdata2 = mutate(CBdata2, CRABZOEA_yn = as.logical(CRABZOEA))
 
 View(CBdata2)
 
 CBdata2 = select(CBdata2, -CRABZOEA_yn)
-
-```
-# Now its your turn
-
-1. How many samples does the Zooplankton survey have from the North Delta that contain Harpacticoids (HARPACT)?
-
-2. Make a new variable for the total catch of all zooplankton.
-
-3. Create a new data frame that only contains samples with positive occurances of Eurytemora (EURYTEM).
 
 

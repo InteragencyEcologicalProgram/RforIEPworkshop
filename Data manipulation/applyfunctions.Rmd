@@ -8,6 +8,9 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
+library(knitr)
+#purl("dataset restructuring.Rmd", output="restructure.R")
+#source("Data manipulation/restructure.R")
 ```
 
 
@@ -36,7 +39,8 @@ output = data.frame(year = min(CBlong$Year):max(CBlong$Year), Mean = NA)
 
 for (i in 1:nrow(output)) {   # sequence
   
-  output$Mean[i] = mean(filter(CBlong, Year == output$year[i])$CPUE, na.rm = T)  #body
+  output$Mean[i] = mean(filter(CBlong, 
+                               Year == output$year[i])$CPUE, na.rm = T)  #body
 }
 
 ```
@@ -46,20 +50,138 @@ That took a few seconds. You may have heard "don't use for loops in R - they are
 
 # Apply
 
+The `apply` family of functions includes a number of "wrappers" for loops that make them run faster with less code involved. 
+Let's start with a quick look at the help documentation for `apply`
+
 ```{r}
-#Insert Jason's code here
+# `<_>apply` Family Functions
+?apply
+
+```
+There are some shortcut fucntions for using `apply` on certain data types. For example, you can use `lapply` for lists and `vapply` for vectors. The basic syntax is:
+
+lapply(list or vector, FUN = function(x) # do something)
+
+# `lapply` First Example
+
+```{r fun-lapply}
+
+lapply(1:5, FUN = `+`, 5)
+
+```
+But with this example, we can do the same thing without using `lapply`
+
+```{r vectorized}
+1:5 + 5
+```
+
+# `lapply` On List
+
+However, when we have a list it gets more complicated
+
+```{r list-create}
+
+X <- list(
+  Item1 = 1:5,
+  Item2 = 6:10,
+  Item3 = 11:20
+)
+
+X
+
+```
+
+because `X` is a list, vectorization concept doesn't work...
+
+```{r list-add5, eval=FALSE}
+
+X + 5
+# Error in X + 5 : non-numeric argument to binary operator
+
+```
+
+so, here's where `lapply` is useful. One nice thing about this is you don't have to set up an empty data frame to save your work the way you do for a loop.
+
+
+```{r list-lapply}
+
+lapply(X, FUN = `+`, 5)
+lapply(X, FUN = `^`, 2)
+
+```
+# Now let's try it with vectors using  `vapply`
+
+```{r employees-list}
+
+employees <- list(
+  c("first", "last"),
+  c("first", "last"),
+  c("first", "last"),
+  c("first", "last"),
+  c("first")
+)
+
+employees
+
+```
+
+can we get employees' first name or concatenate `first` & `last`...
+
+```{r employees-demo}
+
+vapply(employees, FUN = `[`, FUN.VALUE = character(1L), 1)
+vapply(employees, FUN = paste0, FUN.VALUE = character(1L), collapse = " ")
+
+```
+
+let's display our numeric list again
+
+```{r X-display}
+
+# display list `X` again for convenience
+X
+
+```
+
+...what if we wanted some descriptive stats for each item in `X`
+
+
+```{r vapply-matrix_out1} 
+
+vapply(X, FUN = function(x) {
+  c(Min = min(x), Max = max(x), Mean = mean(x))
+}, FUN.VALUE = numeric(3L))
+
 ```
 
 
 # Split-apply-combine
 
-The package dplyr has some nifty tools to group data sets based on values and apply functions to the groups. In this case, we want to group our data frame based on year and apply the "mean" fuction to CPUE. One nice thing about this is you don't have to set up an empty data frame to save your work.
+We often want to split up data sets based on one column and apply functions to another columns. For example, if we wanted to calculate average mysid catch by year, we can use the functions "split" and then "vapply". 
+
+```{r mean-temp-yr1}
+
+mean_temp_yr <- with(data = Zoop, expr = {
+  
+  s <- split(Temperature, f = Year)
+  
+  vapply(s, FUN = mean, FUN.VALUE = numeric(1L))
+  
+})
+
+mean_temp_yr
+
+```
+
+The package dplyr has some nifty tools to do the same thing. In this case, we want to group our data frame based on year and apply the "mean" fuction to CPUE. 
 
 ```{r}
 
 CBmeans = summarize(group_by(CBlong, Year), #group it by Year
                     MeanCPUE = mean(CPUE)) #Calculate Mean CPUE
-#much faster!
+
+CBmeans
+#much faster than the loop!
 
 
 ```
