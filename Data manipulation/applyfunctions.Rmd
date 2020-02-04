@@ -154,6 +154,36 @@ vapply(X, FUN = function(x) {
 
 ```
 
+# Clean Data
+
+We can use `vapply` (for example) to find quoted NAs within out data.
+
+```{r na-quoted}
+
+vapply(Zoop, FUN = function(x) {
+  sum(x %in% "NA")
+}, FUN.VALUE = numeric(1L))
+
+```
+
+It's possible, then, to use `vapply` & `lapply` to replace quoted NAs with R's `NA`.
+
+```{r char-nas}
+
+char_nas <- vapply(Zoop, FUN = function(x) {
+  sum(x %in% "NA")
+}, FUN.VALUE = numeric(1L), USE.NAMES = FALSE)
+
+b <- char_nas > 0
+
+head(Zoop[b])
+
+Zoop[b] <- lapply(Zoop[b], FUN = function(x) {
+  x[x %in% "NA"] <- NA
+  x
+})
+
+```
 
 # Split-apply-combine
 
