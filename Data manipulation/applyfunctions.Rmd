@@ -1,12 +1,12 @@
 ---
-title: "Iteration"
-author: "Rosemary Hartman"
+title: "Iteration - lots of different methods"
+author: "Rosemary Hartman and Jason DuBois"
 date: "12/6/2019"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(eval = F)
 library(tidyverse)
 library(knitr)
 #purl("dataset restructuring.Rmd", output="restructure.R")
@@ -14,7 +14,7 @@ library(knitr)
 ```
 
 
-#	Loops
+##	Loops
 
 We've now got our zooplankton data set in a format we can work with, but now we probably want to do some calculations on it. What if we want to calculate annual average catch?
 
@@ -182,6 +182,18 @@ CBmeans = summarize(group_by(CBlong, Year), #group it by Year
 
 CBmeans
 #much faster than the loop!
+
+
+#we can get really complicated if we want
+CBmeans = summarize(group_by(CBlong, Year), #group it by Year
+                    MeanCPUE = mean(CPUE), #Calculate Mean CPUE
+                    sdCPUE = sd(CPUE), #calculate standard deviation
+                    nobs = length(CPUE), #number of observations
+                    seCPUE = sdCPUE/nobs) #calculate standard error
+View(CBmeans)
+
+#note that you can use your new variables immediately!
+                    
 
 
 ```

@@ -54,6 +54,8 @@ str(zoopdates)
 ?as.Date
 ?strptime
 
+
+#if we don't tell it the format we are in trouble.
 zoopdates = as.Date(CBdates$Date, format = "%m/%d/%Y")
 
 str(zoopdates)
