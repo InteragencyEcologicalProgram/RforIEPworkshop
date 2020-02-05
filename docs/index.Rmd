@@ -26,15 +26,15 @@ In this class, you will be learning how to download data, restructure it, clean 
 
 * Part one - downloading data, changing variable formats, changing names
 
-[Data Manipulation](data-mainpulation.html)
+** [Data Manipulation](data-mainpulation.html)
 
 * Part two - transitioning from wide to long format, summarizing data, merging tables
 
-[Data Restructuring](dataset-restructuring.html)
+** [Data Restructuring](dataset-restructuring.html)
 
 * Part three - Iterating functions, loops, apply functions, split-apply-combine
 
-[Iteration tools](applyfunctions.html)
+** [Iteration tools](applyfunctions.html)
 
 
 ### Graphs
@@ -51,4 +51,11 @@ We can list other useful links here too.
 
 
 # You can do it!
+
+Remember, the difference between being good at coding and being bad at coding it being OK with copying and pasting from Google.
+
+```{r graphics, fig.align = 'center', echo = F, eval = T}
+knitr::include_graphics("googlebook.jpg")
+knitr::include_graphics("copyandpaste.jpg")
+```
 

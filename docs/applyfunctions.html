@@ -390,22 +390,22 @@ for (i in 1:nrow(output)) {   # sequence
 }</code></pre>
 <p>That took a few seconds. You may have heard “don’t use for loops in R - they are slow!” That is true when you are dealing with very large data sets, but remember: If it works, it’s good code! However, you might want to try some different approaches to speed up your data processing, or make your code more readable.</p>
 </div>
-<div id="apply" class="section level1">
-<h1>Apply</h1>
+<div id="apply" class="section level2">
+<h2>Apply</h2>
 <p>The <code>apply</code> family of functions includes a number of “wrappers” for loops that make them run faster with less code involved. Let’s start with a quick look at the help documentation for <code>apply</code></p>
 <pre class="r"><code># `&lt;_&gt;apply` Family Functions
 ?apply</code></pre>
 <p>There are some shortcut fucntions for using <code>apply</code> on certain data types. For example, you can use <code>lapply</code> for lists and <code>vapply</code> for vectors. The basic syntax is:</p>
 <p>lapply(list or vector, FUN = function(x) # do something)</p>
 </div>
-<div id="lapply-first-example" class="section level1">
-<h1><code>lapply</code> First Example</h1>
+<div id="lapply-first-example" class="section level2">
+<h2><code>lapply</code> First Example</h2>
 <pre class="r"><code>lapply(1:5, FUN = `+`, 5)</code></pre>
 <p>But with this example, we can do the same thing without using <code>lapply</code></p>
 <pre class="r"><code>1:5 + 5</code></pre>
 </div>
-<div id="lapply-on-list" class="section level1">
-<h1><code>lapply</code> On List</h1>
+<div id="lapply-on-list" class="section level2">
+<h2><code>lapply</code> On List</h2>
 <p>However, when we have a list it gets more complicated</p>
 <pre class="r"><code>X &lt;- list(
   Item1 = 1:5,
@@ -421,8 +421,8 @@ X</code></pre>
 <pre class="r"><code>lapply(X, FUN = `+`, 5)
 lapply(X, FUN = `^`, 2)</code></pre>
 </div>
-<div id="now-lets-try-it-with-vectors-using-vapply" class="section level1">
-<h1>Now let’s try it with vectors using <code>vapply</code></h1>
+<div id="now-lets-try-it-with-vectors-using-vapply" class="section level2">
+<h2>Now let’s try it with vectors using <code>vapply</code></h2>
 <pre class="r"><code>employees &lt;- list(
   c(&quot;first&quot;, &quot;last&quot;),
   c(&quot;first&quot;, &quot;last&quot;),
@@ -443,8 +443,28 @@ X</code></pre>
   c(Min = min(x), Max = max(x), Mean = mean(x))
 }, FUN.VALUE = numeric(3L))</code></pre>
 </div>
-<div id="split-apply-combine" class="section level1">
-<h1>Split-apply-combine</h1>
+<div id="clean-data" class="section level2">
+<h2>Clean Data</h2>
+<p>We can use <code>vapply</code> (for example) to find quoted NAs within out data.</p>
+<pre class="r"><code>vapply(Zoop, FUN = function(x) {
+  sum(x %in% &quot;NA&quot;)
+}, FUN.VALUE = numeric(1L))</code></pre>
+<p>It’s possible, then, to use <code>vapply</code> &amp; <code>lapply</code> to replace quoted NAs with R’s <code>NA</code>.</p>
+<pre class="r"><code>char_nas &lt;- vapply(Zoop, FUN = function(x) {
+  sum(x %in% &quot;NA&quot;)
+}, FUN.VALUE = numeric(1L), USE.NAMES = FALSE)
+
+b &lt;- char_nas &gt; 0
+
+head(Zoop[b])
+
+Zoop[b] &lt;- lapply(Zoop[b], FUN = function(x) {
+  x[x %in% &quot;NA&quot;] &lt;- NA
+  x
+})</code></pre>
+</div>
+<div id="split-apply-combine" class="section level2">
+<h2>Split-apply-combine</h2>
 <p>We often want to split up data sets based on one column and apply functions to another columns. For example, if we wanted to calculate average mysid catch by year, we can use the functions “split” and then “vapply”.</p>
 <pre class="r"><code>mean_temp_yr &lt;- with(data = Zoop, expr = {
   
@@ -473,8 +493,8 @@ View(CBmeans)
 
 #note that you can use your new variables immediately!</code></pre>
 </div>
-<div id="now-its-your-turn" class="section level1">
-<h1>Now it’s your turn</h1>
+<div id="now-its-your-turn" class="section level2">
+<h2>Now it’s your turn</h2>
 <ol style="list-style-type: decimal">
 <li><p>What is the average CPUE of each species?</p></li>
 <li><p>What is the maximum CPUE of Eurytemora in Suisun Bay by year?</p></li>

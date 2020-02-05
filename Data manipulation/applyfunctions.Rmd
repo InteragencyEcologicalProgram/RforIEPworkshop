@@ -48,7 +48,7 @@ for (i in 1:nrow(output)) {   # sequence
 That took a few seconds. You may have heard "don't use for loops in R - they are slow!" That is true when you are dealing with very large data sets, but remember: If it works, it's good code! However, you might want to try some different approaches to speed up your data processing, or make your code more readable.
 
 
-# Apply
+## Apply
 
 The `apply` family of functions includes a number of "wrappers" for loops that make them run faster with less code involved. 
 Let's start with a quick look at the help documentation for `apply`
@@ -62,7 +62,7 @@ There are some shortcut fucntions for using `apply` on certain data types. For e
 
 lapply(list or vector, FUN = function(x) # do something)
 
-# `lapply` First Example
+## `lapply` First Example
 
 ```{r fun-lapply}
 
@@ -75,7 +75,7 @@ But with this example, we can do the same thing without using `lapply`
 1:5 + 5
 ```
 
-# `lapply` On List
+## `lapply` On List
 
 However, when we have a list it gets more complicated
 
@@ -109,7 +109,9 @@ lapply(X, FUN = `+`, 5)
 lapply(X, FUN = `^`, 2)
 
 ```
-# Now let's try it with vectors using  `vapply`
+
+
+## Now let's try it with vectors using  `vapply`
 
 ```{r employees-list}
 
@@ -154,7 +156,7 @@ vapply(X, FUN = function(x) {
 
 ```
 
-# Clean Data
+## Clean Data
 
 We can use `vapply` (for example) to find quoted NAs within out data.
 
@@ -185,7 +187,7 @@ Zoop[b] <- lapply(Zoop[b], FUN = function(x) {
 
 ```
 
-# Split-apply-combine
+## Split-apply-combine
 
 We often want to split up data sets based on one column and apply functions to another columns. For example, if we wanted to calculate average mysid catch by year, we can use the functions "split" and then "vapply". 
 
@@ -227,7 +229,9 @@ View(CBmeans)
 
 
 ```
-# Now it's your turn
+
+
+## Now it's your turn
 
 1. What is the average CPUE of each species?
 
