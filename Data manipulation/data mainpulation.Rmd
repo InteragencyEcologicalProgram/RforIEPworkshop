@@ -12,15 +12,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Outline
 
 1. Importing data
-1. Foundational skills of data manipulations
-2. Detecting errors and outliers
-3. Dataset restructuring
-4. Missing data
-5. Miscellaneous data manipulation
-6. getting data out of R
-
-
-Do we want to go into data organization at all? Maybe introduce "[tidy data](https://learning.nceas.ucsb.edu/2019-11-RRCourse/data-modeling-tidy-data.html)"?
+2. Renaming columns and restructuring data frames
+3. Converting between data classes
+4. Adding new columns
 
 
 ## Importing data

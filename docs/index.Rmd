@@ -1,7 +1,7 @@
 ---
 title: "R workshop - IEP 2020"
-author: "Rosemary Hartman"
-date: "2/5/2020"
+author: "IEP Data Science PWT"
+date: "3/20/2020"
 output: html_document
 ---
 
@@ -24,17 +24,18 @@ Here we would link to the intro-to-R code
 
 In this class, you will be learning how to download data, restructure it, clean it up, and merge differetn types of data together. We have broaken it into three lessons.
 
-* Part one - downloading data, changing variable formats, changing names
+* Part one [Data Manipulation](data-mainpulation.html) - downloading data, changing variable formats, changing names
 
-** [Data Manipulation](data-mainpulation.html)
 
-* Part two - transitioning from wide to long format, summarizing data, merging tables
+* Part two [Data Restructuring](dataset-restructuring.html)- transitioning from wide to long format, summarizing data, merging tables
 
-** [Data Restructuring](dataset-restructuring.html)
+* Part three [Iteration tools](applyfunctions.html) - Iterating functions, loops, apply functions, split-apply-combine.
 
-* Part three - Iterating functions, loops, apply functions, split-apply-combine
-
-** [Iteration tools](applyfunctions.html)
+* Potential things to cover if we have time:
+  + Detecting outliers
+  + Dealing with dates
+  + Simulting data
+  + Coding style
 
 
 ### Graphs

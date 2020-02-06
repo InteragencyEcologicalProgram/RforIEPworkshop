@@ -187,6 +187,7 @@ Zoop[b] <- lapply(Zoop[b], FUN = function(x) {
 
 ```
 
+
 ## Split-apply-combine
 
 We often want to split up data sets based on one column and apply functions to another columns. For example, if we wanted to calculate average mysid catch by year, we can use the functions "split" and then "vapply". 
@@ -225,10 +226,7 @@ CBmeans = summarize(group_by(CBlong, Year), #group it by Year
 View(CBmeans)
 
 #note that you can use your new variables immediately!
-                    
-
-
-```
+```                    
 
 
 ## Now it's your turn
