@@ -91,9 +91,9 @@ unlink(tf)
 
 ### Dealing with data frames
 
-A lot of these skills can be done with either Base R syntax, or "tidyverse"
-syntax. Most people find "tidyverse" a little more intuitive, but you
-can use whichever you are more comfortable with.
+A lot of these skills can be done with either Base R syntax, or "tidyverse" syntax. Most people find "tidyverse" a little more intuitive, but you can use whichever you are more comfortable with.
+
+One of the useful thing about the `tidyverse` functions is the fact that you can use "pipes" `%>%` to string together several functions instead of nesting the functions
 
 #### Renaming columns
 
@@ -114,8 +114,16 @@ CBdata$cheese = NULL
 
 names(CBdata)
 
-#using "rename" is a little more intuitive
+#using "rename" (from the package "dplyr", one of the tidyverse packages) 
+# is a little more intuitive
 CBdata = rename(CBdata, SurveyCode = crackers)
+
+names(CBdata)
+
+#this is what it looks like with a pipe instead of nesting
+
+CBdata = CBdata %>%
+  rename(crackers = DWRStation)
 
 names(CBdata)
 
@@ -176,7 +184,10 @@ CBdata$ln_cals = log(CBdata$ALLCALADULTS + 1)
 #or we can use the "mutate" function from dplyr. This is especially
 #helpful if you want to make a bunch of variables at once
 
-CBdata = mutate(CBdata, ln_clads = log(ALLCLADOCERA + 1), ln_cyc = log(ALLCYCADULTS +1), ln_all = ln_cals + ln_cyc + ln_clads)
+CBdata = CBdata %>%
+  mutate(ln_clads = log(ALLCLADOCERA + 1), 
+         ln_cyc = log(ALLCYCADULTS +1), 
+         ln_all = ln_cals + ln_cyc + ln_clads)
 
 View(CBdata)
 
@@ -184,15 +195,15 @@ View(CBdata)
 
 #### converting among data classes
 
-Even though we read in all our columns based on particular classses, sometimes
-we want to change the data class. Sometimes that's super easy, sometimes it's more
-difficult. Almost all data classes have an "as" function. as.data.frame, as.character, as.numeric, as.factor, etc. 
+Even though we read in all our columns based on particular classses, sometimes we want to change the data class. Sometimes that's super easy, sometimes it's more difficult. Almost all data classes have an "as" function. as.data.frame, as.character, as.numeric, as.factor, etc. 
 
 Other useful functions:
 length(object) # number of elements or components
 str(object)    # structure of an object
 class(object)  # class or type of an object
 names(object)  # names
+
+Factors are particularly useful for creating models with categorical variables. Factors are actually stored as integers, but have helpful labels so they look like categories.
 
 ```{r eval = F}
 
@@ -205,7 +216,8 @@ str(CBdata2)
 CBdata2$Region = as.factor(CBdata2$Region)
 
 #or we can do it with "mutate" again
-CBdata2 = mutate(CBdata2, Station = as.factor(Station)) 
+CBdata2 = CBdata2 %>%
+  mutate(Station = as.factor(Station)) 
 
 str(CBdata2)
 

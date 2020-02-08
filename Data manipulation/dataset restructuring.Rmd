@@ -52,8 +52,8 @@ The functions "pivot_wider" and "pivot_longer" are probably the easiest way to d
 library(tidyverse)
 ?pivot_longer
 
-CBlong = pivot_longer(CBdata2, #specify the data set you want to pivot
-                      cols = ACARTELA:CRABZOEA, #specify the coloms to pivot
+CBlong = CBdata2 %>% #specify the data set you want to pivot
+  pivot_longer(cols = ACARTELA:CRABZOEA, #specify the coloms to pivot
                       names_to = "TaxonCode", #give the name of the new column you want to create
                       values_to = "CPUE" #name of the column for the values
                       )
@@ -69,8 +69,8 @@ If we want to put it back in "wide" format, we use "pivot_wider"
 ```{r}
 ?pivot_wider
 
-CBwide = pivot_wider(CBlong, #specify the data set you want to pivot
-                      id_cols = c(Survey, Year, Date, Station), #Identifier columns (ones you don't want to pivot)
+CBwide = CBlong %>% #specify the data set you want to pivot
+  pivot_wider(id_cols = c(Survey, Year, Date, Station), #Identifier columns (ones you don't want to pivot)
                       names_from = TaxonCode, #give the name of the new column you want to use for the names of the new columns
                       values_from = CPUE #name of the column for the values
                       )
@@ -83,8 +83,8 @@ We can also use this to summarize values as we pivot. For example, if we wanted 
 
 ```{r}
 
-CBwideY = pivot_wider(CBlong, #specify the data set you want to pivot
-                      id_cols = Year, #specify the column with the unique identifier
+CBwideY = CBlong %>% #specify the data set you want to pivot
+  pivot_wider( id_cols = Year, #specify the column with the unique identifier
                       names_from = TaxonCode, #give the name of the new column you want to use for the names of the new columns
                       values_from = CPUE, #name of the column for the values
                       values_fn = list(CPUE = sum) #function to use to combine values
@@ -131,6 +131,18 @@ Now we can attach the scientific names to the main "CBlong" data frame
 
 CBlong2 = merge(CBlong, taxalookup, by = "TaxonCode")
 
+#It automatically merges by any column with the same name (you don't really need the "by" argument), but
+#sometimes our datasets don't have the same column names, even if they contain the same data.
+
+taxalookup = taxalookup %>%
+  rename(taxoncode = TaxonCode)
+
+CBlongtest = merge(CBlong[1:200,], taxalookup, by.x = "TaxonCode", by.y = "taxoncode")
+
+#if we didn't specify, it would be a mess
+CBlongtest2 = merge(CBlong[1:200,], taxalookup)
+
+#it tried to pair up every combination of rows!
 
 ```
 
@@ -187,6 +199,31 @@ View(CBlong4)
 
 ```
 
+## Exporting data
+
+Now that we have data in a format we like, we can export the data to share with our colleagues or use later. We can export it as a .csv file, or as an .Rdata file. The .Rdata files are smaller, so easier to send around, but are less widely used and not as stable for long-term storage.
+
+```{r}
+
+write.csv(CBlong[1:200,], "CBdata_longformat.csv")
+
+#remember that this will automatically save to our working directory. If you want to save somewhere else 
+#you will need to specify the whole path
+
+#a subfolder within your directory
+write.csv(CBlong[1:200,], "data/CBlonformat.csv")
+
+#a totally different folder
+write.csv(CBlong[1:200,], "C:/Users/rhartman/Desktop/CBlong.csv")
+
+#hint: hit 'tab' inside the quotes to help you with the file path
+
+#for an .Rdata file (also .rda)
+save(CBlong, file = "cblong.rda")
+
+```
+
+
 
 
 
@@ -195,3 +232,5 @@ View(CBlong4)
 1. Import the "Station_GPS.csv" into your environment and merge the latitude and longitude to the "CBlong" data frame.
 
 2. Convert your new data frame (with lats and longs) back to "wide" format.
+
+3. Save you new data frame as a .csv.
