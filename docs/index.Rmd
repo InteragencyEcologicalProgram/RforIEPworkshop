@@ -22,20 +22,21 @@ Here we would link to the intro-to-R code
 
 ### Data Manipulation
 
-In this class, you will be learning how to download data, restructure it, clean it up, and merge differetn types of data together. We have broaken it into three lessons.
+In this class, you will be learning how to download data, restructure it, clean it up, and merge differetn types of data together. We have broaken it into modules.
 
-* Part one [Data Manipulation](data-mainpulation.html) - downloading data, changing variable formats, changing names
+* Part one [Introduction](IntrotoDataManip.html) - Style, Projects, Functions, Packages.
 
+* Part two [Data Manipulation](data-mainpulation.html) - downloading data, changing variable formats, changing names
 
-* Part two [Data Restructuring](dataset-restructuring.html)- transitioning from wide to long format, summarizing data, merging tables
+* Part three [Data Restructuring](dataset-restructuring.html)- transitioning from wide to long format, summarizing data, merging tables
 
 * Part three [Iteration tools](applyfunctions.html) - Iterating functions, loops, apply functions, split-apply-combine.
 
+* Part four [Dates](Date-manipulation.html) - Date and time classes, conversions, lubridate
+
 * Potential things to cover if we have time:
   + Detecting outliers
-  + Dealing with dates
   + Simulting data
-  + Coding style
 
 
 ### Graphs

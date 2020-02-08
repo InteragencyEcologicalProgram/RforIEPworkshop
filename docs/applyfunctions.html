@@ -476,16 +476,18 @@ Zoop[b] &lt;- lapply(Zoop[b], FUN = function(x) {
 
 mean_temp_yr</code></pre>
 <p>The package dplyr has some nifty tools to do the same thing. In this case, we want to group our data frame based on year and apply the “mean” fuction to CPUE.</p>
-<pre class="r"><code>CBmeans = summarize(group_by(CBlong, Year), #group it by Year
-                    MeanCPUE = mean(CPUE)) #Calculate Mean CPUE
+<pre class="r"><code>CBmeans = CBlong %&gt;%
+  group_by(Year) %&gt;% #group it by Year
+  summarize(MeanCPUE = mean(CPUE)) #Calculate Mean CPUE
 
 CBmeans
 #much faster than the loop!
 
 
 #we can get really complicated if we want
-CBmeans = summarize(group_by(CBlong, Year), #group it by Year
-                    MeanCPUE = mean(CPUE), #Calculate Mean CPUE
+CBmeans = CBlong %&gt;%
+  group_by(Year) %&gt;% #group it by Year
+  summarize(MeanCPUE = mean(CPUE), #Calculate Mean CPUE
                     sdCPUE = sd(CPUE), #calculate standard deviation
                     nobs = length(CPUE), #number of observations
                     seCPUE = sdCPUE/nobs) #calculate standard error

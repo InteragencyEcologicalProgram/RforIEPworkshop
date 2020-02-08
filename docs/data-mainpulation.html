@@ -428,6 +428,7 @@ unlink(tf)</code></pre>
 <div id="dealing-with-data-frames" class="section level3">
 <h3>Dealing with data frames</h3>
 <p>A lot of these skills can be done with either Base R syntax, or “tidyverse” syntax. Most people find “tidyverse” a little more intuitive, but you can use whichever you are more comfortable with.</p>
+<p>One of the useful thing about the <code>tidyverse</code> functions is the fact that you can use “pipes” <code>%&gt;%</code> to string together several functions instead of nesting the functions</p>
 <div id="renaming-columns" class="section level4">
 <h4>Renaming columns</h4>
 <pre class="r"><code>library(tidyverse)
@@ -446,8 +447,16 @@ CBdata$cheese = NULL
 
 names(CBdata)
 
-#using &quot;rename&quot; is a little more intuitive
+#using &quot;rename&quot; (from the package &quot;dplyr&quot;, one of the tidyverse packages) 
+# is a little more intuitive
 CBdata = rename(CBdata, SurveyCode = crackers)
+
+names(CBdata)
+
+#this is what it looks like with a pipe instead of nesting
+
+CBdata = CBdata %&gt;%
+  rename(crackers = DWRStation)
 
 names(CBdata)</code></pre>
 </div>
@@ -491,7 +500,10 @@ CBdata$ln_cals = log(CBdata$ALLCALADULTS + 1)
 #or we can use the &quot;mutate&quot; function from dplyr. This is especially
 #helpful if you want to make a bunch of variables at once
 
-CBdata = mutate(CBdata, ln_clads = log(ALLCLADOCERA + 1), ln_cyc = log(ALLCYCADULTS +1), ln_all = ln_cals + ln_cyc + ln_clads)
+CBdata = CBdata %&gt;%
+  mutate(ln_clads = log(ALLCLADOCERA + 1), 
+         ln_cyc = log(ALLCYCADULTS +1), 
+         ln_all = ln_cals + ln_cyc + ln_clads)
 
 View(CBdata)</code></pre>
 </div>
@@ -499,6 +511,7 @@ View(CBdata)</code></pre>
 <h4>converting among data classes</h4>
 <p>Even though we read in all our columns based on particular classses, sometimes we want to change the data class. Sometimes that’s super easy, sometimes it’s more difficult. Almost all data classes have an “as” function. as.data.frame, as.character, as.numeric, as.factor, etc.</p>
 <p>Other useful functions: length(object) # number of elements or components str(object) # structure of an object class(object) # class or type of an object names(object) # names</p>
+<p>Factors are particularly useful for creating models with categorical variables. Factors are actually stored as integers, but have helpful labels so they look like categories.</p>
 <pre class="r"><code>str(CBdata2)
 
 #changing things from characters to factors and back again is really easy
@@ -507,7 +520,8 @@ View(CBdata)</code></pre>
 CBdata2$Region = as.factor(CBdata2$Region)
 
 #or we can do it with &quot;mutate&quot; again
-CBdata2 = mutate(CBdata2, Station = as.factor(Station)) 
+CBdata2 = CBdata2 %&gt;%
+  mutate(Station = as.factor(Station)) 
 
 str(CBdata2)
 
