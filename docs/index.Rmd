@@ -11,18 +11,41 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Welcome!
 
-Hi everyone and welcome to the super-fun R learning session of the IEP workshop. R might seem intimidating, but if you keep at it, it's a super-useful skill. 
+Hi everyone and welcome to the super-fun R learning session of the IEP workshop. R might seem intimidating, but if you keep at it, it's a super-useful skill.  The R learning sessions for the IEP workshop will take place from 8:30-11:30 on the Friday March 20th, 2020, the final day of the IEP Workshop.This will be a hands-on workshop. Be prepared to spend half of the time on coding exercises. Please bring a laptop with a fully-charged battery. We will provide as many power strips/outlets as possible, but you may have to share.
 
 
-### R basics
+### R Coding for Beginners
+
+Lead instructor: Morgan Gilber, USFWS
+
+Room: Sierra 1 
+
+Required software: R, Rstudio, Rtools and the following packages: LIST PACKAGES HERE!
+
+An introduction to R, geared toward someone who has never used the program before. Topics covered: basic code syntax, reading in data, making a basic plot. 
 
 
-Here we would link to the intro-to-R code
+  To load the required packages before the workshop, run this code:
+  
+```{r}
+packages <- installed.packages()[,"Package"]
+if(!is.element("tidyverse",packages)) install.packages("tidyverse")
+if(!is.element("readxl",packages)) install.packages("readxl")
+
+```
+  
+
 
 
 ### Data Manipulation
 
-In this class, you will be learning how to download data, restructure it, clean it up, and merge differetn types of data together. We have broaken it into modules.
+Lead instructors: Rosemary Hartman, DWR, and Jason DuBois, CDFW
+
+Room: Sierra 2
+
+Required software: R, Rstudio, Rtools and the following packages: tidyverse, hms, readxl, lubridate
+
+In this class, you will be learning how to download data, restructure it, clean it up, and merge different types of data together. We have broken it into modules.
 
 * Part one [Introduction](IntrotoDataManip.html) - Style, Projects, Functions, Packages.
 
@@ -37,11 +60,40 @@ In this class, you will be learning how to download data, restructure it, clean 
 * Potential things to cover if we have time:
   + Detecting outliers
   + Simulting data
+  
+  To load the required packages before the workshop, run this code:
+  
+```{r}
+packages <- installed.packages()[,"Package"]
+if(!is.element("tidyverse",packages)) install.packages("tidyverse")
+if(!is.element("readxl",packages)) install.packages("readxl")
+if(!is.element("hms",packages)) install.packages("hms")
+if(!is.element("lubridate",packages)) install.packages("lubridate")
+
+```
+  
+
+### R Coding for Publication-Quality Plots
+
+Lead Instructor: Jereme Gaeta, CDFW 
+
+Room: Sutter
+
+Required Software: R, Rstudio, and the following packages: LIST PACKAGES HERE
+
+Plotting multiple graphs at once, different plot sizes using Layout, displaying multiple variables on one plot, stacked area plots, plotting model outputs, graphing aesthetics.
 
 
-### Graphs
+  To load the required packages before the workshop, run this code:
+  
+```{r}
+packages <- installed.packages()[,"Package"]
+if(!is.element("tidyverse",packages)) install.packages("tidyverse")
 
-This is where there will be info on graphs
+
+```
+  
+
 
 
 ### Other resources
