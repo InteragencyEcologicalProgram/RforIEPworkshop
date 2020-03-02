@@ -173,15 +173,19 @@ vapply
 
 # `vapply` Example
 
+We can tell `vapply` the expected output of `FUN`. We know `base::length()` returns a single numeric value, so we can supply just that to `FUN.VALUE`. *Note*: the `L` maintains 1 as an integer value, not a double.)
+
 ```{r vapply-example}
 
 vapply(X, FUN = length, FUN.VALUE = numeric(1L))
 
 ```
 
-now experiment with changing argument to `FUN` or setting `USE.NAMES = FALSE`
+Now experiment with changing argument to `FUN` or setting `USE.NAMES = FALSE`.
 
 # More with `vapply`
+
+Here we have a fake employee list. We don't have a last name for employee 5.
 
 ```{r employees-list}
 
@@ -197,7 +201,7 @@ employees
 
 ```
 
-can we get employees' first name or concatenate `first` & `last`...
+Can we get employees' first name or concatenate `first` & `last`...again, remember that *everything* is a function call. Thus supplying `[` to `FUN` works. The `1` indicates the elment number we wish to index.
 
 ```{r employees-demo}
 
@@ -206,7 +210,7 @@ vapply(employees, FUN = paste0, FUN.VALUE = character(1L), collapse = " ")
 
 ```
 
-let's display our numeric list again
+Let's display our numeric list again.
 
 ```{r X-display}
 
@@ -217,8 +221,8 @@ X
 
 ...what if we wanted some descriptive stats for each item in `X`
 
-- how might you handle `NAs`
-- how might you change output's orientation (i.e., stat names as columns)
+- how might you handle `NAs`?
+- how might you change output's orientation (i.e., stat names as columns)?
 
 ```{r vapply-matrix_out1} 
 
