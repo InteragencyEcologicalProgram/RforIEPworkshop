@@ -45,7 +45,7 @@ len_freq <- LengthFrequency(
 
 # Function Call
 
-`iris` built-in dataframe in `datasets` package
+Here, we use `iris`, the built-in dataframe in `datasets` package. Below demonstrates the 'everything is a function call' aspect. Commented sections display the much more common use.
 
 ```{r func-call}
 
@@ -68,6 +68,8 @@ print(x)
 
 ```
 
+To know the what-why-when's of the  `<l|v|m>apply()` family of `package:base` functions, it helps to understand --- at least conceptually --- about a `for` loop. For some items in variable `x`, do something.
+
 # `for` Loop
 
 ```
@@ -76,6 +78,8 @@ for (items in variable) {
 }
 ```
 
+...an example
+
 ```{r for-loop}
 for (i in 1:5) {
   print(i)
@@ -83,6 +87,8 @@ for (i in 1:5) {
 ```
 
 # `<_>apply` Family Functions
+
+Here in `lapply` the argument to `FUN` is that 'do something' in the `for` loop. The function passed to `FUN`, will act on every item in the `list or vector`. 
 
 ```
 lapply(list or vector, FUN = function(x) # do something)
@@ -97,6 +103,8 @@ lapply
 
 # `lapply` First Example
 
+Here we supply the vetor 1-->5. We wish to add 5 to each number in that vector.
+
 ```{r fun-lapply}
 
 lapply(1:5, FUN = `+`, 5)
@@ -105,11 +113,15 @@ lapply(1:5, FUN = `+`, 5)
 
 # Vectorized
 
+But because R is vectorized, we can simply write below. The results remain neatly in a vector.
+
 ```{r vectorized}
 1:5 + 5
 ```
 
 # `lapply` On List
+
+But what if instead of a vector, we had a **list** of vectors? (an uneven list in this case)
 
 ```{r list-create}
 
@@ -132,7 +144,7 @@ X + 5
 
 ```
 
-so, here's where `lapply` is useful.
+so, here's where `lapply` is useful. (Adding `5` may not be of particular importance, but what about sqaring each value?)
 
 ```{r list-lapply}
 
@@ -141,7 +153,7 @@ lapply(X, FUN = `^`, 2)
 
 ```
 
-useful to get count for each item in list
+We can certainly supply a built-in function to `FUN`. Sometimes it is useful to get count for each item in list.
 
 ```{r length-X}
 
@@ -150,6 +162,8 @@ lapply(X, FUN = length)
 ```
 
 # `vapply` Inner Workings
+
+`vapply` is quite similar to `lapply` but includes some extra (and convenient) parameters.
 
 ```{r vapply-show}
 
