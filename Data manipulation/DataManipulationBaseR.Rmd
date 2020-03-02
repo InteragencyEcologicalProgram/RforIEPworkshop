@@ -313,13 +313,23 @@ unlink(tf)
 
 # Check Data
 
-is our data clean
+The first thing we want to know about our data is...is it clean? Where are the NA values (in which fields)? What are field data types? Are these the correct data types? ...
 
-```{r na-check}
+`vapply` can help with this.
+
+In this first example, we check each field in `Zoop` for NA values. The function will return 0 if no values are NA, and a value > 0 otherwise. The value > 0 indicates the number of NA records in that field.
+
+```{r na-check1}
 
 vapply(Zoop, FUN = function(x) {
   sum(is.na(x))
 }, FUN.VALUE = numeric(1L))
+
+```
+
+Here, we include `typeof` to our output. `vapply` no returns a matrix. *Note*: we use `base::noquote` to remove quotes from the output (`typeof` returns a character), and `base::t` to transpose the matrix as two columns instead of two rows.
+
+```{r na-check2}
 
 t(noquote(vapply(Zoop, FUN = function(x) {
   c(NumNA = sum(is.na(x)), TypeOf = typeof(x))
@@ -329,7 +339,9 @@ t(noquote(vapply(Zoop, FUN = function(x) {
 
 # Custom Data Summary
 
-(long output)
+Of course, using `utils::str` or `base::summary` on new data is always a good idea. Here, though, we can customize our summary, if you will. For each field in `Zoop`, if value is a double, return the range. Otherwise, return frequency table.
+
+(**waring**: long output)
 
 ```{r summary-plus}
 
