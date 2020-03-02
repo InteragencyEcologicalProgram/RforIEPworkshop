@@ -14,19 +14,20 @@ knitr::opts_chunk$set(echo = TRUE)
 Hi everyone and welcome to the super-fun R learning session of the IEP workshop. R might seem intimidating, but if you keep at it, it's a super-useful skill. The R learning sessions for the IEP workshop will take place from 8:30-11:30 on the Friday March 20th, 2020, the final day of the IEP Workshop.This will be a hands-on workshop. Be prepared to spend half of the time on coding exercises. Please bring a laptop with a fully-charged battery. We will provide as many power strips/outlets as possible, but you may have to share.
 
 Required software: 
+
 * R, version 3.5.3 or above. The latest version is 3.6.3, available here: [https://cloud.r-project.org/](https://cloud.r-project.org/) 
 * Rstudio, version 1.2 or above. The latest version is 1.2.5, available here: [https://rstudio.com](https://rstudio.com/products/rstudio/download/#download)  
 * [Rtools](https://cran.r-project.org/bin/windows/Rtools/) 
-* and the following packages: LIST PACKAGES HERE!
 
 
 ### R coding for beginners
 
-Lead instructor: Morgan Gilber, USFWS
+Lead instructor: Morgan Gilbert, USFWS
 
 Room: Sierra 1 
 
 Required packages: 
+
 * LIST PACKAGES HERE!
 
 An introduction to R, geared toward someone who has never used the program before. Topics covered: basic code syntax, reading in data, making a basic plot. 
@@ -51,6 +52,7 @@ Lead instructors: Rosemary Hartman, DWR, and Jason DuBois, CDFW
 Room: Sierra 2
 
 Required packages: 
+
 * tidyverse
 * hms
 * readxl
