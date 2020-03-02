@@ -364,7 +364,22 @@ vapply(Zoop, FUN = function(x) {
 
 # Clean Data
 
+So how do we efficiently replace the quoted (or character) NA with R's `r NA`?
 
+(1) `char_nas` returns the number of character NAs in each field
+(2) `b` sets to `TRUE` any value > 0; `head(Zoop[b])` displays n=6 for quick viewing
+(3) change all character NAs to `r NA` using `lapply`
+
+*Note*: using `Zoop[b]` before assignment `<-` maintains the data.frame structure. Otherwise, you will get a list.
+
+*Note*: instead of anonymous function, below would be much better suited as a named function. This would allow for ease of use on other data.frames
+
+```
+function(x) {
+  x[x %in% "NA"] <- NA
+  x
+}
+```
 
 ```{r char-nas}
 
@@ -383,7 +398,7 @@ Zoop[b] <- lapply(Zoop[b], FUN = function(x) {
 
 ```
 
-now recheck
+Now let us do a quick recheck. All character `NAs` should be gone, yes?
 
 ```{r na-quoted-recheck}
 
