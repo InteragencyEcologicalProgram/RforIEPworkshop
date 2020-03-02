@@ -352,7 +352,7 @@ lapply(Zoop, FUN = function(x) {
 
 ```
 
-where are the quoted NAs
+We notice something interesting about fields `EZStation` and `DWRStation`. We have some quoted NAs. That is, entries in the Excel file are `NA`, not just blank (which would be read by R as `r NA`). This certainly poses a problem for data summary and other analytics.
 
 ```{r na-quoted}
 
@@ -363,6 +363,8 @@ vapply(Zoop, FUN = function(x) {
 ```
 
 # Clean Data
+
+
 
 ```{r char-nas}
 
