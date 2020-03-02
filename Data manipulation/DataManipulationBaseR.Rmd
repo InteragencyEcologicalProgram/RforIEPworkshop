@@ -459,6 +459,14 @@ points(x = Zoop[["Year"]], y = zoop_scaled[, "A_ hwanhaiensis"], col = "red")
 
 *Note*: standardizing and (or) plotting these data in this manner might not be visually or statistically appropriate. This is merely for demonstration purposes.
 
+# Data Split
+
+Sometimes we wish to summarize data by a particular variable or variable grouping. `stats::aggregate` is always a nice option. Here, though, we demonstrate `base::split`, which returns a list and thus works nicely with `<l|v>apply`.
+
+#### Example 1: mean water temperature by year
+
+Here we use `base::with` for convenience (i.e., to limit `Zoop$Temperature` or `Zoop[["Temperature"]]`). Variable `s` is a list of temperature values by year. `vapply` takes each element in the list (i.e., each year) and returns a mean value.
+
 ```{r mean-temp-yr1}
 
 mean_temp_yr <- with(data = Zoop, expr = {
@@ -473,6 +481,8 @@ mean_temp_yr
 
 ```
 
+Note, however, in the output above, we have many `NA`s. We can use the `...` in `vapply` to pass `na.rm = TRUE` to `base::mean`. Better...
+
 ```{r mean-temp-yr2}
 
 mean_temp_yr <- with(data = Zoop, expr = {
@@ -486,6 +496,36 @@ mean_temp_yr <- with(data = Zoop, expr = {
 mean_temp_yr
 
 ```
+
+Suppose, however, we wanted more than just mean. Typically, along with mean we would like some measure of spread (e.g., variance) and some count (e.g., n).
+
+We can still use `vapply`, but now we've replaced `base::mean` with an anonymous function that includes `mean`. (*Note*: here is where a custom function comes in very handy.)
+
+The anonymous function is this...
+
+```
+function(x) {
+  nna <- sum(is.na(x))
+  x <- Filter(f = Negate(is.na), x = x)
+  c(N = length(x), NNA = nna, Mean = mean(x), Var = var(x))
+}
+```
+
+Let us describe each line.
+
+`nna <- sum(is.na(x))` assigns to variable `nna` the count of values that are `NA`
+
+`x <- Filter(f = Negate(is.na), x = x)` reassigns variable `x` but without `NA`s (for help run `?Filter` in your R console).
+
+- `N = length(x)` gives count of values in `x`, less `NA`s
+
+- `NNA = nna` gives count of values in `x`, **including** `NA`s (remember, we removed `NA`s *after* `sum(is.na(x))`)
+
+- `Mean = mean(x)` returns the mean value of `x` (`na.rm = TRUE` is not needed)
+
+- `Var = var(x)` returns the variance value of `x` (`na.rm = TRUE` is not needed)
+
+Finally, using `c()` bundles the output neatly into a numeric vector, length = 4, thus `FUN.VALUE = numeric(4L)` below. Optionally, a call to `t` manipulates output such that the *rows* represent year and *columns* `N`, `NNA`, `Mean`, and `Var`.
 
 ```{r mean-temp-yr3}
 
@@ -505,10 +545,14 @@ mean_temp_yr <- with(data = Zoop, expr = {
   
 })
 
+# just for display
 str(mean_temp_yr)
 tail(mean_temp_yr)
+dim(mean_temp_yr)
 
 ```
+
+
 
 ```{r mean-temp-yr-mon1}
 
