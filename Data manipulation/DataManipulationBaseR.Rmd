@@ -410,22 +410,38 @@ vapply(Zoop, FUN = function(x) {
 
 # Scale Data
 
-```{r scaled}
+Sometimes we wish to compare variables with markedly different ranges. Here fields `N_ mercedis` and `A_ hwanhaiensi` fit that bill.
+
+```{r scaled1}
 
 cols <- c("N_ mercedis", "A_ hwanhaiensis")
 
-fv <- nrow(Zoop)
+vapply(Zoop[cols], FUN = range, FUN.VALUE = numeric(2L))
 
-apply(Zoop[cols], MARGIN = 2, FUN = range)
-
-zoop_scaled <- vapply(Zoop[cols], FUN = function(x) {
-  x / (max(x) - min(x))
-}, FUN.VALUE = numeric(fv))
-
-apply(zoop_scaled, MARGIN = 2, FUN = range)
-
+# works too
+# apply(Zoop[cols], MARGIN = 2, FUN = range)
 
 ```
+
+Here we standardize ([min-max scaling](https://en.wikipedia.org/wiki/Feature_scaling)) the desired fields dividing each value (minus the minimum value) by the range difference.
+
+$$\frac{x-min(x)}{max(x)-min(x)}$$
+
+```{r scaled2}
+
+# for vapply output
+fv <- nrow(Zoop)
+
+zoop_scaled <- vapply(Zoop[cols], FUN = function(x) {
+  (x - min(x)) / (max(x) - min(x))
+}, FUN.VALUE = numeric(fv))
+
+# verify range is 0 to 1
+apply(zoop_scaled, MARGIN = 2, FUN = range)
+
+```
+
+Plotting the raw data compared to the standardized, we get the following.
 
 ```{r plot-not-scaled}
 
@@ -440,6 +456,8 @@ plot(x = Zoop[["Year"]], y = zoop_scaled[, "N_ mercedis"])
 points(x = Zoop[["Year"]], y = zoop_scaled[, "A_ hwanhaiensis"], col = "red")
 
 ```
+
+*Note*: standardizing and (or) plotting these data in this manner might not be visually or statistically appropriate. This is merely for demonstration purposes.
 
 ```{r mean-temp-yr1}
 
