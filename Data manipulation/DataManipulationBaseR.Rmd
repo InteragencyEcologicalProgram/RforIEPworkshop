@@ -281,9 +281,9 @@ vapply(funs, FUN = function(f, nums) {
 
 # Download Data
 
-here we use zooplankton data from CDFW's ftp site
+Here we use zooplankton data from CDFW's ftp site.
 
-** note the use of package `readxl` **
+** note the use of package `readxl` ** (install prior to running below)
 
 ```{r data-download}
 
@@ -299,6 +299,8 @@ download.file(
   mode = "ab"
 )
 
+# note the space after 2018 in the sheet name --- needed because that space
+# exists in the .xlsx file
 Zoop <- readxl::read_excel(
   path = tf,
   sheet = "Mysid CPUE Matrix 1972-2018 "
