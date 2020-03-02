@@ -262,7 +262,7 @@ t(vapply(X, FUN = function(x) {
 
 # List of Functions
 
-we could pass a list of functions as an argument to `vapply`'s `X`
+We could pass a list of functions as an argument to `vapply`'s `X`. Though this convention is not as common. *Note*: the last function in the list is a custom function that returns count of values less than 5. `x < 5` returns a Boolean, and summing a Boolean returns number `TRUE`, as `TRUE` = 1, `FALSE` = 0.
 
 ```{r list-functions}
 
