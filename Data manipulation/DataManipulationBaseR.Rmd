@@ -9,6 +9,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Style Guide
 
+Herein, I present some quick points about my style guide. This is by no means the best approach but one that has worked for me and one I've developed over the years.
+
 PascalCase: function names; dataframes; field headings; file names  
 camelCase: function parameters  
 lower_case (with underscore): variables  
@@ -16,6 +18,8 @@ lower_case (with underscore): variables
 use `<-` instead of `=` for variable assignment  
 most everytime function call, hard return after left parentheses  
 each line keep to max 80 characters  
+
+Below is an example creating a function, and then calling that function. Note how in the call each function parameter is on its own line. This allows for easily commenting a parameter to try another argument (see `speciesName`).
 
 ```
 # create function
@@ -33,7 +37,9 @@ len_freq <- LengthFrequency(
 ```
 # Functional Programming
 
-- function call
+`R` is a functional programming language. As such, it has certain characteristics that can work to one's advantage.
+
+- everything is a function call
 - arguments can be other functions
 - functions can return functions
 
