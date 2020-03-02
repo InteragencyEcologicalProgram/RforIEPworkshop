@@ -58,6 +58,18 @@ Required packages:
 * readxl
 * lubridate
 
+  To load the required packages before the workshop, run this code:
+  
+```{r}
+packages <- installed.packages()[,"Package"]
+if(!is.element("tidyverse",packages)) install.packages("tidyverse")
+if(!is.element("readxl",packages)) install.packages("readxl")
+if(!is.element("hms",packages)) install.packages("hms")
+if(!is.element("lubridate",packages)) install.packages("lubridate")
+
+```
+
+
 In this class, you will be learning how to download data, restructure it, clean it up, and merge different types of data together. We have broken it into modules.
 
 
@@ -84,10 +96,7 @@ Room: Sutter
 
 Required packages: LIST PACKAGES HERE
 
-
-### Graphs
-
-This is where there will be info on graphs
+This class will show you how to construct complex plots, plotting multiple graphs at once, different plot sizes using Layout, displaying multiple variables on one plot, stacked area plots, plotting model outputs, graphing aesthetics. This class will use "base" graphics, but some assistants will be on-hand to help users more comfortable with ggplot.
 
 
 ### Other resources

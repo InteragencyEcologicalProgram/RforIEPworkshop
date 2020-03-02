@@ -400,11 +400,17 @@ if(!is.element(&quot;readxl&quot;,packages)) install.packages(&quot;readxl&quot;
 <p>Room: Sierra 2</p>
 <p>Required packages:</p>
 <ul>
-<li>tidyverse</li>
-<li>hms</li>
-<li>readxl</li>
-<li>lubridate</li>
+<li><p>tidyverse</p></li>
+<li><p>hms</p></li>
+<li><p>readxl</p></li>
+<li><p>lubridate</p>
+<p>To load the required packages before the workshop, run this code:</p></li>
 </ul>
+<pre class="r"><code>packages &lt;- installed.packages()[,&quot;Package&quot;]
+if(!is.element(&quot;tidyverse&quot;,packages)) install.packages(&quot;tidyverse&quot;)
+if(!is.element(&quot;readxl&quot;,packages)) install.packages(&quot;readxl&quot;)
+if(!is.element(&quot;hms&quot;,packages)) install.packages(&quot;hms&quot;)
+if(!is.element(&quot;lubridate&quot;,packages)) install.packages(&quot;lubridate&quot;)</code></pre>
 <p>In this class, you will be learning how to download data, restructure it, clean it up, and merge different types of data together. We have broken it into modules.</p>
 <ul>
 <li><p>Part one <a href="IntrotoDataManip.html">Introduction</a> - Style, Projects, Functions, Packages.</p></li>
@@ -424,10 +430,7 @@ if(!is.element(&quot;readxl&quot;,packages)) install.packages(&quot;readxl&quot;
 <p>Lead Instructor: Jereme Gaeta, CDFW</p>
 <p>Room: Sutter</p>
 <p>Required packages: LIST PACKAGES HERE</p>
-</div>
-<div id="graphs" class="section level3">
-<h3>Graphs</h3>
-<p>This is where there will be info on graphs</p>
+<p>This class will show you how to construct complex plots, plotting multiple graphs at once, different plot sizes using Layout, displaying multiple variables on one plot, stacked area plots, plotting model outputs, graphing aesthetics. This class will use “base” graphics, but some assistants will be on-hand to help users more comfortable with ggplot.</p>
 </div>
 <div id="other-resources" class="section level3">
 <h3>Other resources</h3>
