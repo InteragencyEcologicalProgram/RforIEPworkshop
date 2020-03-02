@@ -306,6 +306,7 @@ Zoop <- readxl::read_excel(
   sheet = "Mysid CPUE Matrix 1972-2018 "
 )
 
+# always a good idea to remove (delete) the file after downloading data
 unlink(tf)
 
 ```
