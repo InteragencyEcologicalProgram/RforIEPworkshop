@@ -593,7 +593,18 @@ head(mean_temp_yr_mon)
 
 ```
 
-#### Example 2: employing `stats::aggregate`
+#### Example 3: employing `stats::aggregate`
+
+Here we use the same anonymous function. But now we are using `aggregate`, which does the `split`ting for us. Again, we want water temperature mean and variance by year and month. For convenient output, we set month `as.numeric`.
+
+We call `utils::str` and notice something interesting about the output. The structure is a `data.frame`, but our function return --- assigned to field `x` --- is a matrix. This is not really a problem, but if we want a "clean" data.frame, we can simply run the following code (see too output in the next chunk).
+
+```
+data.frame(
+  out[c("Year", "Mon")],
+  out[["x"]]
+)
+```
 
 ```{r mean-temp-yr-mon2}
 
