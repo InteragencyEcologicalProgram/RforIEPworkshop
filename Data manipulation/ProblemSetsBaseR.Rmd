@@ -1,0 +1,26 @@
+---
+
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+
+knitr::opts_knit$set(root.dir = "~/RProjects/RforIEPworkshop/Data manipulation")
+
+```
+
+# Load Data
+
+```{r load-data}
+
+CBdata <- read.csv(
+  file = "CBdata.csv",
+  header = TRUE,
+  stringsAsFactors = FALSE
+)
+
+```
+
+# Questions (from `applyfunctions.Rmd`)
+
