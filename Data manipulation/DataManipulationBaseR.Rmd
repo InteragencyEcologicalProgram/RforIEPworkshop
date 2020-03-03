@@ -657,6 +657,15 @@ str(mean_temp_yr_mon)
 
 ```
 
+# Plotting
+
+We can use `vapply` in `plot`ting to loop through select variables. Say we wanted an annual time series of species CPUE (or whatever the data are).
+
+We can "cheat" a bit to get species field names from our data. Each species --- less `Unidentified mysid` --- begins with a capital letter followed by an underscore. Using the regular expression `^[A-Z]\\_` and a call to `base::grepl`, we can select only those names (see `nms` variable below).
+
+`nms` becomes the variable on which we will loop and will be the `y` variable in our time series plot. Other function parameters are `d` (our dataframe) and `xVar` (i.e., the `x` variable in our plot, to which in this case we set as `"Year"`).
+
+
 ```{r plot-mult-y1}
 
 b <- grepl(pattern = "^[A-Z]\\_", x = colnames(Zoop))
@@ -673,7 +682,7 @@ vapply(nms, FUN = function(y, d, xVar) {
 
 ```
 
-```{r plot-mult-y2}
+```{r plot-mult-y2, eval=FALSE}
 
 par(mfrow = c(4, 2))
 
