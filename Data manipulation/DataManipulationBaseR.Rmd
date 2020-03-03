@@ -665,6 +665,7 @@ We can "cheat" a bit to get species field names from our data. Each species --- 
 
 `nms` becomes the variable on which we will loop and will be the `y` variable in our time series plot. Other function parameters are `d` (our dataframe) and `xVar` (i.e., the `x` variable in our plot, to which in this case we set as `"Year"`).
 
+LEFT OFF HERE 
 
 ```{r plot-mult-y1}
 
