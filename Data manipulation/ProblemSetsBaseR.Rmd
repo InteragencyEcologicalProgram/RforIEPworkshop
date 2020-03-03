@@ -24,3 +24,8 @@ CBdata <- read.csv(
 
 # Questions (from `applyfunctions.Rmd`)
 
+1. What is the average CPUE of each species?
+
+2. What is the maximum CPUE of Eurytemora in Suisun Bay by year?
+
+3. Calculate the relative % composition of each species by year (this is a hard one).
