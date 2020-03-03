@@ -22,6 +22,44 @@ CBdata <- read.csv(
 
 ```
 
+# Check Data
+
+```{r check-data}
+
+# check row and column count
+dim(CBdata)
+
+# long output, but a good option
+# str(CBdata)
+# summary(CBdata)
+
+```
+
+#### Check `NA`
+
+Here, we write a custom function `CountNA` to help us count `NA`s and character NAs. We pass the function to `FUN` in `vapply` - see next step.
+
+*Note*: for now `sum(x %in% c("NA", "na"))` will suffice to check for character NAs. Likely, there are more robust ways, perhaps even using `base::grepl` or the like.
+
+```{r count-na-function}
+
+CountNA <- function(x) {
+  char_na <- sum(x %in% c("NA", "na"))
+  c(CharNA = char_na, `NA` = sum(is.na(x)))
+}
+
+```
+
+The output is long, but we see seven fields have count `NA` > 0. Good to know.
+
+```{r check-na}
+
+t(vapply(CBdata, FUN = CountNA, FUN.VALUE = numeric(2L)))
+
+```
+
+You'll want to develop other data-checking and (or) data-cleaning procedures as needed. For now, we'll suffice at checking `NA`s.
+
 # Questions (from `applyfunctions.Rmd`)
 
 1. What is the average CPUE of each species?
