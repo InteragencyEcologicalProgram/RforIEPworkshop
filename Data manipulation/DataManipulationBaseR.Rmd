@@ -593,6 +593,8 @@ head(mean_temp_yr_mon)
 
 ```
 
+#### Example 2: employing `stats::aggregate`
+
 ```{r mean-temp-yr-mon2}
 
 mean_temp_yr_mon <- with(data = Zoop, expr = {
