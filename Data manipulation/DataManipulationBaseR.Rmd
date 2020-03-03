@@ -552,7 +552,9 @@ dim(mean_temp_yr)
 
 ```
 
+Now suppose we wanted our output to be by year and month. Same thing basically, except we pass to `base::split` year & month (extracted from `SampleDate` using `base::format`). Note, however, the parameter `drop` to which we pass `FALSE`. This will include levels that did not occur. For example, no (sampling) data exists for January 1973, yet `mean_temp_yr_mon` will contain `0, 0, NaN, NA` as output for that year-month combination.
 
+Experiment with setting `drop = TRUE`. What changes?
 
 ```{r mean-temp-yr-mon1}
 
@@ -563,6 +565,7 @@ mean_temp_yr_mon <- with(data = Zoop, expr = {
   
   s <- split(Temperature, f = list(Year, m), drop = FALSE) #, sep = "_"
   
+  # could be use but gets a little cumbersome
   # t(vapply(s, FUN = function(x, ...) {
   #   c(Mean = mean(x, ...), Sd = sd(x, ...))
   # }, FUN.VALUE = numeric(2L), na.rm = TRUE))
@@ -575,6 +578,7 @@ mean_temp_yr_mon <- with(data = Zoop, expr = {
   
 })
 
+# for display only
 dim(mean_temp_yr_mon)
 dimnames(mean_temp_yr_mon)[[2]]
 head(dimnames(mean_temp_yr_mon)[[1]], n = 10)
