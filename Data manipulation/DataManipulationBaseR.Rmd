@@ -552,6 +552,8 @@ dim(mean_temp_yr)
 
 ```
 
+#### Example 2: mean water temperature by year by month
+
 Now suppose we wanted our output to be by year and month. Same thing basically, except we pass to `base::split` year & month (extracted from `SampleDate` using `base::format`). Note, however, the parameter `drop` to which we pass `FALSE`. This will include levels that did not occur. For example, no (sampling) data exists for January 1973, yet `mean_temp_yr_mon` will contain `0, 0, NaN, NA` as output for that year-month combination.
 
 Experiment with setting `drop = TRUE`. What changes?
