@@ -18,7 +18,7 @@ camelCase: function parameters
 lower_case (with underscore): variables  
 
 use `<-` instead of `=` for variable assignment  
-most everytime function call, hard return after left parentheses  
+most every time function call, hard return after left parentheses  
 each line keep to max 80 characters  
 
 Below is an example creating a function, and then calling that function. Note how in the call each function parameter is on its own line. This allows for easily commenting a parameter to try another argument (see `speciesName`).
@@ -105,7 +105,7 @@ lapply
 
 # `lapply` First Example
 
-Here we supply the vetor 1-->5. We wish to add 5 to each number in that vector.
+Here we supply the vector 1-->5. We wish to add 5 to each number in that vector.
 
 ```{r fun-lapply}
 
@@ -146,7 +146,7 @@ X + 5
 
 ```
 
-so, here's where `lapply` is useful. (Adding `5` may not be of particular importance, but what about sqaring each value?)
+so, here's where `lapply` is useful. (Adding `5` may not be of particular importance, but what about squaring each value?)
 
 ```{r list-lapply}
 
@@ -203,7 +203,7 @@ employees
 
 ```
 
-Can we get employees' first name or concatenate `first` & `last`...again, remember that *everything* is a function call. Thus supplying `[` to `FUN` works. The `1` indicates the elment number we wish to index.
+Can we get employees' first name or concatenate `first` & `last`...again, remember that *everything* is a function call. Thus supplying `[` to `FUN` works. The `1` indicates the element number we wish to index.
 
 ```{r employees-demo}
 
@@ -343,7 +343,7 @@ t(noquote(vapply(Zoop, FUN = function(x) {
 
 Of course, using `utils::str` or `base::summary` on new data is always a good idea. Here, though, we can customize our summary, if you will. For each field in `Zoop`, if value is a double, return the range. Otherwise, return frequency table.
 
-(**waring**: long output)
+(**warning**: long output)
 
 ```{r summary-plus}
 
