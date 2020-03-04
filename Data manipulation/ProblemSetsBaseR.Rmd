@@ -12,6 +12,8 @@ knitr::opts_knit$set(root.dir = "~/RProjects/RforIEPworkshop/Data manipulation")
 
 # Load Data
 
+Read the `.csv` file into your current R session. *Note*: your file path to `file` may differ.
+
 ```{r load-data}
 
 CBdata <- read.csv(
@@ -23,6 +25,8 @@ CBdata <- read.csv(
 ```
 
 # Check Data
+
+Check your data with calls to built-in R functions. `dim` returns number of row and number of columns. We have many columns (n=`r ncol(CBdata)`).
 
 ```{r check-data}
 
@@ -130,22 +134,41 @@ vapply(eurytem_year, FUN = function(d) {
 
 We assume we are to use CPUE values (i.e., in our wide format, each species column).
 
-```{r}
+**Step 1**: `split` all species data by year. Recall our variable `b`, which gave `TRUE` for field names with all caps (i.e., species names).
 
+```{r species-year}
 
+species_year <- split(CBdata[b], f = CBdata[["Year"]])
 
+```
 
+Now each element in list `species_year` represents a year. Run `str(species_year[["2018"]])` as an example to verify this element is a dataframe with `r sum(b)` variables. Try other years, too, if you wish.
+
+**Step 2**: Each row in the data.frame (either `CBdata` or `species_year`) represents a sampling event (i.e, date-station-tow). If we sum each species (i.e., each column), we get the yearly total. So here we need a call to `base::colSums`. Below works, but we need "relative % composition".
+
+```{r col-sums-demo}
+
+species_year_total <- t(
+  vapply(species_year, FUN = colSums, FUN.VALUE = numeric(sum(b)))
+)
 
 
 ```
 
+**Step 3**: A call to `base::prop.table` should do the trick. `margin = 1` indicates by rows (i.e., by year). *Note*: If not using a call to `t` like above, then set `margin = 2` for colums.
 
+```{r rel-percent-comp}
 
+rel_percent_comp <- prop.table(species_year_total, margin = 1)
 
+# double-check rows should sum to 1
+# rowSums(rel_percent_comp)
 
+# for ease of viewing rather than in the console
+# View(rel_percent_comp)
 
+```
 
-
-
-
-
+---
+run: `r format(Sys.time(), format = "%B %d %Y @ %H%M")`  
+&copy; IEP educational series
