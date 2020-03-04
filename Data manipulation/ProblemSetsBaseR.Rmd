@@ -168,6 +168,76 @@ rel_percent_comp <- prop.table(species_year_total, margin = 1)
 
 ```
 
+# Questions (from `data mainpulaton.Rmd`)
+
+Here, we will continue to use data.frame `CBdata`.
+
+
+#### How many samples does the Zooplankton survey have from the North Delta that contain Harpacticoids (HARPACT)?
+
+A call to `base::table` on field `Region` returns 700+ records North Delta (we assume `NorDel` = North Delta). Further, we display CPUE range for our desired zooplankton (`HARPACT`).
+
+```{r table-region}
+
+table(CBdata[["Region"]], useNA = "ifany")
+
+range(CBdata[["HARPACT"]])
+
+```
+
+We can answer the question using Boolean values. `CBdata[["HARPACT"]] > 0` returns `TRUE` for all samples with `HARPACT`, and `CBdata[["Region"]] %in% "NorDel"` returns `TRUE` for all North Delta samples. We want the count of records (samples) when both are `TRUE`. Because `TRUE` = 1 and `FALSE` = 0, summing the result should give us the number we desire. *Note*: we assume each row in `CBdata` is a sample.
+
+```{r north-detla-samples}
+
+sum(CBdata[["HARPACT"]] > 0 & CBdata[["Region"]] %in% "NorDel")
+
+```
+
+Our result should be less than the `NorDel` value in the `table` result above.
+
+#### Make a new variable for the total catch of all zooplankton.
+
+Recall our variable `b`, which selects all zooplankton (species) fields in `CBdata`.
+
+```{r total-catch}
+
+total_species_catch <- sum(CBdata[b])
+
+# display
+total_species_catch
+
+# or with formatting possibilities
+format(total_species_catch, big.mark = ",")
+format(total_species_catch, digits = 3, scientific = TRUE)
+
+```
+
+#### Create a new data frame that only contains samples with positive occurances of Eurytemora (EURYTEM).
+
+We need a filter (only possitive occurences) and field selection (all non-species fields + `EURYTEM`). If variable `b` selects for all zooplankton fields, then `!b` is everything else.
+
+```{r fields}
+
+# create our desired fields
+# we assume the only zooplankton field we want is EURYTEM
+fields <- c(colnames(CBdata)[!b], "EURYTEM")
+
+fields
+
+```
+
+```{r eurytem_catch}
+
+# our filter: CBdata[["EURYTEM"]] > 0
+
+eurytem_catch <- CBdata[CBdata[["EURYTEM"]] > 0, fields]
+
+dim(eurytem_catch)
+colnames(eurytem_catch)
+range(eurytem_catch[["EURYTEM"]])
+
+```
+
 ---
 run: `r format(Sys.time(), format = "%B %d %Y @ %H%M")`  
 &copy; IEP educational series
