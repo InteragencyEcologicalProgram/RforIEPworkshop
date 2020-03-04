@@ -87,7 +87,7 @@ sum(b)
 
 # just for easier observartion (run as desired)
 # cbind(colnames(CBdata), b)
-# or from RStudio
+# or...
 # View(cbind(colnames(CBdata), b), title = "SpeciesFieldCheck")
 
 ```
