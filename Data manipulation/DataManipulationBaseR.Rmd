@@ -3,6 +3,7 @@ output:
   github_document:
     toc: true
     toc_depth: 1
+    pandoc_args: --webtex
 ---
 
 ```{r setup, include=FALSE}
