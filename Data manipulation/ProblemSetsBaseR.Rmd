@@ -185,7 +185,7 @@ range(CBdata[["HARPACT"]])
 
 ```
 
-We can answer the question using Boolean values. `CBdata[["HARPACT"]] > 0` returns `TRUE` for all samples with `HARPACT`, and `CBdata[["Region"]] %in% "NorDel"` returns `TRUE` for all North Delta samples. We want the count of records (samples) when both are `TRUE`. Because `TRUE` = 1 and `FALSE` = 0, summing the result should give us the number we desire. *Note*: we assume each row in `CBdata` is a sample.
+We can answer the question using Boolean values. <code>CBdata[["HARPACT"]] > 0</code> returns `TRUE` for all samples with `HARPACT`, and `CBdata[["Region"]] %in% "NorDel"` returns `TRUE` for all North Delta samples. We want the count of records (samples) when both are `TRUE`. Because `TRUE` = 1 and `FALSE` = 0, summing the result should give us the number we desire. *Note*: we assume each row in `CBdata` is a sample.
 
 ```{r north-detla-samples}
 
