@@ -129,7 +129,26 @@ vapply(eurytem_year, FUN = function(d) {
 
 ```
 
+#### Calculate the relative % composition of each species by year (this is a hard one).
+
+We assume we are to use CPUE values (i.e., in our wide format, each species column).
+
+```{r}
 
 
 
-3. Calculate the relative % composition of each species by year (this is a hard one).
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
