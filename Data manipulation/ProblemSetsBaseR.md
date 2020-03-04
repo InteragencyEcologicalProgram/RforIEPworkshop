@@ -1,4 +1,11 @@
 
+  - [Load Data](#load-data)
+  - [Check Data](#check-data)
+  - [Questions (from
+    `applyfunctions.Rmd`)](#questions-from-applyfunctions.rmd)
+  - [Questions (from `data
+    mainpulaton.Rmd`)](#questions-from-data-mainpulaton.rmd)
+
 # Load Data
 
 Read the `.csv` file into your current R session. *Note*: your file path
@@ -423,5 +430,5 @@ range(eurytem_catch[["EURYTEM"]])
 
 -----
 
-run: March 04 2020 @ 1237  
+run: March 04 2020 @ 1253  
 © IEP educational series
