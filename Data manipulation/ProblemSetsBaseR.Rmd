@@ -103,13 +103,33 @@ rm(b)
 
 ```
 
+#### What is the maximum CPUE of Eurytemora in Suisun Bay by year?
+
+Here we get a bit specific. We seek annual maximum CPUE for only Eurytemora in Suisun Bay. Our "filter" is Suisun Bay, and our "split" is by year. *Note*: for this purpose, we assume `EURYTEM` is the desired field.
+
+```{r eurytem-year-split}
+
+eurytem_year <- split(CBdata[c("Region", "EURYTEM")], f = CBdata["Year"])
+
+```
+
+Because, variable `eurytem_year` is a list, we can use `vapply` to loop through each year. Each element in `eurytem_year` is a data.frame with two fields: `Region` & `EURYTEM`. Our anonymous function has one parameter: `d` (short for data).
+
+- `b <- d[["Region"]] %in% "SuiBay"` is our "filter" selecting only `SuiBay` (we assume Suisun Bay)
+- `max(d[b, "EURYTEM"])` returns the maximum value --- a single numeric --- on the subsetted data (just to be safe you could include `, na.rm = TRUE` but we know from our clean data check no `NA`s exist in our species fields)
+
+Output below can be assigned to a variable, and then plotted if desired.
+
+```{r eurytem-year-max}
+
+vapply(eurytem_year, FUN = function(d) {
+  b <- d[["Region"]] %in% "SuiBay"
+  max(d[b, "EURYTEM"])
+}, FUN.VALUE = numeric(1L))
+
+```
 
 
 
-
-
-
-
-2. What is the maximum CPUE of Eurytemora in Suisun Bay by year?
 
 3. Calculate the relative % composition of each species by year (this is a hard one).
