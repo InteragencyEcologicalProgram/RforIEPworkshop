@@ -152,7 +152,6 @@ species_year_total <- t(
   vapply(species_year, FUN = colSums, FUN.VALUE = numeric(sum(b)))
 )
 
-
 ```
 
 **Step 3**: A call to `base::prop.table` should do the trick. `margin = 1` indicates by rows (i.e., by year). *Note*: If not using a call to `t` like above, then set `margin = 2` for columns.
