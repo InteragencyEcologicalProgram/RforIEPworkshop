@@ -26,7 +26,7 @@ CBdata <- read.csv(
 
 # Check Data
 
-Check your data with calls to built-in R functions. `dim` returns number of row and number of columns. We have many columns (n=`r ncol(CBdata)`).
+Check your data with calls to built-in R functions. `dim` returns number of rows and number of columns. We have many columns (n=`r ncol(CBdata)`).
 
 ```{r check-data}
 
