@@ -58,11 +58,57 @@ t(vapply(CBdata, FUN = CountNA, FUN.VALUE = numeric(2L)))
 
 ```
 
-You'll want to develop other data-checking and (or) data-cleaning procedures as needed. For now, we'll suffice at checking `NA`s.
+You'll want to develop other data-checking and (or) data-cleaning procedures as needed. For now , we'll suffice at checking `NA`s.
 
 # Questions (from `applyfunctions.Rmd`)
 
-1. What is the average CPUE of each species?
+#### What is the average CPUE of each species?
+
+The first step to answering this question is which field or fields contain CPUE (catch-per-unit-effort)?
+
+A call to `base::colnames` reveals each species is a field. Are data are in "wide" format. We also see species field names are all CAPS. This can play to our adavantage, as R is case sensitive.
+
+*Note*: we assume data in each species field are CPUE.
+
+```{r column-names}
+
+colnames(CBdata)
+
+```
+
+A call to `base::grepl` using `pattern = "[A-Z]$"` (i.e., checking for capital letters from the text end) yields `TRUE` for all species field names.
+
+```{r species-columns}
+
+# `b` for Boolean
+b <- grepl(pattern = "[A-Z]$", x = colnames(CBdata))
+
+sum(b)
+
+# just for easier observartion (run as desired)
+# cbind(colnames(CBdata), b)
+# or from RStudio
+# View(cbind(colnames(CBdata), b), title = "SpeciesFieldCheck")
+
+```
+
+Verify for yourself there are in fact `r sum(b)` species. Now to answer our question...simply call `base::colMeans` on the subsetted `CBdata`. Play with display format as desired (e.g., call `as.data.frame` on the `colMeans` output).
+
+```{r mean-cpue}
+
+colMeans(CBdata[b])
+
+# for variable clean up
+rm(b)
+
+```
+
+
+
+
+
+
+
 
 2. What is the maximum CPUE of Eurytemora in Suisun Bay by year?
 
