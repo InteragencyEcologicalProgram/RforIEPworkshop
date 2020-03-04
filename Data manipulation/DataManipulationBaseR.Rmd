@@ -665,23 +665,41 @@ We can "cheat" a bit to get species field names from our data. Each species --- 
 
 `nms` becomes the variable on which we will loop and will be the `y` variable in our time series plot. Other function parameters are `d` (our dataframe) and `xVar` (i.e., the `x` variable in our plot, to which in this case we set as `"Year"`).
 
-LEFT OFF HERE 
-
-```{r plot-mult-y1}
+```{r species-to-plot}
 
 b <- grepl(pattern = "^[A-Z]\\_", x = colnames(Zoop))
 nms <- colnames(Zoop)[b]
 nms
 
+# for creating layout matrix in next chunk
+n <- length(nms)
+
+```
+
+The graphic below is not pretty, but you get the idea (and with more massaging, we could improve the look). Looping through each `y` variable to create a stacked plot of the same `x` variable. Further, we could return a value or list from our anonymous function (see example `mean(d[[y]], na.rm = TRUE)`).
+
+```{r plot-mult-y1, fig.asp=1.5, fig.width=4}
+
+# note: chunk runs a bit slowly as we are plotting *all* data points
+
+# construct the layout for stacked plots (i.e., one column)
+par(mar = c(1, 4, 0.5, 0.1), oma = c(1, 1, 0.1, 0.5))
+layout(mat = matrix(data = seq_len(n), nrow = n, ncol = 1))
+
 vapply(nms, FUN = function(y, d, xVar) {
   
-  plot(x = d[[xVar]], y = d[[y]], xlab = xVar, ylab = y)
+  plot(x = d[[xVar]], y = d[[y]], xlab = xVar, ylab = y, xaxt = "n")
   
   mean(d[[y]], na.rm = TRUE)
   
 }, FUN.VALUE = numeric(1L), d = Zoop, xVar = "Year")
 
+# puts tick labels on bottom-most plot as we removed such labels with xaxt = "n"
+axis(side = 1, at = axTicks(side = 1), labels = axTicks(side = 1))
+
 ```
+
+Same principle below but not run.
 
 ```{r plot-mult-y2, eval=FALSE}
 
@@ -697,3 +715,6 @@ vapply(nms, FUN = function(y, d, xVar) {
 
 ```
 
+---
+run: `r format(Sys.time(), format = "%B %d %Y @ %H%M")`  
+&copy; IEP educational series
