@@ -305,7 +305,123 @@ rel_percent_comp <- prop.table(species_year_total, margin = 1)
 # View(rel_percent_comp)
 ```
 
+# Questions (from `data mainpulaton.Rmd`)
+
+Here, we will continue to use data.frame `CBdata`.
+
+#### How many samples does the Zooplankton survey have from the North Delta that contain Harpacticoids (HARPACT)?
+
+A call to `base::table` on field `Region` returns 700+ records North
+Delta (we assume `NorDel` = North Delta). Further, we display CPUE range
+for our desired zooplankton (`HARPACT`).
+
+``` r
+table(CBdata[["Region"]], useNA = "ifany")
+```
+
+    ## 
+    ## CarStrait   EastDel        EZ     NapaR     NEDel    NorDel      SacR       SJR 
+    ##       819      1586       468         5       465       738      1476      4890 
+    ##     SoDel     SPBay    SuiBay    SuiMar   WestDel 
+    ##      1811       578      5899      1555      1947
+
+``` r
+range(CBdata[["HARPACT"]])
+```
+
+    ## [1]     0.0 40420.5
+
+We can answer the question using Boolean values.
+<code>CBdata\[\[“HARPACT”\]\] \> 0</code> returns `TRUE` for all
+samples with `HARPACT`, and `CBdata[["Region"]] %in% "NorDel"` returns
+`TRUE` for all North Delta samples. We want the count of records
+(samples) when both are `TRUE`. Because `TRUE` = 1 and `FALSE` = 0,
+summing the result should give us the number we desire. *Note*: we
+assume each row in `CBdata` is a sample.
+
+``` r
+sum(CBdata[["HARPACT"]] > 0 & CBdata[["Region"]] %in% "NorDel")
+```
+
+    ## [1] 471
+
+Our result should be less than the `NorDel` value in the `table` result
+above.
+
+#### Make a new variable for the total catch of all zooplankton.
+
+Recall our variable `b`, which selects all zooplankton (species) fields
+in `CBdata`.
+
+``` r
+total_species_catch <- sum(CBdata[b])
+
+# display
+total_species_catch
+```
+
+    ## [1] 395448354
+
+``` r
+# or with formatting possibilities
+format(total_species_catch, big.mark = ",")
+```
+
+    ## [1] "395,448,354"
+
+``` r
+format(total_species_catch, digits = 3, scientific = TRUE)
+```
+
+    ## [1] "3.95e+08"
+
+#### Create a new data frame that only contains samples with positive occurances of Eurytemora (EURYTEM).
+
+We need a filter (only possitive occurences) and field selection (all
+non-species fields + `EURYTEM`). If variable `b` selects for all
+zooplankton fields, then `!b` is everything else.
+
+``` r
+# create our desired fields
+# we assume the only zooplankton field we want is EURYTEM
+fields <- c(colnames(CBdata)[!b], "EURYTEM")
+
+fields
+```
+
+    ##  [1] "SurveyCode"      "Year"            "Survey"          "SurveyRep"      
+    ##  [5] "Date"            "Station"         "EZStation"       "DWRStation"     
+    ##  [9] "Core"            "Time"            "TideCode"        "Region"         
+    ## [13] "Secchi"          "Chl.a"           "Temperature"     "ECSurfacePreTow"
+    ## [17] "ECBottomPreTow"  "CBVolume"        "EURYTEM"
+
+``` r
+# our filter: CBdata[["EURYTEM"]] > 0
+
+eurytem_catch <- CBdata[CBdata[["EURYTEM"]] > 0, fields]
+
+dim(eurytem_catch)
+```
+
+    ## [1] 12691    19
+
+``` r
+colnames(eurytem_catch)
+```
+
+    ##  [1] "SurveyCode"      "Year"            "Survey"          "SurveyRep"      
+    ##  [5] "Date"            "Station"         "EZStation"       "DWRStation"     
+    ##  [9] "Core"            "Time"            "TideCode"        "Region"         
+    ## [13] "Secchi"          "Chl.a"           "Temperature"     "ECSurfacePreTow"
+    ## [17] "ECBottomPreTow"  "CBVolume"        "EURYTEM"
+
+``` r
+range(eurytem_catch[["EURYTEM"]])
+```
+
+    ## [1]     0.1 40541.8
+
 -----
 
-run: March 04 2020 @ 0922  
+run: March 04 2020 @ 1237  
 © IEP educational series
