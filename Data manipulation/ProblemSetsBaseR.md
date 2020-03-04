@@ -382,9 +382,9 @@ format(total_species_catch, digits = 3, scientific = TRUE)
 
     ## [1] "3.95e+08"
 
-#### Create a new data frame that only contains samples with positive occurances of Eurytemora (EURYTEM).
+#### Create a new data frame that only contains samples with positive occurrences of Eurytemora (EURYTEM).
 
-We need a filter (only possitive occurences) and field selection (all
+We need a filter (only positive occurrences) and field selection (all
 non-species fields + `EURYTEM`). If variable `b` selects for all
 zooplankton fields, then `!b` is everything else.
 
@@ -430,5 +430,5 @@ range(eurytem_catch[["EURYTEM"]])
 
 -----
 
-run: March 04 2020 @ 1303  
+run: March 04 2020 @ 1321  
 © IEP educational series
