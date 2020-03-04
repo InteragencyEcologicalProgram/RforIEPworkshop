@@ -98,9 +98,6 @@ Verify for yourself there are in fact `r sum(b)` species. Now to answer our ques
 
 colMeans(CBdata[b])
 
-# for variable clean up
-rm(b)
-
 ```
 
 #### What is the maximum CPUE of Eurytemora in Suisun Bay by year?
