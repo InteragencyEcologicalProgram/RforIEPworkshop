@@ -1,5 +1,5 @@
 ---
-
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
@@ -70,7 +70,7 @@ You'll want to develop other data-checking and (or) data-cleaning procedures as 
 
 The first step to answering this question is which field or fields contain CPUE (catch-per-unit-effort)?
 
-A call to `base::colnames` reveals each species is a field. Are data are in "wide" format. We also see species field names are all CAPS. This can play to our adavantage, as R is case sensitive.
+A call to `base::colnames` reveals each species is a field. Are data are in "wide" format. We also see species field names are all CAPS. This can play to our advantage, as R is case sensitive.
 
 *Note*: we assume data in each species field are CPUE.
 
@@ -155,7 +155,7 @@ species_year_total <- t(
 
 ```
 
-**Step 3**: A call to `base::prop.table` should do the trick. `margin = 1` indicates by rows (i.e., by year). *Note*: If not using a call to `t` like above, then set `margin = 2` for colums.
+**Step 3**: A call to `base::prop.table` should do the trick. `margin = 1` indicates by rows (i.e., by year). *Note*: If not using a call to `t` like above, then set `margin = 2` for columns.
 
 ```{r rel-percent-comp}
 
