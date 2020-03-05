@@ -241,6 +241,48 @@ range(eurytem_catch[["EURYTEM"]])
 
 ```
 
+# Questions (from `dataset restructuring.Rmd`)
+
+#### Import the "Station_GPS.csv" into your environment and merge the latitude and longitude to the "CBlong" data frame.
+
+So let us first create a long format of `CBdata`. We can use `stats::reshape`. For help, run `?reshape` in your R console, see example using `state.x77`.
+
+For simplicity, we will arbitrarily use `ACARTELA` & `EURYTEM`, rather than all `r sum(b)` species.
+
+```{r cb-long}
+
+# for simplicity
+species <- c("ACARTELA", "EURYTEM")
+
+# to remove fields we don't want in the long format
+drop_species <- Filter(
+  f = function(nms) !(nms %in% species),
+  x = colnames(CBdata)[b]
+)
+
+# create the long format from wide CBdata
+cb_long <- reshape(
+  data = CBdata,
+  varying = species,
+  # varying = list(species),
+  v.names = "CPUE",
+  timevar = "Species",
+  # idvar = "RowId",
+  # ids = "",
+  times = species,
+  drop = drop_species,
+  direction = "long",
+  new.row.names = seq_len(nrow(CBdata) * length(species))
+)
+
+```
+
+
+
+#### Convert your new data frame (with lats and longs) back to "wide" format.
+
+#### Save you new data frame as a .csv.
+
 ---
 run: `r format(Sys.time(), format = "%B %d %Y @ %H%M")`  
 &copy; IEP educational series
