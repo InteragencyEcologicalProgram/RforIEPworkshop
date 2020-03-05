@@ -398,7 +398,7 @@ range(cb_long[["Longitude"]], na.rm = TRUE)
 
 #### Convert your new data frame (with lats and longs) back to "wide" format.
 
-```{r}
+```{r cb-wide}
 
 # create the long format from wide CBdata
 cb_wide <- reshape(data = cb_long, direction = "wide")
