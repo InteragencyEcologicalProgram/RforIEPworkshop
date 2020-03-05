@@ -314,6 +314,57 @@ vapply(species_split, FUN = mean, FUN.VALUE = numeric(1L))
 
 ```
 
+Now, we will load our lat-lon data.
+
+```{r load-data}
+
+StationsGPS <- read.csv(
+  file = "Stations_GPS.csv",
+  header = TRUE,
+  stringsAsFactors = FALSE
+)
+
+```
+
+Let us check field data types.
+
+```{r str-station-gps}
+
+str(StationsGPS)
+
+```
+
+`Latitude` and `Longitude` are type character. Ideally these data should be numeric. We can check for non-numerics using `base::grep`
+
+```{r check-letters}
+
+grep(pattern = "[A-Za-z]", x = StationsGPS[["Latitude"]], value = TRUE)
+grep(pattern = "[A-Za-z]", x = StationsGPS[["Longitude"]], value = TRUE)
+
+```
+
+It appears we have `#VALUE!` as a value instead of NA. Let us change that, and then convert lat-lon to numeric.
+
+```{r numeric-coords}
+
+# if statements return data as-is; we don't want to change these data
+StationsGPS[] <- lapply(StationsGPS, FUN = function(x) {
+  if (is.numeric(x)) return(x)
+  b <- grepl(pattern = "[A-Za-z]", x = x)
+  if (all(b)) return(x)
+  x[x %in% "#VALUE!"] <- NA
+  as.numeric(x)
+})
+
+# recheck
+str(StationsGPS)
+
+```
+
+Beautiful!
+
+
+
 #### Convert your new data frame (with lats and longs) back to "wide" format.
 
 #### Save you new data frame as a .csv.
