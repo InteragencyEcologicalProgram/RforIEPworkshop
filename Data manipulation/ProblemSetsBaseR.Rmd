@@ -363,7 +363,38 @@ str(StationsGPS)
 
 Beautiful!
 
+Now we could use `base::merge`, but here we'll create variable `index` using `base::match`. We `match` on the common field `Station`. Wherever the values match, `index` contains the row number from `StationsGPS`, NA otherwise.
 
+```{r index}
+
+index <- match(cb_long[["Station"]], table = StationsGPS[["Station"]])
+
+# check length - should be TRUE
+length(index) == nrow(cb_long)
+
+# check NAs (ideally 0)
+sum(is.na(index))
+
+# check range
+range(index)
+
+```
+
+`length(unique(index))` = `r length(unique(index))`, one less than `nrow(StationsGPS)` or `r nrow(StationsGPS)`. Station `NZM12` is not really a monitoring station. To save time, run `View(StationsGPS[86, ])` to verify. (If you recall, record 86 had lat-lon as `#VALUE!`.)
+
+Now, use `index` to add lat-lon fields to `cb_long`.
+
+```{r add-coord-fields}
+
+cb_long$Latitude <- StationsGPS[index, "Latitude"]
+cb_long$Longitude <- StationsGPS[index, "Longitude"]
+
+# confirm
+colnames(cb_long)
+range(cb_long[["Latitude"]], na.rm = TRUE)
+range(cb_long[["Longitude"]], na.rm = TRUE)
+
+```
 
 #### Convert your new data frame (with lats and longs) back to "wide" format.
 
