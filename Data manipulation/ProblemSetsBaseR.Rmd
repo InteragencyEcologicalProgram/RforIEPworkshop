@@ -398,7 +398,36 @@ range(cb_long[["Longitude"]], na.rm = TRUE)
 
 #### Convert your new data frame (with lats and longs) back to "wide" format.
 
+```{r}
+
+# create the long format from wide CBdata
+cb_wide <- reshape(data = cb_long, direction = "wide")
+
+# check
+colMeans(CBdata[species])
+colMeans(cb_wide[species])
+
+# coord range check
+range(cb_wide[["Latitude"]], na.rm = TRUE)
+range(cb_long[["Latitude"]], na.rm = TRUE)
+
+range(cb_wide[["Longitude"]], na.rm = TRUE)
+range(cb_long[["Longitude"]], na.rm = TRUE)
+
+# should be TRUE
+length(unique(cb_wide[["id"]])) == nrow(CBdata)
+
+```
+
 #### Save you new data frame as a .csv.
+
+not run
+
+```{r save-wide, eval=FALSE}
+
+write.csv(cb_wide, file = "CBDataWide.csv", row.names = FALSE)
+
+```
 
 ---
 run: `r format(Sys.time(), format = "%B %d %Y @ %H%M")`  
