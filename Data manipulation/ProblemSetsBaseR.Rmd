@@ -277,7 +277,7 @@ cb_long <- reshape(
 
 ```
 
-Let's run some 'checks' to verify `reshape` worked as we anticipated. The newly-created `cb_long` should have twice as many rows as `CBdata`, or `r 2 * nrow(CBdata)`. We included all non-species fields (n=`r sum(!b)`) and created three new fields: `CPUE`; `Species`; and (default) `id`. So we should now have `r sum(!b) + 3` fields.
+Let's run some 'checks' to verify `reshape` worked as we anticipated. The newly-created `cb_long` should have twice as many rows as `CBdata`, or `r format(2 * nrow(CBdata), scientific = FALSE)`. We included all non-species fields (n=`r sum(!b)`) and created three new fields: `CPUE`; `Species`; and (default) `id`. So we should now have `r sum(!b) + 3` fields.
 
 ```{r check1-long}
 
