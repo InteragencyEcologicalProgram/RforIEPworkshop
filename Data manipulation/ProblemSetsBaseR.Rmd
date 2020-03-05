@@ -316,7 +316,7 @@ vapply(species_split, FUN = mean, FUN.VALUE = numeric(1L))
 
 Now, we will load our lat-lon data.
 
-```{r load-data}
+```{r load-station-data}
 
 StationsGPS <- read.csv(
   file = "Stations_GPS.csv",
