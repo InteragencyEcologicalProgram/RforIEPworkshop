@@ -5,6 +5,8 @@
     `applyfunctions.Rmd`)](#questions-from-applyfunctions.rmd)
   - [Questions (from `data
     mainpulaton.Rmd`)](#questions-from-data-mainpulaton.rmd)
+  - [Questions (from `dataset
+    restructuring.Rmd`)](#questions-from-dataset-restructuring.rmd)
 
 # Load Data
 
@@ -428,7 +430,286 @@ range(eurytem_catch[["EURYTEM"]])
 
     ## [1]     0.1 40541.8
 
+# Questions (from `dataset restructuring.Rmd`)
+
+#### Import the “Station\_GPS.csv” into your environment and merge the latitude and longitude to the “CBlong” data frame.
+
+So let us first create a long format of `CBdata`. We can use
+`stats::reshape`. For help, run `?reshape` in your R console, see
+example using `state.x77`.
+
+For simplicity, we will arbitrarily use `ACARTELA` & `EURYTEM`, rather
+than all 56 species.
+
+``` r
+# for simplicity
+species <- c("ACARTELA", "EURYTEM")
+
+# to remove fields we don't want in the long format
+drop_species <- Filter(
+  f = function(nms) !(nms %in% species),
+  x = colnames(CBdata)[b]
+)
+
+# create the long format from wide CBdata
+cb_long <- reshape(
+  data = CBdata,
+  varying = species,
+  # varying = list(species),
+  v.names = "CPUE",
+  timevar = "Species",
+  # idvar = "RowId",
+  # ids = "",
+  times = species,
+  drop = drop_species,
+  direction = "long",
+  new.row.names = seq_len(nrow(CBdata) * length(species))
+)
+```
+
+Let’s run some ‘checks’ to verify `reshape` worked as we anticipated.
+The newly-created `cb_long` should have twice as many rows as `CBdata`,
+or 44474. We included all non-species fields (n=18) and created three
+new fields: `CPUE`; `Species`; and (default) `id`. So we should now have
+21 fields.
+
+``` r
+dim(cb_long)
+```
+
+    ## [1] 44474    21
+
+Check field `Species` with a call to `base::table`. Frequency should
+equal value returned by `nrow(CBdata)`.
+
+``` r
+table(cb_long[["Species"]]) == nrow(CBdata)
+```
+
+    ## 
+    ## ACARTELA  EURYTEM 
+    ##     TRUE     TRUE
+
+Because field `id` is the row number of `CBdata`, calling
+`table(cb_long[["id"]])` should yield all 2s or `length(species)`.
+
+``` r
+all(table(cb_long[["id"]]) == length(species))
+```
+
+    ## [1] TRUE
+
+…and finally, mean CPUE should be the same between formats wide and
+long. If not, we need to recheck our work. *Note*: mean is just one
+example. You can use other checks as you see fit or wherever your
+creativity takes you.
+
+``` r
+# wide means
+colMeans(CBdata[species])
+```
+
+    ##  ACARTELA   EURYTEM 
+    ##  37.22963 502.79595
+
+``` r
+# long means
+species_split <- split(cb_long[["CPUE"]], f = cb_long["Species"])
+vapply(species_split, FUN = mean, FUN.VALUE = numeric(1L))
+```
+
+    ##  ACARTELA   EURYTEM 
+    ##  37.22963 502.79595
+
+Now, we will load our lat-lon data.
+
+``` r
+StationsGPS <- read.csv(
+  file = "Stations_GPS.csv",
+  header = TRUE,
+  stringsAsFactors = FALSE
+)
+```
+
+Let us check field data types.
+
+``` r
+str(StationsGPS)
+```
+
+    ## 'data.frame':    90 obs. of  6 variables:
+    ##  $ Station  : chr  "NZ002" "NZ003" "NZ004" "NZ005" ...
+    ##  $ Core     : int  0 0 0 0 0 0 0 1 0 1 ...
+    ##  $ Current  : chr  "yes" "no" "yes" "no" ...
+    ##  $ Location : chr  "Carquinez Strait at Glencove Harbor." "Carquinez Strait at Port Costa, light 22." "Carquinez Strait 46 m - 91 m off Ozol pier." "Carquinez Strait at pier E of Marina." ...
+    ##  $ Latitude : chr  "38.06027778" "38.0525" "38.02916667" "38.03166667" ...
+    ##  $ Longitude: chr  "122.2069444" "122.1783333" "122.1583333" "122.1352778" ...
+
+`Latitude` and `Longitude` are type character. Ideally these data should
+be numeric. We can check for non-numerics using `base::grep`
+
+``` r
+grep(pattern = "[A-Za-z]", x = StationsGPS[["Latitude"]], value = TRUE)
+```
+
+    ## [1] "#VALUE!"
+
+``` r
+grep(pattern = "[A-Za-z]", x = StationsGPS[["Longitude"]], value = TRUE)
+```
+
+    ## [1] "#VALUE!"
+
+It appears we have `#VALUE!` as a value instead of NA. Let us change
+that, and then convert lat-lon to numeric.
+
+``` r
+# if statements return data as-is; we don't want to change these data
+StationsGPS[] <- lapply(StationsGPS, FUN = function(x) {
+  if (is.numeric(x)) return(x)
+  b <- grepl(pattern = "[A-Za-z]", x = x)
+  if (all(b)) return(x)
+  x[x %in% "#VALUE!"] <- NA
+  as.numeric(x)
+})
+
+# recheck
+str(StationsGPS)
+```
+
+    ## 'data.frame':    90 obs. of  6 variables:
+    ##  $ Station  : chr  "NZ002" "NZ003" "NZ004" "NZ005" ...
+    ##  $ Core     : int  0 0 0 0 0 0 0 1 0 1 ...
+    ##  $ Current  : chr  "yes" "no" "yes" "no" ...
+    ##  $ Location : chr  "Carquinez Strait at Glencove Harbor." "Carquinez Strait at Port Costa, light 22." "Carquinez Strait 46 m - 91 m off Ozol pier." "Carquinez Strait at pier E of Marina." ...
+    ##  $ Latitude : num  38.1 38.1 38 38 38.1 ...
+    ##  $ Longitude: num  122 122 122 122 122 ...
+
+Beautiful\!
+
+Now we could use `base::merge`, but here we’ll create variable `index`
+using `base::match`. We `match` on the common field `Station`. Wherever
+the values match, `index` contains the row number from `StationsGPS`, NA
+otherwise.
+
+``` r
+index <- match(cb_long[["Station"]], table = StationsGPS[["Station"]])
+
+# check length - should be TRUE
+length(index) == nrow(cb_long)
+```
+
+    ## [1] TRUE
+
+``` r
+# check NAs (ideally 0)
+sum(is.na(index))
+```
+
+    ## [1] 0
+
+``` r
+# check range
+range(index)
+```
+
+    ## [1]  1 90
+
+`length(unique(index))` = 89, one less than `nrow(StationsGPS)` or 90.
+Station `NZM12` is not really a monitoring station. To save time, run
+`View(StationsGPS[86, ])` to verify. (If you recall, record 86 had
+lat-lon as `#VALUE!`.)
+
+Now, use `index` to add lat-lon fields to `cb_long`.
+
+``` r
+cb_long$Latitude <- StationsGPS[index, "Latitude"]
+cb_long$Longitude <- StationsGPS[index, "Longitude"]
+
+# confirm
+colnames(cb_long)
+```
+
+    ##  [1] "SurveyCode"      "Year"            "Survey"          "SurveyRep"      
+    ##  [5] "Date"            "Station"         "EZStation"       "DWRStation"     
+    ##  [9] "Core"            "Time"            "TideCode"        "Region"         
+    ## [13] "Secchi"          "Chl.a"           "Temperature"     "ECSurfacePreTow"
+    ## [17] "ECBottomPreTow"  "CBVolume"        "Species"         "CPUE"           
+    ## [21] "id"              "Latitude"        "Longitude"
+
+``` r
+range(cb_long[["Latitude"]], na.rm = TRUE)
+```
+
+    ## [1] 37.83444 38.47000
+
+``` r
+range(cb_long[["Longitude"]], na.rm = TRUE)
+```
+
+    ## [1] 121.3819 122.4325
+
+#### Convert your new data frame (with lats and longs) back to “wide” format.
+
+``` r
+# create the long format from wide CBdata
+cb_wide <- reshape(data = cb_long, direction = "wide")
+
+# check
+colMeans(CBdata[species])
+```
+
+    ##  ACARTELA   EURYTEM 
+    ##  37.22963 502.79595
+
+``` r
+colMeans(cb_wide[species])
+```
+
+    ##  ACARTELA   EURYTEM 
+    ##  37.22963 502.79595
+
+``` r
+# coord range check
+range(cb_wide[["Latitude"]], na.rm = TRUE)
+```
+
+    ## [1] 37.83444 38.47000
+
+``` r
+range(cb_long[["Latitude"]], na.rm = TRUE)
+```
+
+    ## [1] 37.83444 38.47000
+
+``` r
+range(cb_wide[["Longitude"]], na.rm = TRUE)
+```
+
+    ## [1] 121.3819 122.4325
+
+``` r
+range(cb_long[["Longitude"]], na.rm = TRUE)
+```
+
+    ## [1] 121.3819 122.4325
+
+``` r
+# should be TRUE
+length(unique(cb_wide[["id"]])) == nrow(CBdata)
+```
+
+    ## [1] TRUE
+
+#### Save you new data frame as a .csv.
+
+not run
+
+``` r
+write.csv(cb_wide, file = "CBDataWide.csv", row.names = FALSE)
+```
+
 -----
 
-run: March 04 2020 @ 1321  
+run: March 05 2020 @ 1449  
 © IEP educational series
