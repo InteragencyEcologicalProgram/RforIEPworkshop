@@ -379,8 +379,11 @@ summary {
 <li>Adding new columns</li>
 </ol>
 </div>
-<div id="importing-data" class="section level2">
-<h2>Importing data</h2>
+<div id="importing-data" class="section level1">
+<h1>Importing data</h1>
+<div id="import-from-your-desktop" class="section level2">
+<h2>Import from your desktop</h2>
+<p><em>Rosie</em></p>
 <p>There are multiple different ways of getting your data into R. RStudio has a nice little point=and-click interface that lets you import your dataset, however using the GUI makes it more difficult to replicate your work later. Therefore, it’s better to use the comand-line to import your data.</p>
 <p>We are going to use the Zooplankton Survey data for this demonstration. It’s available <a href="ftp://ftp.wildlife.ca.gov/IEP_Zooplankton/1972-2018CBMatrix.xlsx">here</a></p>
 <p>If you have a .csv file, you can use base R. So I went into the excel file and saved one of the worksheets as a .csv</p>
@@ -404,6 +407,10 @@ CBdata = read_excel(&quot;1972-2018CBMatrix.xlsx&quot;,
         &quot;text&quot;, &quot;numeric&quot;, &quot;text&quot;, rep(&quot;numeric&quot;, 62)))
 
 head(CBdata)</code></pre>
+</div>
+<div id="download-from-online" class="section level2">
+<h2>Download from online</h2>
+<p><em>Jason</em></p>
 <p>If we want to download directly from an online site we can use</p>
 <pre class="r"><code>#Set up the path to a temporary file where we can store the data set
 tf &lt;- tempfile(pattern = &quot;thisone&quot;, fileext = &quot;.xlsx&quot;)
@@ -426,12 +433,14 @@ Zoop &lt;- readxl::read_excel(
 
 #get rid of the temporary excel file we created
 unlink(tf)</code></pre>
-<div id="dealing-with-data-frames" class="section level3">
-<h3>Dealing with data frames</h3>
+</div>
+<div id="dealing-with-data-frames" class="section level2">
+<h2>Dealing with data frames</h2>
+<p><em>Rosie</em></p>
 <p>A lot of these skills can be done with either Base R syntax, or “tidyverse” syntax. Most people find “tidyverse” a little more intuitive, but you can use whichever you are more comfortable with.</p>
 <p>One of the useful thing about the <code>tidyverse</code> functions is the fact that you can use “pipes” <code>%&gt;%</code> to string together several functions instead of nesting the functions</p>
-<div id="renaming-columns" class="section level4">
-<h4>Renaming columns</h4>
+<div id="renaming-columns" class="section level3">
+<h3>Renaming columns</h3>
 <pre class="r"><code>library(tidyverse)
 
 names(CBdata)
@@ -460,7 +469,6 @@ CBdata = CBdata %&gt;%
   rename(crackers = DWRStation)
 
 names(CBdata)</code></pre>
-</div>
 <div id="dropping-columns" class="section level4">
 <h4>Dropping columns</h4>
 <p>The zooplankton data set has one row for every sample, and one column for every species. It also has columns with the sums of groups of species (e.g. “All Cladocera”). We want to get rid of those summed columns because they make the data messy and harder to work with.</p>
@@ -550,6 +558,7 @@ levels(CBdata2$Region)</code></pre>
 View(CBdata2)
 
 CBdata2 = select(CBdata2, -CRABZOEA_yn)</code></pre>
+</div>
 </div>
 </div>
 </div>

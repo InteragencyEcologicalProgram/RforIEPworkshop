@@ -372,6 +372,7 @@ summary {
 
 <div id="loops" class="section level2">
 <h2>Loops</h2>
+<p><em>Jason</em></p>
 <p>We’ve now got our zooplankton data set in a format we can work with, but now we probably want to do some calculations on it. What if we want to calculate annual average catch?</p>
 <p>We can do it one year at a time:</p>
 <pre class="r"><code>mean(filter(CBlong, Year == 1984)$CPUE)
@@ -521,12 +522,16 @@ Zoop[b] &lt;- lapply(Zoop[b], FUN = function(x) {
 </div>
 <div id="heres-a-simpler-way-to-do-it" class="section level1">
 <h1>Here’s a simpler way to do it:</h1>
+<p><em>Rosie</em></p>
 <p>The function “na_if” automatically replaces a certain value with an NA</p>
 <pre class="r"><code>Zoop2 = mutate(Zoop, EZStation == na_if(EZStation, &quot;NA&quot;),
                DWRStation == na_if(DWRStation, &quot;NA&quot;))</code></pre>
 </div>
 <div id="split-apply-combine" class="section level1">
 <h1>Split-apply-combine</h1>
+<div id="split-and-vapply" class="section level2">
+<h2>Split and vapply</h2>
+<p><em>Jason</em></p>
 <p>We often want to split up data sets based on one column and apply functions to another columns. For example, if we wanted to calculate average mysid catch by year, we can use the functions “split” and then “vapply”.</p>
 <pre class="r"><code>mean_temp_yr &lt;- with(data = Zoop, expr = {
   
@@ -537,6 +542,10 @@ Zoop[b] &lt;- lapply(Zoop[b], FUN = function(x) {
 })
 
 mean_temp_yr</code></pre>
+</div>
+<div id="group_by-and-summarize" class="section level2">
+<h2>Group_by and summarize</h2>
+<p><em>Rosie</em></p>
 <p>The package dplyr has some nifty tools to do the same thing. In this case, we want to group our data frame based on year and apply the “mean” fuction to CPUE.</p>
 <pre class="r"><code>CBmeans = CBlong %&gt;%
   group_by(Year) %&gt;% #group it by Year
@@ -556,6 +565,7 @@ CBmeans = CBlong %&gt;%
 View(CBmeans)
 
 #note that you can use your new variables immediately!</code></pre>
+</div>
 <div id="now-its-your-turn" class="section level2">
 <h2>Now it’s your turn</h2>
 <ol style="list-style-type: decimal">

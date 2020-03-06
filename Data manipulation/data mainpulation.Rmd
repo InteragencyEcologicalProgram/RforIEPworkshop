@@ -17,7 +17,10 @@ knitr::opts_chunk$set(echo = TRUE)
 4. Adding new columns
 
 
-## Importing data
+# Importing data
+
+## Import from your desktop
+*Rosie*
 
 There are multiple different ways of getting your data into R. RStudio 
 has a nice little point=and-click interface that lets you import your dataset, however using
@@ -60,6 +63,10 @@ CBdata = read_excel("1972-2018CBMatrix.xlsx",
 head(CBdata)
 
 ```
+
+## Download from online
+*Jason*
+
 If we want to download directly from an online site we can use
 
 ```{r eval = F}
@@ -89,13 +96,14 @@ unlink(tf)
 ```
 
 
-### Dealing with data frames
+## Dealing with data frames
+*Rosie*
 
 A lot of these skills can be done with either Base R syntax, or "tidyverse" syntax. Most people find "tidyverse" a little more intuitive, but you can use whichever you are more comfortable with.
 
 One of the useful thing about the `tidyverse` functions is the fact that you can use "pipes" `%>%` to string together several functions instead of nesting the functions
 
-#### Renaming columns
+### Renaming columns
 
 ```{r eval = F}
 library(tidyverse)

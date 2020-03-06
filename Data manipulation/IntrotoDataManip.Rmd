@@ -1,16 +1,18 @@
 ---
-title: "Introduction"
+title: "Data Mainpulation: Introduction"
 author: "Rosemary Hartman and Jason DuBois"
-date: "2/7/2020"
+date: "3/20/2020"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+library(knitr)
 #library(tidyverse)
 ```
 
 # Style Guide
+*Jason*
 
 Some things about writing code are necessary for the code to run. Examples:
 * R is case sensative
@@ -19,22 +21,27 @@ Some things about writing code are necessary for the code to run. Examples:
 
 Other things about writing code are best-practice for readability, or are particular to the coder. Examples:
 * Be consistant as to how you name your functions, variables, and parameters
+
   + PascalCase: function names; dataframes; field headings; file names  
   + camelCase: function parameters  
   + lower_case (with underscore): variables  
+  
 * Be consistant with variable assignment
+
   + Both `<-` and `=` work. Rosie likes `=`, whereas Jason likes `<-`
+  
 *  Return after left parentheses
 * Keep lines to a max of 80 characters
 * Use indents 
 
 But the most important part about your code is getting it to run! 
 
-```{r}
+```{r, echo=FALSE, eval=TRUE}
 include_graphics("itruns.png")
 ```
 
 # Projects and Working directories
+*Rosie*
 
 Hopefully you are already working in projects. If not, start one now! They will make working directories and file handling much, much easier. 
 
@@ -64,6 +71,7 @@ len_freq <- LengthFrequency(
 )
 ```
 # Functional Programming
+*Jason*
 
 `R` is a functional programming language. As such, it has certain characteristics that can work to one's advantage.
 
@@ -87,6 +95,7 @@ sd
 
 
 ## Function Call
+*Jason*
 
 Lots of the little symbols in R are actually functions! 
 
@@ -135,6 +144,7 @@ green = LengthFrequency(Sturgeon, "green")
 green
 ```
 ## Error codes
+*Rosie*
 
 You will get errors. Don't be afraid of them. For beginners, error codes are often inpenetrable, but if you learn to read them they can be very helpful! You can also always type them into google.
 
@@ -155,6 +165,7 @@ mean(Sturgeon$species)
 ```
 
 ## Packages
+*Rosie*
 
 By now, you've probably already been using packages. Packages are one of the great wonders of R. Get used to them! However, there are lots of them and many of them do the same things. Everyone has favorites, so use whichever you are most comfortable with. Unfortunately, there are so many of them that they often have functions that have the same names, which can lead to conflicts. Fortunately, when you load them you should get a warning. You can use `::` to specify which package a function comes from if there are conflicts.
 
@@ -168,3 +179,11 @@ library(tidyverse)
 ```
 
 So that's an introduction. Now let's dive into it!
+
+* Part two [Data Manipulation](data-mainpulation.html)
+
+* Part three [Data Restructuring](dataset-restructuring.html)
+
+* Part three [Iteration tools](applyfunctions.html)
+
+* Part four [Dates](Date-manipulation.html)

@@ -15,6 +15,7 @@ library(knitr)
 
 
 ##	Loops
+*Jason*
 
 We've now got our zooplankton data set in a format we can work with, but now we probably want to do some calculations on it. What if we want to calculate annual average catch?
 
@@ -281,6 +282,7 @@ Zoop[b] <- lapply(Zoop[b], FUN = function(x) {
 ```
 
 # Here's a simpler way to do it:
+*Rosie*
 
 The function "na_if" automatically replaces a certain value with an NA
 
@@ -293,6 +295,9 @@ Zoop2 = mutate(Zoop, EZStation == na_if(EZStation, "NA"),
 
 
 # Split-apply-combine
+
+## Split and vapply
+*Jason*
 
 We often want to split up data sets based on one column and apply functions to another columns. For example, if we wanted to calculate average mysid catch by year, we can use the functions "split" and then "vapply". 
 
@@ -309,6 +314,9 @@ mean_temp_yr <- with(data = Zoop, expr = {
 mean_temp_yr
 
 ```
+
+## Group_by and summarize
+*Rosie*
 
 The package dplyr has some nifty tools to do the same thing. In this case, we want to group our data frame based on year and apply the "mean" fuction to CPUE. 
 
