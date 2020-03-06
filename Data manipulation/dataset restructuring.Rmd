@@ -219,6 +219,18 @@ write.csv(CBlong[1:200,], "C:/Users/rhartman/Desktop/CBlong.csv")
 
 #hint: hit 'tab' inside the quotes to help you with the file path
 
+```
+
+If you open one of the .csv's you just made, you will notice that there is a new column of numbers at the start of the file. These were the row names from the origional data frame. These get annoying if you need to read the file back into R. Get rid of them with `row.names = FALSE`
+
+```{r}
+write.csv(CBlong[1:200,], "CBdata_longformat.csv", row.names = FALSE)
+
+```
+
+If you are saving the data to put back into R later, you can save it as an Rdata file. These files take up less sorage space than .csvs, and it saves the row names and data classes as well as the data themselves.
+
+``` {r}
 #for an .Rdata file (also .rda)
 save(CBlong, file = "cblong.rda")
 
@@ -235,3 +247,12 @@ save(CBlong, file = "cblong.rda")
 2. Convert your new data frame (with lats and longs) back to "wide" format.
 
 3. Save you new data frame as a .csv.
+
+
+
+Did you remember to comment your code?
+
+
+```{r, echo=FALSE, eval=TRUE}
+include_graphics("live dangerously.jpg")
+```

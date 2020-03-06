@@ -15,11 +15,13 @@ library(knitr)
 *Jason*
 
 Some things about writing code are necessary for the code to run. Examples:
+
 * R is case sensative
 * Variables cannot start with a number
 * Characters must be in quotes
 
 Other things about writing code are best-practice for readability, or are particular to the coder. Examples:
+
 * Be consistant as to how you name your functions, variables, and parameters
 
   + PascalCase: function names; dataframes; field headings; file names  
@@ -38,6 +40,23 @@ But the most important part about your code is getting it to run!
 
 ```{r, echo=FALSE, eval=TRUE}
 include_graphics("itruns.png")
+```
+
+## Comments
+*Rosie*
+
+Comment your code. Just do it. All the cool kids do it. 
+
+Anything after a `#` is a comment. It won't do anything to your code, but it will allow you to remember what you were doing when you go back to it later. Trust me, you will forget what you were doing unless you put comments in it. Also, when you try to show it to someone else, it will not make any sense without comments.
+
+"But I'm the only one who reads my code! Do I still need comments?"
+
+Yes, yes you do. Also, I highly recommend showing other people your code. They probably have the answers to the problem you spend three hours trying to solve yesterday.
+
+Even Gandalf needs to comment his code. 
+
+```{r, echo=FALSE, eval=TRUE}
+include_graphics("commentyourcode.jpg")
 ```
 
 # Projects and Working directories
