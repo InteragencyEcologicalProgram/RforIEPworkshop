@@ -1,7 +1,7 @@
 ---
 title: "Iteration - lots of different methods"
 author: "Rosemary Hartman and Jason DuBois"
-date: "12/6/2019"
+date: "03/20/2020"
 output: html_document
 ---
 
@@ -28,8 +28,25 @@ mean(filter(CBlong, Year == 1985)$CPUE)
 mean(filter(CBlong, Year == 1986)$CPUE)
 
 ```
-But we don't want to keep copying and pasting! Instead, we can use a loop:
+But we don't want to keep copying and pasting! Instead, we can use a loop. For some items in variable `x`, do something.
 
+### `for` Loop
+
+```
+for (items in variable) {
+  # do something
+}
+```
+
+...an example
+
+```{r for-loop}
+for (i in 1:5) {
+  print(i)
+}
+```
+
+to calculate the means:
 
 ```{r}
 
@@ -60,24 +77,32 @@ Let's start with a quick look at the help documentation for `apply`
 ```
 There are some shortcut fucntions for using `apply` on certain data types. For example, you can use `lapply` for lists and `vapply` for vectors. The basic syntax is:
 
-lapply(list or vector, FUN = function(x) # do something)
+Here in `lapply` the argument to `FUN` is that 'do something' in the `for` loop. The function passed to `FUN`, will act on every item in the `list or vector`. 
 
-## `lapply` First Example
+```
+lapply(list or vector, FUN = function(x) # do something)
+```
+
+
+### `lapply` First Example
+
+Here we supply the vector 1-->5. We wish to add 5 to each number in that vector.
 
 ```{r fun-lapply}
 
 lapply(1:5, FUN = `+`, 5)
 
 ```
-But with this example, we can do the same thing without using `lapply`
+But with this example, we can do the same thing without using `lapply`. But because R is vectorized, we can simply write below. The results remain neatly in a vector.
 
 ```{r vectorized}
 1:5 + 5
 ```
 
-## `lapply` On List
+### `lapply` On List
 
-However, when we have a list it gets more complicated
+But what if instead of a vector, we had a **list** of vectors? (an uneven list in this case)
+
 
 ```{r list-create}
 
@@ -111,7 +136,7 @@ lapply(X, FUN = `^`, 2)
 ```
 
 
-## Now let's try it with vectors using  `vapply`
+### Now let's try it with vectors using  `vapply`
 
 ```{r employees-list}
 
@@ -156,9 +181,68 @@ vapply(X, FUN = function(x) {
 
 ```
 
-## Clean Data
 
-We can use `vapply` (for example) to find quoted NAs within out data.
+### List of Functions
+
+We could pass a list of functions as an argument to `vapply`'s `X`. Though this convention is not as common. *Note*: the last function in the list is a custom function that returns count of values less than 5. `x < 5` returns a Boolean, and summing a Boolean returns number `TRUE`, as `TRUE` = 1, `FALSE` = 0.
+
+```{r list-functions}
+
+funs <- list(
+  Mean = mean,
+  Sd = sd,
+  N = length,
+  NumValsLT5 = function(x) sum(x < 5)
+)
+
+vapply(funs, FUN = function(f, nums) {
+  f(nums)
+}, FUN.VALUE = numeric(1L), nums = 1:10)
+
+```
+
+
+# Clean Data
+
+Now let's take a look at some of the zooplankton data! The first thing we want to know about our data is...is it clean? Where are the NA values (in which fields)? What are field data types? Are these the correct data types? ...
+
+`vapply` can help with this.
+
+In this first example, we check each field in `Zoop` for NA values. The function will return 0 if no values are NA, and a value > 0 otherwise. The value > 0 indicates the number of NA records in that field.
+
+```{r na-check1}
+
+vapply(Zoop, FUN = function(x) {
+  sum(is.na(x))
+}, FUN.VALUE = numeric(1L))
+
+```
+
+Here, we include `typeof` to our output. `vapply` no returns a matrix. *Note*: we use `base::noquote` to remove quotes from the output (`typeof` returns a character), and `base::t` to transpose the matrix as two columns instead of two rows.
+
+```{r na-check2}
+
+t(noquote(vapply(Zoop, FUN = function(x) {
+  c(NumNA = sum(is.na(x)), TypeOf = typeof(x))
+}, FUN.VALUE = character(2L))))
+
+```
+
+##  Custom Data Summary
+
+Of course, using `utils::str` or `base::summary` on new data is always a good idea. Here, though, we can customize our summary, if you will. For each field in `Zoop`, if value is a double, return the range. Otherwise, return frequency table.
+
+
+```{r summary-plus}
+
+lapply(Zoop, FUN = function(x) {
+  if (is.double(x)) return(range(x, na.rm = TRUE))
+  table(x, useNA = "ifany", dnn = NULL)
+})
+
+```
+
+We notice something interesting about fields `EZStation` and `DWRStation`. We have some quoted NAs. That is, entries in the Excel file are `NA`, not just blank (which would be read by R as `r NA`). This certainly poses a problem for data summary and other analytics.
 
 ```{r na-quoted}
 
@@ -168,7 +252,17 @@ vapply(Zoop, FUN = function(x) {
 
 ```
 
-It's possible, then, to use `vapply` & `lapply` to replace quoted NAs with R's `NA`.
+# Note for Jason: this seems needlessly complicated
+
+So how do we efficiently replace the quoted (or character) NA with R's `r NA`?
+
+(1) `char_nas` returns the number of character NAs in each field
+(2) `b` sets to `TRUE` any value > 0; `head(Zoop[b])` displays n=6 for quick viewing
+(3) change all character NAs to `r NA` using `lapply`
+
+*Note*: using `Zoop[b]` before assignment `<-` maintains the data.frame structure. Otherwise, you will get a list.
+
+*Note*: instead of anonymous function, below would be much better suited as a named function. This would allow for ease of use on other data.frames
 
 ```{r char-nas}
 
@@ -184,11 +278,21 @@ Zoop[b] <- lapply(Zoop[b], FUN = function(x) {
   x[x %in% "NA"] <- NA
   x
 })
+```
+
+# Here's a simpler way to do it:
+
+The function "na_if" automatically replaces a certain value with an NA
+
+```{r}
+
+Zoop2 = mutate(Zoop, EZStation == na_if(EZStation, "NA"),
+               DWRStation == na_if(DWRStation, "NA"))
 
 ```
 
 
-## Split-apply-combine
+# Split-apply-combine
 
 We often want to split up data sets based on one column and apply functions to another columns. For example, if we wanted to calculate average mysid catch by year, we can use the functions "split" and then "vapply". 
 

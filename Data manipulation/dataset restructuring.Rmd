@@ -1,7 +1,7 @@
 ---
 title: "Dataset restructuring"
 author: "Rosemary Hartman and Jason DuBois"
-date: "1/30/2020"
+date: "3/20/2020"
 output: html_document
 ---
 
@@ -134,15 +134,16 @@ CBlong2 = merge(CBlong, taxalookup, by = "TaxonCode")
 #It automatically merges by any column with the same name (you don't really need the "by" argument), but
 #sometimes our datasets don't have the same column names, even if they contain the same data.
 
-taxalookup = taxalookup %>%
+taxalookup2 = taxalookup %>%
   rename(taxoncode = TaxonCode)
 
-CBlongtest = merge(CBlong[1:200,], taxalookup, by.x = "TaxonCode", by.y = "taxoncode")
+CBlongtest = merge(CBlong[1:200,], taxalookup2, by.x = "TaxonCode", by.y = "taxoncode")
 
 #if we didn't specify, it would be a mess
-CBlongtest2 = merge(CBlong[1:200,], taxalookup)
+CBlongtest2 = merge(CBlong[1:200,], taxalookup2)
 
 #it tried to pair up every combination of rows!
+
 
 ```
 

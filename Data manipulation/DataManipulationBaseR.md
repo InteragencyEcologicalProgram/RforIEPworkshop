@@ -156,7 +156,7 @@ lapply
     ##         X <- as.list(X)
     ##     .Internal(lapply(X, FUN))
     ## }
-    ## <bytecode: 0x0000000018d7e438>
+    ## <bytecode: 0x0000000011ece300>
     ## <environment: namespace:base>
 
 # `lapply` First Example
@@ -286,7 +286,7 @@ vapply
     ##         X <- as.list(X)
     ##     .Internal(vapply(X, FUN, FUN.VALUE, USE.NAMES))
     ## }
-    ## <bytecode: 0x0000000018d659b0>
+    ## <bytecode: 0x0000000011eb5398>
     ## <environment: namespace:base>
 
 # `vapply` Example
@@ -1198,5 +1198,5 @@ vapply(nms, FUN = function(y, d, xVar) {
 
 -----
 
-run: March 04 2020 @ 1438  
+run: March 06 2020 @ 0823  
 © IEP educational series

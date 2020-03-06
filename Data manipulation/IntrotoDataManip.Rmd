@@ -47,9 +47,29 @@ getwd()
 this prints the absolute path for our working direcory. From now on we can use relative paths to refer to any file within this working directory. Anything we export will automatically be saved here.
 
 
-# Functions
+Below is an example creating a function, and then calling that function. Note how in the call each function parameter is on its own line. This allows for easily commenting a parameter to try another argument (see `speciesName`).
 
-R uses functions for everything. A function is usually a verb, whereas objects are nouns, but just like in English, any noun can be verbbed and any verb can be a noun! 
+```
+# create function
+LengthFrequency <- function(data, speciesName, forkLength) {
+  # do something here
+}
+# end LengthFrequency
+
+len_freq <- LengthFrequency(
+  data = Sturgeon,
+  speciesName = "white",
+  # speciesName = "green",
+  forkLength = TRUE
+)
+```
+# Functional Programming
+
+`R` is a functional programming language. As such, it has certain characteristics that can work to one's advantage.
+
+- everything is a function call
+- arguments can be other functions
+- functions can return functions
 
 Functions usually require arguments (objects) and the function is applied to that object. Functions will return values. You can see what a function does by looking at it's help documentation. For example:
 
@@ -70,7 +90,8 @@ sd
 
 Lots of the little symbols in R are actually functions! 
 
-`iris` built-in dataframe in `datasets` package
+Here, we use `iris`, the built-in dataframe in `datasets` package. Below demonstrates the 'everything is a function call' aspect. Commented sections display the much more common use.
+
 
 ```{r func-call}
 
@@ -86,10 +107,7 @@ print(x)
 
 `[[`(iris, 1, "Sepal.Width")   # iris[[1, "Sepal.Width"]]
 
-# Not run --------------------------------------------------
-# `[`(iris, 5)                 # iris[5]
-# `[`(iris, , 5, drop = TRUE)  # iris[, 5, drop = TRUE]
-# `[[`(iris, 5)                # iris[[5]]
+
 
 ```
 
