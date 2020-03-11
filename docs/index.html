@@ -385,14 +385,12 @@ summary {
 <p>Room: Sierra 1</p>
 <p>Required packages:</p>
 <ul>
-<li>LIST PACKAGES HERE!</li>
+<li>tidyverse</li>
 </ul>
 <p>An introduction to R, geared toward someone who has never used the program before. Topics covered: basic code syntax, reading in data, making a basic plot.</p>
 <p>To load the required packages before the workshop, run this code:</p>
 <pre class="r"><code>packages &lt;- installed.packages()[,&quot;Package&quot;]
-if(!is.element(&quot;tidyverse&quot;,packages)) install.packages(&quot;tidyverse&quot;)
-if(!is.element(&quot;readxl&quot;,packages)) install.packages(&quot;readxl&quot;)</code></pre>
-<p>Here we would link to the intro-to-R code</p>
+if(!is.element(&quot;tidyverse&quot;,packages)) install.packages(&quot;tidyverse&quot;)</code></pre>
 </div>
 <div id="data-manipulation" class="section level3">
 <h3>Data Manipulation</h3>
@@ -418,11 +416,6 @@ if(!is.element(&quot;lubridate&quot;,packages)) install.packages(&quot;lubridate
 <li><p>Part three <a href="dataset-restructuring.html">Data Restructuring</a>- transitioning from wide to long format, summarizing data, merging tables</p></li>
 <li><p>Part three <a href="applyfunctions.html">Iteration tools</a> - Iterating functions, loops, apply functions, split-apply-combine.</p></li>
 <li><p>Part four <a href="Date-manipulation.html">Dates</a> - Date and time classes, conversions, lubridate</p></li>
-<li><p>Potential things to cover if we have time:</p>
-<ul>
-<li>Detecting outliers</li>
-<li>Simulting data</li>
-</ul></li>
 </ul>
 </div>
 <div id="r-coding-for-publication-quality-plots" class="section level3">
@@ -434,8 +427,14 @@ if(!is.element(&quot;lubridate&quot;,packages)) install.packages(&quot;lubridate
 </div>
 <div id="other-resources" class="section level3">
 <h3>Other resources</h3>
-<p>Join the Data Science PWT for more help on these topics! Sign up <a href="https://groups.google.com/forum/#!forum/bay-delta-datascience">here</a> or visit us on <a href="https://github.com/InteragencyEcologicalProgram/DataScience">GitHub</a>.</p>
-<p>We can list other useful links here too.</p>
+<ul>
+<li>Join the Data Science PWT for more help on these topics! Sign up <a href="https://groups.google.com/forum/#!forum/bay-delta-datascience">here</a> or visit us on <a href="https://github.com/InteragencyEcologicalProgram/DataScience">GitHub</a>.</li>
+<li><a href="rseek.org">rseek</a> is a search engine that just searches R-related pages</li>
+<li><a href="https://r4ds.had.co.nz/index.html">R for Data Science</a> is a free webbook with all kinds of useful resources for data manipulation and visualization.</li>
+<li><a href="http://www.cookbook-r.com/">Cookbook for R</a> is a great site walking you through the basics.</li>
+<li><a href="https://stackoverflow.com/">Stack Overflow</a> is <em>the</em> site for questions and answers on all types of coding topics.</li>
+<li><a href="https://software-carpentry.org/lessons/">Software Carpentry</a> teaches a variety of data science workshops, and makes their lessons available online.</li>
+</ul>
 </div>
 </div>
 <div id="you-can-do-it" class="section level1">

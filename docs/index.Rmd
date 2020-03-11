@@ -28,7 +28,7 @@ Room: Sierra 1
 
 Required packages: 
 
-* LIST PACKAGES HERE!
+* tidyverse
 
 An introduction to R, geared toward someone who has never used the program before. Topics covered: basic code syntax, reading in data, making a basic plot. 
 
@@ -38,11 +38,9 @@ An introduction to R, geared toward someone who has never used the program befor
 ```{r}
 packages <- installed.packages()[,"Package"]
 if(!is.element("tidyverse",packages)) install.packages("tidyverse")
-if(!is.element("readxl",packages)) install.packages("readxl")
 
 ```
 
-Here we would link to the intro-to-R code
 
 
 ### Data Manipulation
@@ -83,9 +81,6 @@ In this class, you will be learning how to download data, restructure it, clean 
 
 * Part four [Dates](Date-manipulation.html) - Date and time classes, conversions, lubridate
 
-* Potential things to cover if we have time:
-  + Detecting outliers
-  + Simulting data
 
 
 ### R Coding for Publication-Quality Plots
@@ -101,10 +96,14 @@ This class will show you how to construct complex plots, plotting multiple graph
 
 ### Other resources
 
-Join the Data Science PWT for more help on these topics! Sign up [here](https://groups.google.com/forum/#!forum/bay-delta-datascience)
+* Join the Data Science PWT for more help on these topics! Sign up [here](https://groups.google.com/forum/#!forum/bay-delta-datascience)
 or visit us on [GitHub](https://github.com/InteragencyEcologicalProgram/DataScience).
+* [rseek](rseek.org) is a search engine that just searches R-related pages
+* [R for Data Science](https://r4ds.had.co.nz/index.html) is a free webbook with all kinds of useful resources for data manipulation and visualization.
+* [Cookbook for R](http://www.cookbook-r.com/) is a great site walking you through the basics.
+* [Stack Overflow](https://stackoverflow.com/) is *the* site for questions and answers on all types of coding topics.
+* [Software Carpentry](https://software-carpentry.org/lessons/) teaches a variety of data science workshops, and makes their lessons available online.
 
-We can list other useful links here too.
 
 
 # You can do it!
