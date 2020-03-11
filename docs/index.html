@@ -417,13 +417,47 @@ if(!is.element(&quot;lubridate&quot;,packages)) install.packages(&quot;lubridate
 <li><p>Part three <a href="applyfunctions.html">Iteration tools</a> - Iterating functions, loops, apply functions, split-apply-combine.</p></li>
 <li><p>Part four <a href="Date-manipulation.html">Dates</a> - Date and time classes, conversions, lubridate</p></li>
 </ul>
+<p>Data:</p>
+<p>We will be using the CDFW Zooplankton data for this course. You may want to download the data ahead of time in case we have bad hotel wi-fi. Data are available at the links below.</p>
+<ul>
+<li><a href="https://github.com/InteragencyEcologicalProgram/RforIEPworkshop/raw/master/Data%20manipulation/CBdata.csv">CBdata.csv</a></li>
+<li><a href="https://github.com/InteragencyEcologicalProgram/RforIEPworkshop/raw/master/Data%20manipulation/Stations_GPS.csv">Stations_GPS.csv</a></li>
+<li><a href="ftp://ftp.wildlife.ca.gov/IEP_Zooplankton/1972-2018CBMatrix.xlsx">1972-2018CBMatrix.xlsx</a></li>
+<li><a href="ftp://ftp.wildlife.ca.gov/IEP_Zooplankton/1972-2018MysidMatrix.xlsx">1972-2018MysidMatrix.xlsx</a></li>
+</ul>
 </div>
 <div id="r-coding-for-publication-quality-plots" class="section level3">
 <h3>R Coding for Publication-Quality Plots</h3>
 <p>Lead Instructor: Jereme Gaeta, CDFW</p>
 <p>Room: Sutter</p>
-<p>Required packages: LIST PACKAGES HERE</p>
-<p>This class will show you how to construct complex plots, plotting multiple graphs at once, different plot sizes using Layout, displaying multiple variables on one plot, stacked area plots, plotting model outputs, graphing aesthetics. This class will use “base” graphics, but some assistants will be on-hand to help users more comfortable with ggplot.</p>
+<p>Required packages: effects</p>
+<p>To load the required packages before the workshop, run this code:</p>
+<pre class="r"><code>packages &lt;- installed.packages()[,&quot;Package&quot;]
+if(!is.element(&quot;effects&quot;,packages)) install.packages(&quot;effects&quot;)</code></pre>
+<p>This class will show you how to construct complex plots, plotting multiple graphs at once, different plot sizes using Layout, displaying multiple variables on one plot, stacked area plots, plotting model outputs, graphing aesthetics. This class will use “base” graphics, but some assistants will be on-hand to help users more comfortable with ggplot. The class is broken up into two parts:</p>
+<ul>
+<li><a href>Part 1</a>
+<ul>
+<li>Plotting with Dates</li>
+<li>Axis labels with Greek letters, subscripts, and superscripts</li>
+<li>Creating a back-transformed second axis</li>
+<li>Plotting stacked polygons</li>
+<li>Advanced legends</li>
+</ul></li>
+<li><a href>Part 2</a>
+<ul>
+<li>Visualizing linear models</li>
+<li>Visualizing model uncertainty</li>
+<li>Adding color scale bars</li>
+<li>Formatting and exporting figures for publication</li>
+</ul></li>
+</ul>
+<p>Data:</p>
+<p>We will be using data queried from the <a href="https://deltascience.shinyapps.io/ZoopSynth/">Zooplankton Synthesis Shiny App</a>. You may want to download the data ahead of time in case we have bad hotel wi-fi. Data are available at the links below.</p>
+<ul>
+<li><a href="https://github.com/InteragencyEcologicalProgram/RforIEPworkshop/raw/master/Plotting/zoop_df.csv">zoop_df.csv</a></li>
+<li><a href="https://github.com/InteragencyEcologicalProgram/RforIEPworkshop/raw/master/Plotting/zooper_delta_smelt_food.csv">zooper_delta_smelt_food.csv</a></li>
+</ul>
 </div>
 <div id="other-resources" class="section level3">
 <h3>Other resources</h3>

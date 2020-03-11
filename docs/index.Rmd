@@ -82,6 +82,15 @@ In this class, you will be learning how to download data, restructure it, clean 
 * Part four [Dates](Date-manipulation.html) - Date and time classes, conversions, lubridate
 
 
+Data:
+
+We will be using the CDFW Zooplankton data for this course. You may want to download the data ahead of time in case we have bad hotel wi-fi. Data are available at the links below.
+
+* [CBdata.csv](https://github.com/InteragencyEcologicalProgram/RforIEPworkshop/raw/master/Data%20manipulation/CBdata.csv)
+* [Stations_GPS.csv](https://github.com/InteragencyEcologicalProgram/RforIEPworkshop/raw/master/Data%20manipulation/Stations_GPS.csv)
+* [1972-2018CBMatrix.xlsx](ftp://ftp.wildlife.ca.gov/IEP_Zooplankton/1972-2018CBMatrix.xlsx)
+* [1972-2018MysidMatrix.xlsx](ftp://ftp.wildlife.ca.gov/IEP_Zooplankton/1972-2018MysidMatrix.xlsx)
+
 
 ### R Coding for Publication-Quality Plots
 
@@ -89,10 +98,39 @@ Lead Instructor: Jereme Gaeta, CDFW
 
 Room: Sutter
 
-Required packages: LIST PACKAGES HERE
+Required packages: effects
 
-This class will show you how to construct complex plots, plotting multiple graphs at once, different plot sizes using Layout, displaying multiple variables on one plot, stacked area plots, plotting model outputs, graphing aesthetics. This class will use "base" graphics, but some assistants will be on-hand to help users more comfortable with ggplot.
+  To load the required packages before the workshop, run this code:
+  
+```{r}
+packages <- installed.packages()[,"Package"]
+if(!is.element("effects",packages)) install.packages("effects")
 
+
+```
+
+
+This class will show you how to construct complex plots, plotting multiple graphs at once, different plot sizes using Layout, displaying multiple variables on one plot, stacked area plots, plotting model outputs, graphing aesthetics. This class will use "base" graphics, but some assistants will be on-hand to help users more comfortable with ggplot. The class is broken up into two parts:
+
+* [Part 1]() 
+  + Plotting with Dates
+  + Axis labels with Greek letters, subscripts, and superscripts
+  + Creating a back-transformed second axis
+  + Plotting stacked polygons
+  + Advanced legends
+* [Part 2]()
+  + Visualizing linear models
+  + Visualizing model uncertainty
+  + Adding color scale bars
+  + Formatting and exporting figures for publication
+
+
+Data:
+
+We will be using data queried from the [Zooplankton Synthesis Shiny App](https://deltascience.shinyapps.io/ZoopSynth/). You may want to download the data ahead of time in case we have bad hotel wi-fi. Data are available at the links below.
+
+* [zoop_df.csv](https://github.com/InteragencyEcologicalProgram/RforIEPworkshop/raw/master/Plotting/zoop_df.csv)
+* [zooper_delta_smelt_food.csv](https://github.com/InteragencyEcologicalProgram/RforIEPworkshop/raw/master/Plotting/zooper_delta_smelt_food.csv)
 
 ### Other resources
 

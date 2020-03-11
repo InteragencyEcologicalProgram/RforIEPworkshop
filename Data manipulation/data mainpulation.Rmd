@@ -75,7 +75,7 @@ If we want to download directly from an online site we can use
 tf <- tempfile(pattern = "thisone", fileext = ".xlsx")
 
 #download the file from online
-#This time we'll go for the mysid database
+#This time we'll go for the mysid data
 
 download.file(
   url = "ftp://ftp.wildlife.ca.gov/IEP_Zooplankton/1972-2018MysidMatrix.xlsx",
