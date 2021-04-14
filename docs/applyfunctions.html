@@ -372,7 +372,6 @@ summary {
 
 <div id="loops" class="section level2">
 <h2>Loops</h2>
-<p><em>Jason</em></p>
 <p>We’ve now got our zooplankton data set in a format we can work with, but now we probably want to do some calculations on it. What if we want to calculate annual average catch?</p>
 <p>We can do it one year at a time:</p>
 <pre class="r"><code>mean(filter(CBlong, Year == 1984)$CPUE)
@@ -380,17 +379,17 @@ summary {
 mean(filter(CBlong, Year == 1985)$CPUE)
 
 mean(filter(CBlong, Year == 1986)$CPUE)</code></pre>
-<p>But we don’t want to keep copying and pasting! Instead, we can use a loop. For some items in variable <code>x</code>, do something.</p>
+<p>But we don’t want to keep copying and pasting! Instead, we can use a loop. For each items in a sequence, do something.</p>
 <div id="for-loop" class="section level3">
 <h3><code>for</code> Loop</h3>
-<pre><code>for (items in variable) {
+<pre><code>for (items in sequence) {
   # do something
 }</code></pre>
 <p>…an example</p>
 <pre class="r"><code>for (i in 1:5) {
   print(i)
 }</code></pre>
-<p>to calculate the means:</p>
+<p>to calculate the means of our CB data set by year:</p>
 <pre class="r"><code>#first we set up an empty data frame to accept our output
 output = data.frame(year = min(CBlong$Year):max(CBlong$Year), Mean = NA)
 
@@ -408,7 +407,7 @@ for (i in 1:nrow(output)) {   # sequence
 <p>The <code>apply</code> family of functions includes a number of “wrappers” for loops that make them run faster with less code involved. Let’s start with a quick look at the help documentation for <code>apply</code></p>
 <pre class="r"><code># `&lt;_&gt;apply` Family Functions
 ?apply</code></pre>
-<p>There are some shortcut fucntions for using <code>apply</code> on certain data types. For example, you can use <code>lapply</code> for lists and <code>vapply</code> for vectors. The basic syntax is:</p>
+<p>There are some shortcut functions for using <code>apply</code> on certain data types. For example, you can use <code>lapply</code> for lists and <code>vapply</code> for vectors. The basic syntax is:</p>
 <p>Here in <code>lapply</code> the argument to <code>FUN</code> is that ‘do something’ in the <code>for</code> loop. The function passed to <code>FUN</code>, will act on every item in the <code>list or vector</code>.</p>
 <pre><code>lapply(list or vector, FUN = function(x) # do something)</code></pre>
 <div id="lapply-first-example" class="section level3">
@@ -418,135 +417,23 @@ for (i in 1:nrow(output)) {   # sequence
 <p>But with this example, we can do the same thing without using <code>lapply</code>. But because R is vectorized, we can simply write below. The results remain neatly in a vector.</p>
 <pre class="r"><code>1:5 + 5</code></pre>
 </div>
-<div id="lapply-on-list" class="section level3">
-<h3><code>lapply</code> On List</h3>
-<p>But what if instead of a vector, we had a <strong>list</strong> of vectors? (an uneven list in this case)</p>
-<pre class="r"><code>X &lt;- list(
-  Item1 = 1:5,
-  Item2 = 6:10,
-  Item3 = 11:20
-)
-
-X</code></pre>
-<p>because <code>X</code> is a list, vectorization concept doesn’t work…</p>
-<pre class="r"><code>X + 5
-# Error in X + 5 : non-numeric argument to binary operator</code></pre>
-<p>so, here’s where <code>lapply</code> is useful. One nice thing about this is you don’t have to set up an empty data frame to save your work the way you do for a loop.</p>
-<pre class="r"><code>lapply(X, FUN = `+`, 5)
-lapply(X, FUN = `^`, 2)</code></pre>
-</div>
-<div id="now-lets-try-it-with-vectors-using-vapply" class="section level3">
-<h3>Now let’s try it with vectors using <code>vapply</code></h3>
-<pre class="r"><code>employees &lt;- list(
-  c(&quot;first&quot;, &quot;last&quot;),
-  c(&quot;first&quot;, &quot;last&quot;),
-  c(&quot;first&quot;, &quot;last&quot;),
-  c(&quot;first&quot;, &quot;last&quot;),
-  c(&quot;first&quot;)
-)
-
-employees</code></pre>
-<p>can we get employees’ first name or concatenate <code>first</code> &amp; <code>last</code>…</p>
-<pre class="r"><code>vapply(employees, FUN = `[`, FUN.VALUE = character(1L), 1)
-vapply(employees, FUN = paste0, FUN.VALUE = character(1L), collapse = &quot; &quot;)</code></pre>
-<p>let’s display our numeric list again</p>
-<pre class="r"><code># display list `X` again for convenience
-X</code></pre>
-<p>…what if we wanted some descriptive stats for each item in <code>X</code></p>
-<pre class="r"><code>vapply(X, FUN = function(x) {
-  c(Min = min(x), Max = max(x), Mean = mean(x))
-}, FUN.VALUE = numeric(3L))</code></pre>
-</div>
-<div id="list-of-functions" class="section level3">
-<h3>List of Functions</h3>
-<p>We could pass a list of functions as an argument to <code>vapply</code>’s <code>X</code>. Though this convention is not as common. <em>Note</em>: the last function in the list is a custom function that returns count of values less than 5. <code>x &lt; 5</code> returns a Boolean, and summing a Boolean returns number <code>TRUE</code>, as <code>TRUE</code> = 1, <code>FALSE</code> = 0.</p>
-<pre class="r"><code>funs &lt;- list(
-  Mean = mean,
-  Sd = sd,
-  N = length,
-  NumValsLT5 = function(x) sum(x &lt; 5)
-)
-
-vapply(funs, FUN = function(f, nums) {
-  f(nums)
-}, FUN.VALUE = numeric(1L), nums = 1:10)</code></pre>
-</div>
 </div>
 <div id="clean-data" class="section level1">
 <h1>Clean Data</h1>
-<p>Now let’s take a look at some of the zooplankton data! The first thing we want to know about our data is…is it clean? Where are the NA values (in which fields)? What are field data types? Are these the correct data types? …</p>
-<p><code>vapply</code> can help with this.</p>
-<p>In this first example, we check each field in <code>Zoop</code> for NA values. The function will return 0 if no values are NA, and a value &gt; 0 otherwise. The value &gt; 0 indicates the number of NA records in that field.</p>
-<pre class="r"><code>vapply(Zoop, FUN = function(x) {
-  sum(is.na(x))
-}, FUN.VALUE = numeric(1L))</code></pre>
-<p>Here, we include <code>typeof</code> to our output. <code>vapply</code> no returns a matrix. <em>Note</em>: we use <code>base::noquote</code> to remove quotes from the output (<code>typeof</code> returns a character), and <code>base::t</code> to transpose the matrix as two columns instead of two rows.</p>
-<pre class="r"><code>t(noquote(vapply(Zoop, FUN = function(x) {
-  c(NumNA = sum(is.na(x)), TypeOf = typeof(x))
-}, FUN.VALUE = character(2L))))</code></pre>
-<div id="custom-data-summary" class="section level2">
-<h2>Custom Data Summary</h2>
-<p>Of course, using <code>utils::str</code> or <code>base::summary</code> on new data is always a good idea. Here, though, we can customize our summary, if you will. For each field in <code>Zoop</code>, if value is a double, return the range. Otherwise, return frequency table.</p>
-<pre class="r"><code>lapply(Zoop, FUN = function(x) {
-  if (is.double(x)) return(range(x, na.rm = TRUE))
-  table(x, useNA = &quot;ifany&quot;, dnn = NULL)
-})</code></pre>
-<p>We notice something interesting about fields <code>EZStation</code> and <code>DWRStation</code>. We have some quoted NAs. That is, entries in the Excel file are <code>NA</code>, not just blank (which would be read by R as NA). This certainly poses a problem for data summary and other analytics.</p>
-<pre class="r"><code>vapply(Zoop, FUN = function(x) {
-  sum(x %in% &quot;NA&quot;)
-}, FUN.VALUE = numeric(1L))</code></pre>
-</div>
-</div>
-<div id="note-for-jason-this-seems-needlessly-complicated" class="section level1">
-<h1>Note for Jason: this seems needlessly complicated</h1>
-<p>So how do we efficiently replace the quoted (or character) NA with R’s NA?</p>
-<ol style="list-style-type: decimal">
-<li><code>char_nas</code> returns the number of character NAs in each field</li>
-<li><code>b</code> sets to <code>TRUE</code> any value &gt; 0; <code>head(Zoop[b])</code> displays n=6 for quick viewing</li>
-<li>change all character NAs to NA using <code>lapply</code></li>
-</ol>
-<p><em>Note</em>: using <code>Zoop[b]</code> before assignment <code>&lt;-</code> maintains the data.frame structure. Otherwise, you will get a list.</p>
-<p><em>Note</em>: instead of anonymous function, below would be much better suited as a named function. This would allow for ease of use on other data.frames</p>
-<pre class="r"><code>char_nas &lt;- vapply(Zoop, FUN = function(x) {
-  sum(x %in% &quot;NA&quot;)
-}, FUN.VALUE = numeric(1L), USE.NAMES = FALSE)
-
-b &lt;- char_nas &gt; 0
-
-head(Zoop[b])
-
-Zoop[b] &lt;- lapply(Zoop[b], FUN = function(x) {
-  x[x %in% &quot;NA&quot;] &lt;- NA
-  x
-})</code></pre>
-</div>
-<div id="heres-a-simpler-way-to-do-it" class="section level1">
-<h1>Here’s a simpler way to do it:</h1>
-<p><em>Rosie</em></p>
+<p>Now let’s take a look at some of the zooplankton data! The first thing we want to know about our data is…is it clean? Where are the NA values (in which fields)? What are field data types? Are these the correct data types?</p>
+<p>The easiest way to start is with the “summary” function</p>
+<pre class="r"><code>summary(CBdata)</code></pre>
+<p>This is great for all of our numeric data, and lets us know the data types, but there might be some problems in our character variables too.</p>
+<p>To check out those, we can use the <code>unique</code> functions. First we will select just the coloms with characters, then apply the &quot;unique’ functino to each column.</p>
+<pre class="r"><code>lapply(select(CBlong, where(is.character)), unique)</code></pre>
+<p>We notice something interesting about fields <code>EZStation</code> and <code>crackers</code>. We have some quoted NAs. That is, entries in the Excel file are <code>NA</code>, not just blank (which would be read by R as NA). This certainly poses a problem for data summary and other analytics.</p>
 <p>The function “na_if” automatically replaces a certain value with an NA</p>
-<pre class="r"><code>Zoop2 = mutate(Zoop, EZStation == na_if(EZStation, &quot;NA&quot;),
-               DWRStation == na_if(DWRStation, &quot;NA&quot;))</code></pre>
+<pre class="r"><code>CBlong = mutate(CBlong, EZStation == na_if(EZStation, &quot;NA&quot;),
+               crackers == na_if(crackers, &quot;NA&quot;))</code></pre>
 </div>
 <div id="split-apply-combine" class="section level1">
 <h1>Split-apply-combine</h1>
-<div id="split-and-vapply" class="section level2">
-<h2>Split and vapply</h2>
-<p><em>Jason</em></p>
-<p>We often want to split up data sets based on one column and apply functions to another columns. For example, if we wanted to calculate average mysid catch by year, we can use the functions “split” and then “vapply”.</p>
-<pre class="r"><code>mean_temp_yr &lt;- with(data = Zoop, expr = {
-  
-  s &lt;- split(Temperature, f = Year)
-  
-  vapply(s, FUN = mean, FUN.VALUE = numeric(1L))
-  
-})
-
-mean_temp_yr</code></pre>
-</div>
-<div id="group_by-and-summarize" class="section level2">
-<h2>Group_by and summarize</h2>
-<p><em>Rosie</em></p>
-<p>The package dplyr has some nifty tools to do the same thing. In this case, we want to group our data frame based on year and apply the “mean” fuction to CPUE.</p>
+<p>The package dplyr has some nifty tools to create summaries of your data based on particular groups. In this case, we want to group our data frame based on year and apply the <code>mean</code> fuction to CPUE.</p>
 <pre class="r"><code>CBmeans = CBlong %&gt;%
   group_by(Year) %&gt;% #group it by Year
   summarize(MeanCPUE = mean(CPUE)) #Calculate Mean CPUE
@@ -565,7 +452,6 @@ CBmeans = CBlong %&gt;%
 View(CBmeans)
 
 #note that you can use your new variables immediately!</code></pre>
-</div>
 <div id="now-its-your-turn" class="section level2">
 <h2>Now it’s your turn</h2>
 <ol style="list-style-type: decimal">

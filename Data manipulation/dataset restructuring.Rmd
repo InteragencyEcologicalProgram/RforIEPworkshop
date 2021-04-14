@@ -1,6 +1,6 @@
 ---
 title: "Dataset restructuring"
-author: "Rosemary Hartman and Jason DuBois"
+author: "Rosemary Hartman "
 date: "3/20/2020"
 output: html_document
 ---
@@ -149,7 +149,6 @@ CBlongtest2 = merge(CBlong[1:200,], taxalookup2)
 
 
 This automatically only keeps rows that are present in both data sets (equivelent to an "inner join" in SQL). If we want to do a left join or a right joing you can set "all.x = T" or "all.y = T".
-
 
 ```{r}
 #for example, if we only had scientific names for some of our taxa

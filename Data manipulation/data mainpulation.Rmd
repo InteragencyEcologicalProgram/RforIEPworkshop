@@ -64,40 +64,9 @@ head(CBdata)
 
 ```
 
-## Download from online
-*Jason*
-
-If we want to download directly from an online site we can use
-
-```{r eval = F}
-
-#Set up the path to a temporary file where we can store the data set
-tf <- tempfile(pattern = "thisone", fileext = ".xlsx")
-
-#download the file from online
-#This time we'll go for the mysid data
-
-download.file(
-  url = "ftp://ftp.wildlife.ca.gov/IEP_Zooplankton/1972-2018MysidMatrix.xlsx",
-  # destfile = tempfile(fileext = ".xlsx")
-  destfile = tf,
-  mode = "ab"
-)
-
-#now use the readxl file to bring it into your environment
-Zoop <- readxl::read_excel(
-  path = tf,
-  sheet = "Mysid CPUE Matrix 1972-2018 "
-)
-
-#get rid of the temporary excel file we created
-unlink(tf)
-
-```
 
 
 ## Dealing with data frames
-*Rosie*
 
 A lot of these skills can be done with either Base R syntax, or "tidyverse" syntax. Most people find "tidyverse" a little more intuitive, but you can use whichever you are more comfortable with.
 

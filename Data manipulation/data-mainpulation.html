@@ -408,35 +408,8 @@ CBdata = read_excel(&quot;1972-2018CBMatrix.xlsx&quot;,
 
 head(CBdata)</code></pre>
 </div>
-<div id="download-from-online" class="section level2">
-<h2>Download from online</h2>
-<p><em>Jason</em></p>
-<p>If we want to download directly from an online site we can use</p>
-<pre class="r"><code>#Set up the path to a temporary file where we can store the data set
-tf &lt;- tempfile(pattern = &quot;thisone&quot;, fileext = &quot;.xlsx&quot;)
-
-#download the file from online
-#This time we&#39;ll go for the mysid database
-
-download.file(
-  url = &quot;ftp://ftp.wildlife.ca.gov/IEP_Zooplankton/1972-2018MysidMatrix.xlsx&quot;,
-  # destfile = tempfile(fileext = &quot;.xlsx&quot;)
-  destfile = tf,
-  mode = &quot;ab&quot;
-)
-
-#now use the readxl file to bring it into your environment
-Zoop &lt;- readxl::read_excel(
-  path = tf,
-  sheet = &quot;Mysid CPUE Matrix 1972-2018 &quot;
-)
-
-#get rid of the temporary excel file we created
-unlink(tf)</code></pre>
-</div>
 <div id="dealing-with-data-frames" class="section level2">
 <h2>Dealing with data frames</h2>
-<p><em>Rosie</em></p>
 <p>A lot of these skills can be done with either Base R syntax, or “tidyverse” syntax. Most people find “tidyverse” a little more intuitive, but you can use whichever you are more comfortable with.</p>
 <p>One of the useful thing about the <code>tidyverse</code> functions is the fact that you can use “pipes” <code>%&gt;%</code> to string together several functions instead of nesting the functions</p>
 <div id="renaming-columns" class="section level3">
