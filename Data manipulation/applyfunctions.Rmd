@@ -1,7 +1,7 @@
 ---
 title: "Iteration - lots of different methods"
-author: "Rosemary Hartman and Jason DuBois"
-date: "03/20/2020"
+author: "Rosemary Hartman"
+date: "6/8/2021"
 output: html_document
 ---
 
@@ -104,7 +104,7 @@ But with this example, we can do the same thing without using `lapply`. But beca
 
 ## Some examples with our zooplankton data
 
-Now let's take a look at some of the zooplankton data! The first thing we want to know about our data is...is it clean? Where are the NA values (in which fields)? What are field data types? Are these the correct data types? 
+Now let's take a look at some of the zooplankton data! We already got the columns organized, but we can use the apply functions to clean up data within the columns. The first thing we want to know about our data is...is it clean? Where are the NA values (in which fields)? What are field data types? Are these the correct data types? 
 
 The easiest way to start is with the "summary" function
 
@@ -116,7 +116,7 @@ summary(CBdata)
 
 This is great for all of our numeric data, and lets us know the data types, but there might be some problems in our character variables too. 
 
-To check out those, we can use the `unique` functions. First we will select just the coloms with characters, then apply the "unique' functino to each column.
+To check out those, we can use the `unique` functions. First we will select just the colomns with characters, then apply the "unique' function to each column.
 
 ```{r}
 
@@ -141,7 +141,7 @@ CBlong = mutate(CBlong, EZStation == na_if(EZStation, "NA"),
 # Split-apply-combine
 
 
-The package dplyr has some nifty tools to create summaries of your data based on particular groups. In this case, we want to group our data frame based on year and apply the `mean` fuction to CPUE. 
+The package dplyr has some nifty tools to create summaries of your data based on particular groups. In this case, we want to group our data frame based on year and apply the `mean` function to CPUE. 
 
 ```{r}
 
@@ -167,6 +167,9 @@ View(CBmeans)
 
 
 ## Now it's your turn
+
+Take 20-30 minutes to work through these examples. Feel free to raise your hand or use the chat to ask for help. Use the "thumbs up" reaction when you are done. 
+
 
 1. What is the average CPUE of each species?
 

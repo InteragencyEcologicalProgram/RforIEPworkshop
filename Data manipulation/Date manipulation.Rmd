@@ -1,7 +1,7 @@
 ---
 title: "Dates"
 author: "Rosemary Hartman"
-date: "03/20/2020"
+date: "06/08/2020"
 output: html_document
 ---
 
@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE, eval = F)
 
 Dealing with dates is one of the most difficult data types, but fortunately the package "lubridate" makes it much easier.
 
-There are a few different types of data that reffer to dates. "Dates" just have a date component, whereas date-times may be POSIXct (number of seconds since 1970), or PSIXlt (a named vector of year/month/day/hour/minute/second/time zone).
+There are a few different types of data that refer to dates. "Dates" just have a date component, whereas date-times may be POSIXct (number of seconds since 1970), or PSIXlt (a named vector of year/month/day/hour/minute/second/time zone).
 
 
 
@@ -36,7 +36,7 @@ To play with dates, let's read in the CB data again, but we won't tell it that t
 ```{r}
 library(readxl)
 
-CBdates = read.csv("CBdata.csv", stringsAsFactors = F)[,1:10]
+CBdates = read.csv("CBdata.csv")[,1:10]
 str(CBdates$Date)
 
 ```
@@ -67,8 +67,7 @@ Well, that seemed to work, but I can never remember how the "format" thing works
 ?ymd
 
 CBdates = mutate(CBdates, Date2 = mdy(Date))
-
-#if you don't like 
+str(CBdates)
 
 ```
 If I want to organize my dataset by month, I need to extract the "month" part of the date.
@@ -89,6 +88,9 @@ View(CBdates)
 ```
 
 # Now you try it!
+
+Take 20-30 minutes to work through these examples. Feel free to raise your hand or use the chat to ask for help. Use the "thumbs up" reaction when you are done. 
+
 
 1. What happens if you parse a string that contains invalid dates?
 

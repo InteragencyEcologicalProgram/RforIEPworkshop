@@ -1,12 +1,12 @@
 ---
 title: "IEP Data Manipulation and Processing"
 author: "Rosemary Hartman"
-date: "03/20/2020"
+date: "06/15/2021"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, eval = F)
 ```
 
 ## Outline
@@ -28,20 +28,25 @@ the GUI makes it more difficult to replicate your work later. Therefore, it's be
 to use the comand-line to import your data.
 
 We are going to use the Zooplankton Survey data for this demonstration. It's available 
-[here](ftp://ftp.wildlife.ca.gov/IEP_Zooplankton/1972-2018CBMatrix.xlsx)
+[On the CDFW Website](https://filelib.wildlife.ca.gov/Public/IEP_Zooplankton/1972-2019CBMatrix.xlsx)
 
 If you have a .csv file, you can use base R. So I went into the excel file and saved
 one of the worksheets as a .csv
 
+If you've having trouble saving as a .csv, you can download the .csv version from the [workshop GitHub Site](https://github.com/InteragencyEcologicalProgram/RforIEPworkshop/blob/master/Data%20manipulation/CBdata.csv)
+
 ```{r eval = F}
 ?read.csv
 
-CBdata = read.csv("CBdata.csv", stringsAsFactors = F)
+CBdata = read.csv("CBdata.csv")
 head(CBdata)
 
 ```
 
-But what if we want to import the origional excel file? For that,
+Now, I just had to give `read.csv` the name of the file, and it found the file because it was saved in my project's working directory. if you have it saved somewhere else, it might be a little harder. If you type `read.csv("")` and hit the tab key inside the quotes, RStudio will help you navigate (quick demo here).
+
+
+But what if we want to import the original excel file? For that,
 we need the "readxl" package
 
 ```{r eval = F}
@@ -65,22 +70,26 @@ head(CBdata)
 ```
 
 
-
 ## Dealing with data frames
+
+Now we have our data imported, but it is usually not in the format we want. Often the column names are long and unwieldy, data got imported in the wrong format, or we want to re-order the data.
 
 A lot of these skills can be done with either Base R syntax, or "tidyverse" syntax. Most people find "tidyverse" a little more intuitive, but you can use whichever you are more comfortable with.
 
-One of the useful thing about the `tidyverse` functions is the fact that you can use "pipes" `%>%` to string together several functions instead of nesting the functions
+One of the useful thing about the `tidyverse` functions is the fact that you can use "pipes" `%>%` to string together several functions instead of nesting the functions. We will introduce you to pipes, but I'll show you how to nest the function too, so you can use whichever is easier for you to understand.
 
 ### Renaming columns
+
+When the EMP zooplankton folks were getting data ready to share, they wanted to use nice long descriptive column names. But some of them my be long and annoying if we are going to use them for coding. So we want to rename some of them. We have several options. 
 
 ```{r eval = F}
 library(tidyverse)
 
 names(CBdata)
 
-#several options for how to rename your colums
+#several options for how to rename your columns
 
+#Use the square brackets to select values from the vector of column names
 names(CBdata)[names(CBdata)== "SurveyCode"] = "cheese"
 
 names(CBdata)
@@ -106,6 +115,7 @@ names(CBdata)
 
 ```
 #### Dropping columns
+
 The zooplankton data set has one row for every sample, and one
 column for every species. It also has columns with the sums of groups 
 of species (e.g. "All Cladocera"). We want to get rid of those summed
@@ -117,7 +127,7 @@ columns because they make the data messy and harder to work with.
 
 CBdata2 = subset(CBdata, select = -ALLCYCADULTS)
 
-#but we can do more complicated selections with the "select" function from dplry
+#but we can do more complicated selections with the "select" function from dplyr
 ?select
 
 CBdata2 = select(CBdata, -starts_with("ALL"))
@@ -125,7 +135,7 @@ CBdata2 = select(CBdata, -starts_with("ALL"))
 
 ####	Reordering columns
 
-But now our "SurveyCode" column is at the end. We want to put it back in the begining.
+But now our "SurveyCode" column is at the end. We want to put it back in the beginning.
 
 ```{r eval = F}
 #here's how to do it in base R
@@ -134,7 +144,7 @@ CBdata2 = CBdata2[,c(67, 1:66)]
 names(CBdata2)
 
 #you can also use the "select" function in dplyr to do the same thing, but you 
-#can list the columns by name
+#can list the columns by name. (note that the `:` specifies the list of all values in between two values)
 CBdata2 = select(CBdata2, Survey, Year, SurveyCode, SurveyRep:CRABZOEA)
 
 names(CBdata2)
@@ -172,7 +182,7 @@ View(CBdata)
 
 #### converting among data classes
 
-Even though we read in all our columns based on particular classses, sometimes we want to change the data class. Sometimes that's super easy, sometimes it's more difficult. Almost all data classes have an "as" function. as.data.frame, as.character, as.numeric, as.factor, etc. 
+Even though we read in all our columns based on particular classes, sometimes we want to change the data class. Sometimes that's super easy, sometimes it's more difficult. Almost all data classes have an "as" function. as.data.frame, as.character, as.numeric, as.factor, etc. 
 
 Other useful functions:
 length(object) # number of elements or components
@@ -205,7 +215,7 @@ The levels are automatically in alphabetical order.
 If we want to put them in order from west to east we
 can change the levels using the "factor" function. Just
 put the levels in the order you want. You can also use
-this fuction to change the labels of the factors (useful when plotting)
+this function to change the labels of the factors (useful when plotting)
 
 ```{r eval = F}
 ?factor
@@ -242,10 +252,12 @@ CBdata2 = select(CBdata2, -CRABZOEA_yn)
 ```
 # Now its your turn
 
+Take 20-30 minutes to work through these examples. Feel free to raise your hand or use the chat to ask for help. Use the "thumbs up" reaction when you are done. 
+
 1. How many samples does the Zooplankton survey have from the North Delta that contain Harpacticoids (HARPACT)?
 
 2. Make a new variable for the total catch of all zooplankton.
 
-3. Create a new data frame that only contains samples with positive occurances of Eurytemora (EURYTEM).
+3. Create a new data frame that only contains samples with positive occurrences of Eurytemora (EURYTEM).
 
 

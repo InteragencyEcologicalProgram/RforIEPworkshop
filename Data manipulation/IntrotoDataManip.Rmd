@@ -1,7 +1,7 @@
 ---
 title: "Data Mainpulation: Introduction"
-author: "Rosemary Hartman and Jason DuBois"
-date: "3/20/2020"
+author: "Rosemary Hartman"
+date: "6/8/2021"
 output: html_document
 ---
 
@@ -15,7 +15,7 @@ library(knitr)
 
 Some things about writing code are necessary for the code to run. Examples:
 
-* R is case sensative
+* R is case sensitive
 * Variables cannot start with a number
 * Characters must be in quotes
 
@@ -69,16 +69,16 @@ getwd()
 
 
 ```
-This prints the absolute path for our working direcory. From now on we can use relative paths to refer to any file within this working directory. Anything we export will automatically be saved here.
+This prints the absolute path for our working directory. From now on we can use relative paths to refer to any file within this working directory. Anything we export will automatically be saved here.
 
-Using a project in RStuio will set your working directory so you don't have to do it at the top of each script.
+Using a project in RStudio will set your working directory so you don't have to do it at the top of each script.
 
 
 # Functions
 
-R uses functions for most of its data analysis and manipulation methods. Becoming comfortable with the syntax of these functions is super important. RStuduio makes this easier!
+R uses functions for most of its data analysis and manipulation methods. Becoming comfortable with the syntax of these functions is super important. RStudio makes this easier!
 
-Each function requires certain arguments be passed to the fuction, and will give you certain values. 
+Each function requires certain arguments be passed to the function, and will give you certain values. 
 
 You can access the help menu for a function using `?` or the help window in RStudio
 
@@ -86,9 +86,11 @@ You can access the help menu for a function using `?` or the help window in RStu
 ?mean
 ```
 
-Notice that when you start typing, RStuio has a drop down that suggests what you might be looking for.
+Notice that when you start typing, RStudio has a drop down that suggests what you might be looking for.
 
-The function 'mean' only requires one argument. 'x' which will usually be a vector of nubers.
+The function 'mean' only requires one argument. 'x' which will usually be a vector of numbers.
+
+The help function also lists two other arguments - `trim` and `na.rm`, however they have defaults included. If we want to accept the defaults for those arguments (which we usually do), we just need `x`.
 
 ```{r}
 
@@ -113,6 +115,12 @@ it doesn't have to be called "x" either
 foo = c(1,2,3,4,5)
 
 mean(x = foo)
+```
+
+Because `mean` only has one argument, we don't have to assign it to `x`. R will know what you are talking about. If there is more than one argument, unassigned arguments must be listed in order or R will get confused.
+
+```{r}
+mean(foo)
 
 ```
 
@@ -129,9 +137,17 @@ Sturgeon <- data.frame(species = c("white", "white", "white", "green", "green"),
 #arguments are
 LengthFrequency <- function(data, # the data I want to analyze, as a data frame
                             speciesName) { #the species we want to analyze, as a character
+  
+  #first I"ll subset my data to select the species I want
   df = data[which(data$species == speciesName),]
+  
+  #now I'll calculate mean length
   length = mean(df$forkLength)
+  
+  #print a histogram of all the fork lengths
   hist(df$forkLength)
+  
+  #return the mean length
   return(length) 
 }
 # end LengthFrequency
@@ -149,9 +165,9 @@ You will get errors. Don't be afraid of them. For beginners, error codes are oft
 
 You will also get warnings. Warnings are also in red like errors, but they may or may not be bad. Always read and understand them, but sometimes they are nothing to worry about. 
 
-```{r}
+```{r eval=FALSE}
 
-#see if you can solve these
+#see if you can solve these (10mins)
 
 x <- y
 

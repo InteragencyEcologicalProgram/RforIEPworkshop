@@ -1,7 +1,7 @@
 ---
 title: "Dataset restructuring"
 author: "Rosemary Hartman "
-date: "3/20/2020"
+date: "6/15/2021"
 output: html_document
 ---
 
@@ -22,8 +22,17 @@ knitr::opts_chunk$set(eval = F)
 
 The data is never in the format you want it. Usually, R likes things to be in "long" format instead of "wide" format. However, data is often published in "wide" format, and community analyses like things in "wide" format, so you need to know how to switch between the two. 
 
+The "Long" format preferred because it usually makes the data "tidy". Tidy data is a method of data structuring analagous to the 'normal forms' of database structure. We don't have time to go into detail here, but in brief, we want data where:
 
-You can easily transpose the rows and columns of a matrix using `t`
+1. Every column is a variable.
+
+2. Every row is an observation.
+
+3. Every cell is a single value.
+
+You can read more about tidy data in the [R for Data Science Web Book](https://r4ds.had.co.nz/tidy-data.html#fig:tidy-structure)
+
+To start tidying our zooplankton data, we need to transpose our data so we have one species per row. You can easily transpose the rows and columns of a matrix using `t`
 
 ```{r vapply-matrix_out3} 
 
@@ -45,7 +54,7 @@ Y
 
 However, sometimes you want to transpose some of the columns and leave the other columns the way they are. For example, we want to keep the environmental data for each row in the zooplankton data set, but transpose the species names.
 
-The functions "pivot_wider" and "pivot_longer" are probably the easiest way to do this.
+The functions `pivot_wider` and `pivot_longer` are probably the easiest way to do this. You may have heard of other ways to do it, including the reshape package (`melt` and `cast`), and the earlier tidyr functions `spread` and `gather`. They all work, it's just a matter of which works for you. 
 
 
 ```{r}
@@ -53,7 +62,7 @@ library(tidyverse)
 ?pivot_longer
 
 CBlong = CBdata2 %>% #specify the data set you want to pivot
-  pivot_longer(cols = ACARTELA:CRABZOEA, #specify the coloms to pivot
+  pivot_longer(cols = ACARTELA:CRABZOEA, #specify the colomns to pivot
                       names_to = "TaxonCode", #give the name of the new column you want to create
                       values_to = "CPUE" #name of the column for the values
                       )
@@ -63,7 +72,7 @@ View(CBlong)
 ```
 
 
-If we want to put it back in "wide" format, we use "pivot_wider"
+If we want to put it back in "wide" format, we use `pivot_wider`
 
 
 ```{r}
@@ -78,7 +87,7 @@ CBwide = CBlong %>% #specify the data set you want to pivot
 View(CBwide)
 ```
 
-We can also use this to summarize values as we pivot. For example, if we wanted one row for each year instead of foreach sample, we can do that.
+We can also use this to summarize values as we pivot. For example, if we wanted one row for each year instead of for each sample, we can do that.
 
 
 ```{r}
@@ -148,7 +157,7 @@ CBlongtest2 = merge(CBlong[1:200,], taxalookup2)
 ```
 
 
-This automatically only keeps rows that are present in both data sets (equivelent to an "inner join" in SQL). If we want to do a left join or a right joing you can set "all.x = T" or "all.y = T".
+This automatically only keeps rows that are present in both data sets (equivalent to an "inner join" in SQL). If we want to do a left join or a right join you can set "all.x = T" or "all.y = T".
 
 ```{r}
 #for example, if we only had scientific names for some of our taxa
@@ -168,7 +177,7 @@ View(CBlong4)
 ```
 
 
-That's how it works in base R. The "tidyverse" has a set of functions for differet types of joins that are very similar to the syntax in SQL or an Access database, so some people find them easier to deal with. 
+That's how it works in base R. The "tidyverse" has a set of functions for different types of joins that are very similar to the syntax in SQL or an Access database, so some people find them easier to deal with. 
 
 
 ```{r graphics, fig.align = 'center', echo = F, eval = T}
@@ -179,7 +188,7 @@ knitr::include_graphics("joins.jpg")
 
 ?join
 
-#for a basic join, the syntax is simmilar
+#for a basic join, the syntax is similar
 CBlong2 = inner_join(CBlong, taxalookup, by = "TaxonCode")
 
 #but when things get more complicated, it's a little easier to see what you are doing
@@ -220,14 +229,14 @@ write.csv(CBlong[1:200,], "C:/Users/rhartman/Desktop/CBlong.csv")
 
 ```
 
-If you open one of the .csv's you just made, you will notice that there is a new column of numbers at the start of the file. These were the row names from the origional data frame. These get annoying if you need to read the file back into R. Get rid of them with `row.names = FALSE`
+If you open one of the .csv's you just made, you will notice that there is a new column of numbers at the start of the file. These were the row names from the original data frame. These get annoying if you need to read the file back into R. Get rid of them with `row.names = FALSE`
 
 ```{r}
 write.csv(CBlong[1:200,], "CBdata_longformat.csv", row.names = FALSE)
 
 ```
 
-If you are saving the data to put back into R later, you can save it as an Rdata file. These files take up less sorage space than .csvs, and it saves the row names and data classes as well as the data themselves.
+If you are saving the data to put back into R later, you can save it as an Rdata file. These files take up less storage space than .csvs, and it saves the row names and data classes as well as the data themselves.
 
 ``` {r}
 #for an .Rdata file (also .rda)
@@ -240,6 +249,9 @@ save(CBlong, file = "cblong.rda")
 
 
 ## Now its your turn
+
+
+Take 20-30 minutes to work through these examples. Feel free to raise your hand or use the chat to ask for help. Use the "thumbs up" reaction when you are done. 
 
 1. Import the "Station_GPS.csv" into your environment and merge the latitude and longitude to the "CBlong" data frame.
 
