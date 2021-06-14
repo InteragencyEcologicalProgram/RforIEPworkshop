@@ -67,6 +67,12 @@ CBdata = read_excel("1972-2018CBMatrix.xlsx",
 
 head(CBdata)
 
+
+#You can also adjust the `guessmax` argument to skip all the beginning NAs
+CBdata = read_excel("1972-2018CBMatrix.xlsx", 
+    sheet = "CB CPUE Matrix 1972-2018", guess_max = 100000)
+
+
 ```
 
 
