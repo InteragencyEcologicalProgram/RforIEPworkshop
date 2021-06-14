@@ -210,7 +210,12 @@ CBdata = read_excel(&quot;1972-2018CBMatrix.xlsx&quot;,
         &quot;date&quot;, &quot;text&quot;, &quot;text&quot;, &quot;text&quot;, &quot;numeric&quot;, 
         &quot;text&quot;, &quot;numeric&quot;, &quot;text&quot;, rep(&quot;numeric&quot;, 62)))
 
-head(CBdata)</code></pre>
+head(CBdata)
+
+
+#You can also adjust the `guessmax` argument to skip all the beginning NAs
+CBdata = read_excel(&quot;1972-2018CBMatrix.xlsx&quot;, 
+    sheet = &quot;CB CPUE Matrix 1972-2018&quot;, guess_max = 100000)</code></pre>
 </div>
 <div id="dealing-with-data-frames" class="section level2">
 <h2>Dealing with data frames</h2>
