@@ -200,22 +200,14 @@ head(CBdata)</code></pre>
 
 ?read_excel
 
-#CBdata = read_xlsx(&quot;1972-2018CBMatrix.xlsx&quot;, sheet = &quot;CB CPUE Matrix 1972-2018&quot;)
+#CBdata = read_xlsx(&quot;1972-2019CBMatrix.xlsx&quot;, sheet = &quot;CB CPUE Matrix 1972-2019&quot;)
 #Yuck. If you have too many blanks in the begining of your sheet, it thinks it is
 #a logical vector. Let&#39;s fix that.
 
-CBdata = read_excel(&quot;1972-2018CBMatrix.xlsx&quot;, 
-    sheet = &quot;CB CPUE Matrix 1972-2018&quot;, col_types = c(&quot;numeric&quot;, 
-        &quot;numeric&quot;, &quot;numeric&quot;, &quot;numeric&quot;, 
-        &quot;date&quot;, &quot;text&quot;, &quot;text&quot;, &quot;text&quot;, &quot;numeric&quot;, 
-        &quot;text&quot;, &quot;numeric&quot;, &quot;text&quot;, rep(&quot;numeric&quot;, 62)))
-
-head(CBdata)
-
-
-#You can also adjust the `guessmax` argument to skip all the beginning NAs
-CBdata = read_excel(&quot;1972-2018CBMatrix.xlsx&quot;, 
-    sheet = &quot;CB CPUE Matrix 1972-2018&quot;, guess_max = 100000)</code></pre>
+#You can adjust the `guessmax` argument to skip all the beginning NAs
+CBdata = read_excel(&quot;1972-2019CBMatrix.xlsx&quot;, 
+    sheet = &quot;CB CPUE Matrix 1972-2019&quot;, guess_max = 100000,
+    na = &quot;NA&quot;)</code></pre>
 </div>
 <div id="dealing-with-data-frames" class="section level2">
 <h2>Dealing with data frames</h2>
@@ -251,7 +243,7 @@ names(CBdata)
 #this is what it looks like with a pipe instead of nesting
 
 CBdata = CBdata %&gt;%
-  rename(crackers = DWRStation)
+  rename(crackers = DWRStationNo)
 
 names(CBdata)</code></pre>
 <div id="dropping-columns" class="section level4">
@@ -270,15 +262,15 @@ CBdata2 = select(CBdata, -starts_with(&quot;ALL&quot;))</code></pre>
 <h4>Reordering columns</h4>
 <p>But now our “SurveyCode” column is at the end. We want to put it back in the beginning.</p>
 <pre class="r"><code>#here&#39;s how to do it in base R
-CBdata2 = CBdata2[,c(67, 1:66)]
+CBdata2 = CBdata2[,c(67, 1:68)]
 
 names(CBdata2)
 
 #you can also use the &quot;select&quot; function in dplyr to do the same thing, but you 
 #can list the columns by name. (note that the `:` specifies the list of all values in between two values)
-CBdata2 = select(CBdata2, Survey, Year, SurveyCode, SurveyRep:CRABZOEA)
+CBdata2v = select(CBdata2, Survey, Year, SurveyCode, SurveyRep:BARNNAUP)
 
-names(CBdata2)
+names(CBdata2v)
 
 #I just learned this cool thing when you have a lot of columns!
 CBdatatest = select(CBdata2, DAPHNIA, everything())

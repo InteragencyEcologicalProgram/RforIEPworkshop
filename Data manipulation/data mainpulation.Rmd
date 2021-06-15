@@ -55,22 +55,14 @@ library(readxl)
 
 ?read_excel
 
-#CBdata = read_xlsx("1972-2018CBMatrix.xlsx", sheet = "CB CPUE Matrix 1972-2018")
+#CBdata = read_xlsx("1972-2019CBMatrix.xlsx", sheet = "CB CPUE Matrix 1972-2019")
 #Yuck. If you have too many blanks in the begining of your sheet, it thinks it is
 #a logical vector. Let's fix that.
 
-CBdata = read_excel("1972-2018CBMatrix.xlsx", 
-    sheet = "CB CPUE Matrix 1972-2018", col_types = c("numeric", 
-        "numeric", "numeric", "numeric", 
-        "date", "text", "text", "text", "numeric", 
-        "text", "numeric", "text", rep("numeric", 62)))
-
-head(CBdata)
-
-
-#You can also adjust the `guessmax` argument to skip all the beginning NAs
-CBdata = read_excel("1972-2018CBMatrix.xlsx", 
-    sheet = "CB CPUE Matrix 1972-2018", guess_max = 100000)
+#You can adjust the `guessmax` argument to skip all the beginning NAs
+CBdata = read_excel("1972-2019CBMatrix.xlsx", 
+    sheet = "CB CPUE Matrix 1972-2019", guess_max = 100000,
+    na = "NA")
 
 
 ```
@@ -115,7 +107,7 @@ names(CBdata)
 #this is what it looks like with a pipe instead of nesting
 
 CBdata = CBdata %>%
-  rename(crackers = DWRStation)
+  rename(crackers = DWRStationNo)
 
 names(CBdata)
 
@@ -145,15 +137,15 @@ But now our "SurveyCode" column is at the end. We want to put it back in the beg
 
 ```{r eval = F}
 #here's how to do it in base R
-CBdata2 = CBdata2[,c(67, 1:66)]
+CBdata2 = CBdata2[,c(67, 1:68)]
 
 names(CBdata2)
 
 #you can also use the "select" function in dplyr to do the same thing, but you 
 #can list the columns by name. (note that the `:` specifies the list of all values in between two values)
-CBdata2 = select(CBdata2, Survey, Year, SurveyCode, SurveyRep:CRABZOEA)
+CBdata2v = select(CBdata2, Survey, Year, SurveyCode, SurveyRep:BARNNAUP)
 
-names(CBdata2)
+names(CBdata2v)
 
 #I just learned this cool thing when you have a lot of columns!
 CBdatatest = select(CBdata2, DAPHNIA, everything())
