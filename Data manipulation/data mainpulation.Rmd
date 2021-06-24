@@ -137,7 +137,7 @@ But now our "SurveyCode" column is at the end. We want to put it back in the beg
 
 ```{r eval = F}
 #here's how to do it in base R
-CBdata2 = CBdata2[,c(67, 1:68)]
+CBdata2 = CBdata2[,c(68, 1:67)]
 
 names(CBdata2)
 
