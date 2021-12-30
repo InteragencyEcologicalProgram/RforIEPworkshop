@@ -1,7 +1,7 @@
 ---
-title: "R workshop - IEP 2021"
-author: "IEP Data Science PWT"
-date: "6/8/2020"
+title: "R Data manipulation workshop - AFS 2022"
+author: "Rosemary Hartman"
+date: "2/14/2022"
 output: html_document
 ---
 
@@ -11,41 +11,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Welcome!
 
-Hi everyone and welcome to the super-fun R workshop series brought to you by the IEP Data Science PWT. R might seem intimidating, but if you keep at it, it's a super-useful skill. We hope this will be a workshop that is repeated annually (or so) to increase our community knowlege base.
+Hi everyone and welcome to the super-fun R workshop on data mainpulation in R. Have you started to use R but have trouble getting your dataset into the right format? Do dates and times confuse you? Do you "fix" your data in Excel before uploading into R? Then this is the class for you!
 
 Required software: 
 
-* R, version 4.0 or above. The latest version is 4.1.0, available here: [https://cloud.r-project.org/](https://cloud.r-project.org/) 
+* R, version 4.0 or above. The latest version is 4.1.2, available here: [https://cloud.r-project.org/](https://cloud.r-project.org/) 
 * Rstudio, version 1.2 or above. The latest version is 1.4.1, available here: [https://rstudio.com](https://rstudio.com/products/rstudio/download/#download)  
-* [Rtools](https://cran.r-project.org/bin/windows/Rtools/) 
-
-
-### R coding for beginners
-
-Lead instructor: Morgan Gilbert, USFWS
-
-Required packages: 
-
-* tidyverse
-
-An introduction to R, geared toward someone who has never used the program before. Topics covered: basic code syntax, reading in data, making a basic plot. 
-
-
-  To load the required packages before the workshop, run this code:
-  
-```{r}
-packages <- installed.packages()[,"Package"]
-if(!is.element("tidyverse",packages)) install.packages("tidyverse")
-
-```
-
-
-
-### Data Manipulation
-
-Lead instructor: Rosemary Hartman
-
-Dates: June 15, 22, and 29th. 
 
 Required packages: 
 
@@ -66,7 +37,7 @@ if(!is.element("lubridate",packages)) install.packages("lubridate")
 ```
 
 
-In this class, you will be learning how to download data, restructure it, clean it up, and merge different types of data together. We have broken it into modules.
+In this class, you will be learning how to download data, restructure it, clean it up, and merge different types of data together. We have broken it into modules. We may not get through them all today, but you can walk though them on your own afterwards.
 
 
 * Part one [Introduction](IntrotoDataManip.html) - Style, Projects, Functions, Packages.
@@ -82,51 +53,13 @@ In this class, you will be learning how to download data, restructure it, clean 
 
 Data:
 
-We will be using the CDFW Zooplankton data for this course. You may want to download the data ahead of time in case you have wi-fi issues. Data are available at the links below.
+We will be using the California Department of Fish and Wildlife Sacramento-San Joaquin Zooplankton data for this course. You may want to download the data ahead of time in case you have wi-fi issues. Data are available at the links below.
 
 * [CBdata.csv](https://github.com/InteragencyEcologicalProgram/RforIEPworkshop/raw/master/Data%20manipulation/CBdata.csv)
 * [Stations_GPS.csv](https://github.com/InteragencyEcologicalProgram/RforIEPworkshop/raw/master/Data%20manipulation/Stations_GPS.csv)
 * [1972-2019CBMatrix.xlsx](https://filelib.wildlife.ca.gov/Public/IEP_Zooplankton/1972-2019CBMatrix.xlsx)
 * [1972-2019MysidMatrix.xlsx](https://filelib.wildlife.ca.gov/Public/IEP_Zooplankton/1972-2019MysidMatrix.xlsx)
 
-
-### R Coding for Publication-Quality Plots
-
-Lead Instructor: Jereme Gaeta, CDFW 
-
-Required packages: effects
-
-  To load the required packages before the workshop, run this code:
-  
-```{r}
-packages <- installed.packages()[,"Package"]
-if(!is.element("effects",packages)) install.packages("effects")
-
-
-```
-
-
-This class will show you how to construct complex plots, plotting multiple graphs at once, different plot sizes using Layout, displaying multiple variables on one plot, stacked area plots, plotting model outputs, graphing aesthetics. This class will use "base" graphics, but some assistants will be on-hand to help users more comfortable with ggplot. The class is broken up into two parts:
-
-* [Part 1]() 
-  + Plotting with Dates
-  + Axis labels with Greek letters, subscripts, and superscripts
-  + Creating a back-transformed second axis
-  + Plotting stacked polygons
-  + Advanced legends
-* [Part 2]()
-  + Visualizing linear models
-  + Visualizing model uncertainty
-  + Adding color scale bars
-  + Formatting and exporting figures for publication
-
-
-Data:
-
-We will be using data queried from the [Zooplankton Synthesis Shiny App](https://deltascience.shinyapps.io/ZoopSynth/). You may want to download the data ahead of time in case we have bad hotel wi-fi. Data are available at the links below.
-
-* [zoop_df.csv](https://github.com/InteragencyEcologicalProgram/RforIEPworkshop/raw/master/Plotting/zoop_df.csv)
-* [zooper_delta_smelt_food.csv](https://github.com/InteragencyEcologicalProgram/RforIEPworkshop/raw/master/Plotting/zooper_delta_smelt_food.csv)
 
 ### Other resources
 
